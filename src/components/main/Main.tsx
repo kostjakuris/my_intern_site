@@ -39,7 +39,12 @@ const Main = ({ ...props }: HookData) => {
           </span>
           <p className="page-info__username">Valentin Kravchenko</p>
         </div>
-        <Modal active={modalActive} setActive={setModalActive} />
+        <Modal
+          active={modalActive}
+          setActive={setModalActive}
+          activeClassName={"modal__content active"}
+          className={"modal__content"}
+        />
         <button className="main-page-info__edit" onClick={() => setModalActive(true)}>
           Edit profile
         </button>

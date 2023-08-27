@@ -4,12 +4,14 @@ export type ModalData = {
   active: boolean;
   setActive: (active: boolean) => void;
   children?: React.ReactNode;
+  activeClassName: string;
+  className: string;
 };
 
-const ModalFunction = ({ active, setActive, children }: ModalData) => {
+const ModalFunction = ({ active, setActive, children, activeClassName, className }: ModalData) => {
   return (
     <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
-      <div className={active ? "modal__content active" : "modal__content"} onClick={(e) => e.stopPropagation()}>
+      <div className={active ? activeClassName : className} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>
