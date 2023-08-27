@@ -1,0 +1,166 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.header__hidden {
+  display: none;
+}
+
+.header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__wrapper {
+  display: flex;
+  width: 20%;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.header__info {
+  position: relative;
+}
+
+.header__menu {
+  position: absolute;
+  z-index: 5;
+  top: 100px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  width: 20%;
+  height: 80px;
+}
+
+.header__menu.disabled {
+  display: none;
+}
+
+.header__icon-image {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.header__icon-image.active {
+  transform: rotate(180deg);
+}
+
+.header__button {
+  margin: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  text-align: left;
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+}
+
+.header__button.active {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.header__button:hover {
+  background-color: #d9d9d9;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button__img {
+  padding-left: 10px;
+  padding-right: 30px;
+  position: relative;
+}
+
+.button__img-icon {
+  position: absolute;
+  left: 10px;
+  bottom: 0.5px;
+}
+
+.header__info-title {
+  color: #999;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.header__info-email {
+  text-decoration: none;
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media (max-width: 1000px) {
+  .header__wrapper,
+  .header__menu {
+    width: 25%;
+  }
+}
+
+@media (max-width: 850px) {
+  .header__wrapper {
+    width: 10%;
+  }
+
+  .header__menu {
+    width: 30%;
+  }
+  .header__info {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .header__nav-icon {
+    left: 10px;
+  }
+}
+
+@media (max-width: 750px) {
+  .header__nav-icon {
+    left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .header__menu {
+    width: 40%;
+  }
+}
+
+@media (max-width: 450px) {
+  .header__menu {
+    width: 90%;
+  }
+
+  .header__wrapper {
+    width: 22%;
+  }
+}
