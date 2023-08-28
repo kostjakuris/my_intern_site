@@ -4,6 +4,7 @@ import "./signInForm.min.css";
 import { useState } from "react";
 import { validate } from "../input/InputValidation";
 import Input from "../input/Input";
+import { FormData } from "../input/inputVariables";
 
 const SignIn = () => {
   const [hidePassword, setHidePassword] = useState(false);
@@ -13,8 +14,8 @@ const SignIn = () => {
       password: "",
     },
     validate,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values: FormData) => {
+      console.log(values);
     },
   });
 
@@ -22,7 +23,7 @@ const SignIn = () => {
     <main className="main">
       <div className="main-content">
         <div className="form-wrapper-signIn">
-          <form className="signIn__form" onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} className="signIn__form">
             <h2 className="form-wrapper__title-signIn">Welcome back</h2>
             <p className="form-wrapper__info-signIn">Welcome back! Please enter your details </p>
             <div className=" form__email">

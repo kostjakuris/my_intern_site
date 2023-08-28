@@ -12,6 +12,8 @@ import { HookData } from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import ModalProfile from "../modal-function/ModalProfile";
 import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
+import { FormData } from "../input/inputVariables";
+import { useFormik } from "formik";
 
 type GridData = {
   headerName?: string;
@@ -86,8 +88,8 @@ const Users = ({ ...props }: HookData) => {
           className={"modal__content"}
         >
           <div className=" form__select--desktop ">
-            <select name="pagination" className="form select">
-              <option value="" disabled selected className="date-pagination__option">
+            <select name="pagination" className="form select" defaultValue={"Role"}>
+              <option value="Role" disabled className="date-pagination__option">
                 Role
               </option>
               <option value="Customer" className="date-pagination__option">
@@ -105,8 +107,8 @@ const Users = ({ ...props }: HookData) => {
             </select>
           </div>
           <div className=" form__select ">
-            <select name="pagination" className="form-modal select ">
-              <option value="" disabled selected className="date-pagination__option">
+            <select name="pagination" className="form-modal select " defaultValue={"Role"}>
+              <option value="Role" disabled className="date-pagination__option">
                 Role
               </option>
               <option value="Customer" className="date-pagination__option">

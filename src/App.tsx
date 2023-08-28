@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SignUp from "./components/signUpForm/SignUp";
+import SignIn from "./components/signInForm/SignIn";
 import Header from "./components/header/Header";
 import Nav from "./components/nav/Nav";
 
@@ -14,10 +15,10 @@ function App() {
   const [nav, setNav] = useState(false);
   return (
     <div>
-      {/* <SignIn /> */}
+      <SignIn />
       {/* <SignUp /> */}
-      <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
-      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} />
+      {/* <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
+      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} /> */}
     </div>
   );
 }

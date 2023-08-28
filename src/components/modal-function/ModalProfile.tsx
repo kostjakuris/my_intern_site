@@ -1,11 +1,19 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { ModalData } from "../modal-function/ModalFunction";
 import { validate } from "../input/InputValidation";
 import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
+import { FormData } from "../input/inputVariables";
 
-const ModalProfile = ({ setActive, children }: ModalData) => {
+export type ModalProfileData = {
+  active: boolean;
+  setActive: (active: boolean) => void;
+  children?: React.ReactNode;
+  activeClassName: string;
+  className: string;
+};
+
+const ModalProfile = ({ ...props }: ModalProfileData) => {
   const [hidePassword, setHidePassword] = useState(false);
 
   const formik = useFormik({
@@ -19,17 +27,20 @@ const ModalProfile = ({ setActive, children }: ModalData) => {
       password: "",
       rePassword: "",
       adress: "",
+      role: "",
     },
     validate,
-    onSubmit: (values) => {
+    onSubmit: (values: FormData) => {
+      console.log(values);
       alert(JSON.stringify(values, null, 2));
     },
   });
+
   return (
     <div>
       <div className="modal__top">
         <h3 className="form-wrapper-modal__title">Edit Profile</h3>
-        <span className="cross__wrapper" onClick={() => setActive(false)}>
+        <span className="cross__wrapper" onClick={() => props.setActive(false)}>
           <img src={cross} alt="cross" />
         </span>
       </div>
@@ -149,16 +160,16 @@ const ModalProfile = ({ setActive, children }: ModalData) => {
                   errors={formik.errors.town}
                 />
               </div>
-              {children}
+              {props.children}
             </div>
           </div>
 
           <div className="buttons">
-            <button className="cancel__button" onClick={() => setActive(false)}>
+            <button className="cancel__button" onClick={() => props.setActive(false)}>
               Cancel
             </button>
 
-            <button className="submit__button-modal" type="submit" onClick={(e) => e.preventDefault}>
+            <button className="submit__button-modal" type="submit">
               Save
             </button>
           </div>
@@ -277,14 +288,14 @@ const ModalProfile = ({ setActive, children }: ModalData) => {
                 errors={formik.errors.town}
               />
             </div>
-            {children}
+            {props.children}
           </div>
           <div className="buttons">
-            <button className="cancel__button" onClick={() => setActive(false)}>
+            <button className="cancel__button" onClick={() => props.setActive(false)}>
               Cancel
             </button>
 
-            <button className="submit__button-modal" type="submit" onClick={(e) => e.preventDefault}>
+            <button className="submit__button-modal" type="submit">
               Save
             </button>
           </div>

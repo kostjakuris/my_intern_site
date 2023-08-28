@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { Routes, Route } from "react-router-dom";
 import "./signUpForm.min.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { validate } from "../input/InputValidation";
 import Input from "../input/Input";
 import SignIn from "../signInForm/SignIn";
@@ -26,28 +26,28 @@ const SignUp = () => {
     validate,
 
     onSubmit: (values: FormData) => {
-      console.log(formik.values);
-      onSubmit();
+      console.log(values);
+      // onSubmit();
     },
   });
-  async function onSubmit() {
-    try {
-      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
-        name: "Regional",
-        surname: "Admin",
-        email: "RegionalAdmin1@gmail.com",
-        role: "regional_admin",
-        password: "zaqxsw228",
-        country: "USA",
-        city: "Dnipro",
-        address: "123 Main Street",
-        phone_number: "+1 (555) 123-4567",
-      });
-      return respons;
-    } catch (e: any) {
-      return e.message;
-    }
-  }
+  // async function onSubmit() {
+  //   try {
+  //     const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
+  //       name: "Regional",
+  //       surname: "Admin",
+  //       email: "RegionalAdmin1@gmail.com",
+  //       role: "regional_admin",
+  //       password: "zaqxsw228",
+  //       country: "USA",
+  //       city: "Dnipro",
+  //       address: "123 Main Street",
+  //       phone_number: "+1 (555) 123-4567",
+  //     });
+  //     return respons;
+  //   } catch (e: any) {
+  //     return e.message;
+  //   }
+  // }
 
   return (
     <main className="main">
@@ -212,7 +212,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            <button className="submit__button-signUp" type="submit" onClick={(e) => e.preventDefault}>
+            <button className="submit__button-signUp" type="submit">
               Sign Up
             </button>
           </form>

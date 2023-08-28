@@ -8,6 +8,7 @@ export type FormData = {
   password?: string;
   rePassword?: string;
   adress?: string;
+  role?: string;
   handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
