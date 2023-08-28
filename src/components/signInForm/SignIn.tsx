@@ -2,10 +2,24 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import "./signInForm.min.css";
 import { useState } from "react";
-import { validate } from "../input/InputValidation";
+
 import Input from "../input/Input";
 import { FormData } from "../input/inputVariables";
+const validate = (values: FormData) => {
+  const errors: FormData = {};
 
+  if (!values.email) {
+    errors.email = "Email required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = "Invalid email address";
+  }
+
+  if (!values.password) {
+    errors.password = "Password required";
+  } else if (values.password.length < 8) {
+    errors.password = "Must be at least 8 characters or more";
+  }
+};
 const SignIn = () => {
   const [hidePassword, setHidePassword] = useState(false);
   const formik = useFormik({

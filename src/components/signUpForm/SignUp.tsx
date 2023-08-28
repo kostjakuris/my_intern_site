@@ -27,27 +27,27 @@ const SignUp = () => {
 
     onSubmit: (values: FormData) => {
       console.log(values);
-      // onSubmit();
+      onSubmit();
     },
   });
-  // async function onSubmit() {
-  //   try {
-  //     const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
-  //       name: "Regional",
-  //       surname: "Admin",
-  //       email: "RegionalAdmin1@gmail.com",
-  //       role: "regional_admin",
-  //       password: "zaqxsw228",
-  //       country: "USA",
-  //       city: "Dnipro",
-  //       address: "123 Main Street",
-  //       phone_number: "+1 (555) 123-4567",
-  //     });
-  //     return respons;
-  //   } catch (e: any) {
-  //     return e.message;
-  //   }
-  // }
+  async function onSubmit() {
+    try {
+      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
+        name: "Regional",
+        surname: "Admin",
+        email: "RegionalAdmin1@gmail.com",
+        role: "regional_admin",
+        password: "zaqxsw228",
+        country: "USA",
+        city: "Dnipro",
+        address: "123 Main Street",
+        phone_number: "+1 (555) 123-4567",
+      });
+      return respons;
+    } catch (e: any) {
+      return e.message;
+    }
+  }
 
   return (
     <main className="main">
