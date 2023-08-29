@@ -2,16 +2,16 @@ import { useFormik } from "formik";
 import { Routes, Route } from "react-router-dom";
 import "./signUpForm.min.css";
 import { useState } from "react";
-import { validate } from "../input/InputValidation";
 import Input from "../input/Input";
 import SignIn from "../signInForm/SignIn";
 import { FormData } from "../input/inputVariables";
+import { signUpSchema } from "../input/SignUpValidation";
 import axios from "axios";
 
 const SignUp = () => {
   const [hidePassword, setHidePassword] = useState(false);
   const [hideRePassword, setHideRePassword] = useState(false);
-  const formik = useFormik({
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       firstname: "",
       lastname: "",
@@ -23,8 +23,7 @@ const SignUp = () => {
       rePassword: "",
       adress: "",
     },
-    validate,
-
+    validationSchema: signUpSchema,
     onSubmit: (values: FormData) => {
       console.log(values);
       onSubmit();
@@ -56,7 +55,7 @@ const SignUp = () => {
       </Routes>
       <div className="main-content">
         <div className="form-wrapper-signUp ">
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <h2 className="form-wrapper-signUp__title">Sign Up</h2>
             <p className="form-wrapper-signUp__info">Please enter your details to continue</p>
             <div className="signUp__form">
@@ -68,11 +67,11 @@ const SignUp = () => {
                     type={"text"}
                     placeholder={"Firstname"}
                     className={"form--signUp firstName"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.firstname}
-                    touched={formik.touched.firstname}
-                    errors={formik.errors.firstname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.firstname}
+                    touched={touched.firstname}
+                    errors={errors.firstname}
                   />
                 </div>
 
@@ -83,11 +82,11 @@ const SignUp = () => {
                     type={"email"}
                     placeholder={"Email"}
                     className={"form--signUp email"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    touched={formik.touched.email}
-                    errors={formik.errors.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    touched={touched.email}
+                    errors={errors.email}
                   />
                 </div>
 
@@ -98,11 +97,11 @@ const SignUp = () => {
                     type={"text"}
                     placeholder={"Country"}
                     className={"form--signUp country"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.country}
-                    touched={formik.touched.country}
-                    errors={formik.errors.country}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.country}
+                    touched={touched.country}
+                    errors={errors.country}
                   />
                 </div>
 
@@ -113,11 +112,11 @@ const SignUp = () => {
                     type={hidePassword ? "text" : "password"}
                     placeholder={"Password"}
                     className={"form--signUp password"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                    touched={formik.touched.password}
-                    errors={formik.errors.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    touched={touched.password}
+                    errors={errors.password}
                   />
                   <span
                     className={hidePassword ? "hiding__icon-signUp disabled" : "hiding__icon-signUp"}
@@ -133,11 +132,11 @@ const SignUp = () => {
                     type={"text"}
                     placeholder={"Adress"}
                     className={"form--signUp adress"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.adress}
-                    touched={formik.touched.adress}
-                    errors={formik.errors.adress}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.adress}
+                    touched={touched.adress}
+                    errors={errors.adress}
                   />
                 </div>
               </div>
@@ -150,11 +149,11 @@ const SignUp = () => {
                     type={"text"}
                     placeholder={"Lastname"}
                     className={"form--signUp lastName"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastname}
-                    touched={formik.touched.lastname}
-                    errors={formik.errors.lastname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.lastname}
+                    touched={touched.lastname}
+                    errors={errors.lastname}
                   />
                 </div>
 
@@ -165,11 +164,11 @@ const SignUp = () => {
                     type={"tel"}
                     placeholder={"Phone number"}
                     className={"form--signUp phoneNumber"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.phoneNumber}
-                    touched={formik.touched.phoneNumber}
-                    errors={formik.errors.phoneNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.phoneNumber}
+                    touched={touched.phoneNumber}
+                    errors={errors.phoneNumber}
                   />
                 </div>
 
@@ -180,11 +179,11 @@ const SignUp = () => {
                     type={"text"}
                     placeholder={"Town"}
                     className={"form--signUp town"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.town}
-                    touched={formik.touched.town}
-                    errors={formik.errors.town}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.town}
+                    touched={touched.town}
+                    errors={errors.town}
                   />
                 </div>
 
@@ -195,11 +194,11 @@ const SignUp = () => {
                     type={hideRePassword ? "text" : "password"}
                     placeholder={"Re-password"}
                     className={"form--signUp rePassword"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.rePassword}
-                    touched={formik.touched.rePassword}
-                    errors={formik.errors.rePassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.rePassword}
+                    touched={touched.rePassword}
+                    errors={errors.rePassword}
                   />
                   <span
                     className={hideRePassword ? "hiding__icon-signUp disabled" : "hiding__icon-signUp"}
@@ -227,7 +226,7 @@ const SignUp = () => {
         </div>
 
         <div className="form-wrapper-signUp--mobile ">
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <h2 className="form-wrapper-signUp__title">Sign Up</h2>
             <p className="form-wrapper-signUp__info">Please enter your details to continue</p>
             <div className="signUp__form">
@@ -238,11 +237,11 @@ const SignUp = () => {
                   type={"text"}
                   placeholder={"Firstname"}
                   className={"form--signUp firstName"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.firstname}
-                  touched={formik.touched.firstname}
-                  errors={formik.errors.firstname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.firstname}
+                  touched={touched.firstname}
+                  errors={errors.firstname}
                 />
               </div>
 
@@ -253,11 +252,11 @@ const SignUp = () => {
                   type={"text"}
                   placeholder={"Lastname"}
                   className={"form--signUp lastName"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.lastname}
-                  touched={formik.touched.lastname}
-                  errors={formik.errors.lastname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.lastname}
+                  touched={touched.lastname}
+                  errors={errors.lastname}
                 />
               </div>
 
@@ -268,11 +267,11 @@ const SignUp = () => {
                   type={"email"}
                   placeholder={"Email"}
                   className={"form--signUp email"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  touched={formik.touched.email}
-                  errors={formik.errors.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  touched={touched.email}
+                  errors={errors.email}
                 />
               </div>
 
@@ -283,11 +282,11 @@ const SignUp = () => {
                   type={"tel"}
                   placeholder={"Phone number"}
                   className={"form--signUp phoneNumber"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.phoneNumber}
-                  touched={formik.touched.phoneNumber}
-                  errors={formik.errors.phoneNumber}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.phoneNumber}
+                  touched={touched.phoneNumber}
+                  errors={errors.phoneNumber}
                 />
               </div>
 
@@ -298,11 +297,11 @@ const SignUp = () => {
                   type={"text"}
                   placeholder={"Adress"}
                   className={"form--signUp adress"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.adress}
-                  touched={formik.touched.adress}
-                  errors={formik.errors.adress}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.adress}
+                  touched={touched.adress}
+                  errors={errors.adress}
                 />
               </div>
 
@@ -313,11 +312,11 @@ const SignUp = () => {
                   type={"text"}
                   placeholder={"Country"}
                   className={"form--signUp country"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.country}
-                  touched={formik.touched.country}
-                  errors={formik.errors.country}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.country}
+                  touched={touched.country}
+                  errors={errors.country}
                 />
               </div>
               <div className=" form__town ">
@@ -327,11 +326,11 @@ const SignUp = () => {
                   type={"text"}
                   placeholder={"Town"}
                   className={"form--signUp town"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.town}
-                  touched={formik.touched.town}
-                  errors={formik.errors.town}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.town}
+                  touched={touched.town}
+                  errors={errors.town}
                 />
               </div>
 
@@ -342,11 +341,11 @@ const SignUp = () => {
                   type={hidePassword ? "text" : "password"}
                   placeholder={"Password"}
                   className={"form--signUp password"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  touched={formik.touched.password}
-                  errors={formik.errors.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  touched={touched.password}
+                  errors={errors.password}
                 />
                 <span
                   className={hidePassword ? "hiding__icon-signUp disabled" : "hiding__icon-signUp"}
@@ -363,11 +362,11 @@ const SignUp = () => {
                   type={hideRePassword ? "text" : "password"}
                   placeholder={"Re-password"}
                   className={"form--signUp rePassword"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.rePassword}
-                  touched={formik.touched.rePassword}
-                  errors={formik.errors.rePassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.rePassword}
+                  touched={touched.rePassword}
+                  errors={errors.rePassword}
                 />
                 <span
                   className={hideRePassword ? "hiding__icon-signUp disabled" : "hiding__icon-signUp"}

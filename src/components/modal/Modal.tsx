@@ -6,8 +6,8 @@ import { FormData } from "../input/inputVariables";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Input from "../input/Input";
-import cross from "../../icons/clarity_devices-line.svg";
-import { validate } from "../input/InputValidation";
+import cross from "../../icons/system-uicons_cross.svg";
+import { ModalEditSchema } from "../input/ModalEditValidation";
 
 const Modal = ({ active, setActive }: ModalData) => {
   const [hidePassword, setHidePassword] = useState(false);
@@ -17,18 +17,14 @@ const Modal = ({ active, setActive }: ModalData) => {
       firstname: "",
       lastname: "",
       email: "",
-      phoneNumber: "",
       country: "",
       town: "",
       password: "",
-      rePassword: "",
       adress: "",
-      role: "",
     },
-    validate,
+    validationSchema: ModalEditSchema,
     onSubmit: (values: FormData) => {
       console.log(values);
-      alert(JSON.stringify(values, null, 2));
     },
   });
   return (
@@ -58,7 +54,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.firstname}
-                  // touched={formik.touched.firstname}
+                  touched={formik.touched.firstname}
                   errors={formik.errors.firstname}
                 />
               </div>
@@ -73,7 +69,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  // touched={formik.touched.email}
+                  touched={formik.touched.email}
                   errors={formik.errors.email}
                 />
               </div>
@@ -88,7 +84,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.country}
-                  // touched={formik.touched.country}
+                  touched={formik.touched.country}
                   errors={formik.errors.country}
                 />
               </div>
@@ -103,7 +99,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.adress}
-                  // touched={formik.touched.adress}
+                  touched={formik.touched.adress}
                   errors={formik.errors.adress}
                 />
               </div>
@@ -120,7 +116,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.lastname}
-                  // touched={formik.touched.lastname}
+                  touched={formik.touched.lastname}
                   errors={formik.errors.lastname}
                 />
               </div>
@@ -135,7 +131,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  // touched={formik.touched.password}
+                  touched={formik.touched.password}
                   errors={formik.errors.password}
                 />
                 <span
@@ -156,7 +152,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.town}
-                  // touched={formik.touched.town}
+                  touched={formik.touched.town}
                   errors={formik.errors.town}
                 />
               </div>
@@ -168,7 +164,7 @@ const Modal = ({ active, setActive }: ModalData) => {
               Cancel
             </button>
 
-            <button className="submit__button-modal" type="submit" onClick={(e) => e.preventDefault()}>
+            <button className="submit__button-modal" type="submit">
               Save
             </button>
           </div>
@@ -188,7 +184,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.firstname}
-                // touched={formik.touched.firstname}
+                touched={formik.touched.firstname}
                 errors={formik.errors.firstname}
               />
             </div>
@@ -203,7 +199,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.lastname}
-                // touched={formik.touched.lastname}
+                touched={formik.touched.lastname}
                 errors={formik.errors.lastname}
               />
             </div>
@@ -218,7 +214,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
-                // touched={formik.touched.email}
+                touched={formik.touched.email}
                 errors={formik.errors.email}
               />
             </div>
@@ -233,7 +229,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.adress}
-                // touched={formik.touched.adress}
+                touched={formik.touched.adress}
                 errors={formik.errors.adress}
               />
             </div>
@@ -248,7 +244,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
-                // touched={formik.touched.password}
+                touched={formik.touched.password}
                 errors={formik.errors.password}
               />
               <span
@@ -269,7 +265,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.country}
-                // touched={formik.touched.country}
+                touched={formik.touched.country}
                 errors={formik.errors.country}
               />
             </div>
@@ -283,7 +279,7 @@ const Modal = ({ active, setActive }: ModalData) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.town}
-                // touched={formik.touched.town}
+                touched={formik.touched.town}
                 errors={formik.errors.town}
               />
             </div>
@@ -293,7 +289,7 @@ const Modal = ({ active, setActive }: ModalData) => {
               Cancel
             </button>
 
-            <button className="submit__button-modal" type="submit" onClick={(e) => e.preventDefault()}>
+            <button className="submit__button-modal" type="submit">
               Save
             </button>
           </div>

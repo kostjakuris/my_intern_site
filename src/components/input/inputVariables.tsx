@@ -9,7 +9,11 @@ export type FormData = {
   rePassword?: string;
   adress?: string;
   role?: string;
-  handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+};
+
+export type SignInFormData = {
+  email?: string;
+  password?: string;
 };
 
 export type HookData = {

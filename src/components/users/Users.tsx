@@ -13,7 +13,9 @@ import ModalFunction from "../modal-function/ModalFunction";
 import ModalProfile from "../modal-function/ModalProfile";
 import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
 import { FormData } from "../input/inputVariables";
+import { ModalCreateSchema } from "../input/ModalCreateValidation";
 import { useFormik } from "formik";
+import UsersAdditionalGrid from "./UsersAdditionalGrid";
 
 type GridData = {
   headerName?: string;
@@ -24,9 +26,37 @@ type GridData = {
 };
 
 const Users = ({ ...props }: HookData) => {
+  const formik = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      country: "",
+      town: "",
+      password: "",
+      adress: "",
+      role: "",
+    },
+    validationSchema: ModalCreateSchema,
+    onSubmit: (values: FormData) => {},
+  });
+
+  async function onSubmit(values: FormData) {
+    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json", {
+      method: "POST",
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+      });
+  }
+
   const [createActive, setCreateActive] = useState(false);
   const [deleteActive, setDeleteActive] = useState(false);
   const [detailsActive, setDetailsActive] = useState(false);
+  const [editUserActive, setEditUserActive] = useState(false);
+  const [addGridActive, setAddGridActive] = useState(false);
 
   function changeState() {
     if (props.signActive) {
@@ -37,7 +67,7 @@ const Users = ({ ...props }: HookData) => {
     }
   }
   const [gridApi, setGridApi] = useState<AgGridReact<GridData>>();
-  const [columnDefs] = useState<GridData[]>([
+  const [columnDefs, setColumnDefs] = useState<GridData[]>([
     { headerName: "Name", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
     { headerName: "Surname", field: "age" },
     { headerName: "Email", field: "country" },
@@ -85,7 +115,7 @@ const Users = ({ ...props }: HookData) => {
           active={createActive}
           setActive={setCreateActive}
           activeClassName={"modal__content active"}
-          className={"modal__content"}
+          title={"User creation"}
         >
           <div className=" form__select--desktop ">
             <select name="pagination" className="form select" defaultValue={"Role"}>
@@ -142,6 +172,73 @@ const Users = ({ ...props }: HookData) => {
 
           <button className="submit__button-modal submit__button-modal-delete">OK</button>
         </div>
+      </ModalFunction>
+
+      <ModalFunction
+        active={editUserActive}
+        setActive={setEditUserActive}
+        activeClassName={"modal__content active"}
+        className={"modal__content"}
+      >
+        <ModalProfile
+          active={createActive}
+          setActive={setCreateActive}
+          activeClassName={"modal__content active"}
+          title={"User creation"}
+        >
+          <div className=" form__select--desktop ">
+            <select name="pagination" className="form select" defaultValue={"Role"}>
+              <option value="Role" disabled className="date-pagination__option">
+                Role
+              </option>
+              <option value="Customer" className="date-pagination__option">
+                Customer
+              </option>
+              <option value="Device owner" className="date-pagination__option">
+                Device owner
+              </option>
+              <option value="Regional admin" className="date-pagination__option">
+                Regional admin
+              </option>
+              <option value="Super admin" className="date-pagination__option">
+                Super admin
+              </option>
+            </select>
+          </div>
+          <div className=" form__select ">
+            <select
+              name="pagination"
+              className="form-modal select "
+              defaultValue={"Role"}
+              onChange={(e) => e.target.value}
+            >
+              <option value="Role" disabled className="date-pagination__option">
+                Role
+              </option>
+              <option value="Customer" className="date-pagination__option">
+                Customer
+              </option>
+              <option value="Device owner" className="date-pagination__option">
+                Device owner
+              </option>
+              <option value="Regional admin" className="date-pagination__option">
+                Regional admin
+              </option>
+              <option value="Super admin" className="date-pagination__option">
+                Super admin
+              </option>
+            </select>
+          </div>
+        </ModalProfile>
+      </ModalFunction>
+
+      <ModalFunction
+        active={addGridActive}
+        setActive={setAddGridActive}
+        activeClassName={"modal__content active"}
+        className={"modal__content"}
+      >
+        <UsersAdditionalGrid />
       </ModalFunction>
 
       <ModalFunction
@@ -213,7 +310,7 @@ const Users = ({ ...props }: HookData) => {
               <img className="users-grid__img" src={deleteUser} alt="delete user" />
             </span>
           </button>
-          <button className="users-grid__button">
+          <button className="users-grid__button" onClick={() => setEditUserActive(true)}>
             <span className="users-grid__span">
               <img className="users-grid__img" src={editUser} alt="edit user" />
             </span>

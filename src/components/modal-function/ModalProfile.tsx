@@ -1,17 +1,20 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { validate } from "../input/InputValidation";
 import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
 import { FormData } from "../input/inputVariables";
+import { ModalEditSchema } from "../input/ModalEditValidation";
 
 export type ModalProfileData = {
   active: boolean;
   setActive: (active: boolean) => void;
   children?: React.ReactNode;
   activeClassName: string;
-  className: string;
+  title: string;
+  onSubmit?: (values: FormData) => void;
 };
+
+export function createOneUser() {}
 
 const ModalProfile = ({ ...props }: ModalProfileData) => {
   const [hidePassword, setHidePassword] = useState(false);
@@ -21,25 +24,19 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
       firstname: "",
       lastname: "",
       email: "",
-      phoneNumber: "",
       country: "",
       town: "",
       password: "",
-      rePassword: "",
       adress: "",
-      role: "",
     },
-    validate,
-    onSubmit: (values: FormData) => {
-      console.log(values);
-      alert(JSON.stringify(values, null, 2));
-    },
+
+    onSubmit: (values: FormData) => {},
   });
 
   return (
     <div>
       <div className="modal__top">
-        <h3 className="form-wrapper-modal__title">Edit Profile</h3>
+        <h3 className="form-wrapper-modal__title">{props.title}</h3>
         <span className="cross__wrapper" onClick={() => props.setActive(false)}>
           <img src={cross} alt="cross" />
         </span>

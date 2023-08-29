@@ -16,9 +16,9 @@ function App() {
   return (
     <div>
       {/* <SignIn /> */}
-      <SignUp />
-      {/* <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
-      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} /> */}
+      {/* <SignUp /> */}
+      <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
+      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} />
     </div>
   );
 }
