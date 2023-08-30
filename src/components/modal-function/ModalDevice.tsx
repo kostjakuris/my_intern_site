@@ -1,43 +1,34 @@
+import React from "react";
 import { useFormik } from "formik";
-import { useState } from "react";
-import Input from "../input/Input";
+import { DeviceFormData } from "../input/inputVariables";
+import { EditUserSchema } from "../input/EditUserValidation";
 import cross from "../../icons/system-uicons_cross.svg";
-import { FormData } from "../input/inputVariables";
-import { ModalCreateSchema } from "../input/ModalCreateValidation";
+import Input from "../input/Input";
 
-export type ModalProfileData = {
+export type DeviceModalData = {
   active: boolean;
   setActive: (active: boolean) => void;
-  children?: React.ReactNode;
-  activeClassName: string;
-  userRole?: string;
 };
 
-export function createOneUser() {}
-
-const ModalProfile = ({ ...props }: ModalProfileData) => {
-  const [hidePassword, setHidePassword] = useState(false);
-
+const ModalDevice = ({ ...props }: DeviceModalData) => {
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      deviceName: "",
+      deviceType: "",
       email: "",
       country: "",
-      town: "",
-      password: "",
+      city: "",
       adress: "",
     },
-    validationSchema: ModalCreateSchema,
-    onSubmit: (values: FormData) => {
+    validationSchema: EditUserSchema,
+    onSubmit: (values: DeviceFormData) => {
       console.log(values);
     },
   });
-
   return (
     <div>
       <div className="modal__top">
-        <h3 className="form-wrapper-modal__title">Edit user</h3>
+        <h3 className="form-wrapper-modal__title">Edit Device</h3>
         <span className="cross__wrapper" onClick={() => props.setActive(false)}>
           <img src={cross} alt="cross" />
         </span>
@@ -48,16 +39,16 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
             <div className="left__form--modal">
               <div className=" form__firstname ">
                 <Input
-                  id={"firstname"}
-                  name={"firstname"}
+                  id={"deviceName"}
+                  name={"deviceName"}
                   type={"text"}
-                  placeholder={"Firstname"}
+                  placeholder={"Device Name"}
                   className={"form firstName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.firstname}
-                  touched={formik.touched.firstname}
-                  errors={formik.errors.firstname}
+                  value={formik.values.deviceName}
+                  touched={formik.touched.deviceName}
+                  errors={formik.errors.deviceName}
                 />
               </div>
 
@@ -110,62 +101,52 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
             <div className="right__form--modal">
               <div className=" form__lastname">
                 <Input
-                  id={"lastname"}
-                  name={"lastname"}
+                  id={"deviceType"}
+                  name={"deviceType"}
                   type={"text"}
-                  placeholder={"Lastname"}
+                  placeholder={"Device Type"}
                   className={"form lastName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.lastname}
-                  touched={formik.touched.lastname}
-                  errors={formik.errors.lastname}
+                  value={formik.values.deviceType}
+                  touched={formik.touched.deviceType}
+                  errors={formik.errors.deviceType}
                 />
-              </div>
-
-              <div className=" form__password ">
-                <Input
-                  id={"password"}
-                  name={"password"}
-                  type={hidePassword ? "text" : "password"}
-                  placeholder={"Password"}
-                  className={"form password"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  touched={formik.touched.password}
-                  errors={formik.errors.password}
-                />
-                <span
-                  className={hidePassword ? "hiding__icon-modal disabled" : "hiding__icon-modal"}
-                  onClick={() => setHidePassword((prev) => !prev)}
-                >
-                  <img src="img/mdi_eye.jpg" alt="eye" />
-                </span>
               </div>
 
               <div className=" form__town ">
                 <Input
-                  id={"town"}
-                  name={"town"}
+                  id={"city"}
+                  name={"city"}
                   type={"text"}
-                  placeholder={"Town"}
+                  placeholder={"City"}
                   className={"form town"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.town}
-                  touched={formik.touched.town}
-                  errors={formik.errors.town}
+                  value={formik.values.city}
+                  touched={formik.touched.city}
+                  errors={formik.errors.city}
                 />
               </div>
-              {props.children}
+              <div className=" form__serialNumber ">
+                <Input
+                  id={"serialNumber"}
+                  name={"town"}
+                  type={"text"}
+                  placeholder={"Serial Number"}
+                  className={"form serialNumber"}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.serialNumber}
+                  touched={formik.touched.serialNumber}
+                  errors={formik.errors.serialNumber}
+                />
+              </div>
             </div>
           </div>
 
           <div className="buttons">
-            <button className="cancel__button" onClick={() => props.setActive(false)}>
-              Cancel
-            </button>
+            <button className="cancel__button">Cancel</button>
 
             <button className="submit__button-modal" type="submit">
               Save
@@ -179,31 +160,31 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
           <div className="signUp__form--modal">
             <div className=" form__firstname ">
               <Input
-                id={"firstname"}
-                name={"firstname"}
+                id={"deviceName"}
+                name={"deviceName"}
                 type={"text"}
-                placeholder={"Firstname"}
+                placeholder={"Device Name"}
                 className={"form-modal firstName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.firstname}
-                touched={formik.touched.firstname}
-                errors={formik.errors.firstname}
+                value={formik.values.deviceName}
+                touched={formik.touched.deviceName}
+                errors={formik.errors.deviceName}
               />
             </div>
 
             <div className=" form__lastname">
               <Input
-                id={"lastname"}
-                name={"lastname"}
+                id={"deviceType"}
+                name={"deviceType"}
                 type={"text"}
-                placeholder={"Lastname"}
+                placeholder={"Device Type"}
                 className={"form-modal lastName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.lastname}
-                touched={formik.touched.lastname}
-                errors={formik.errors.lastname}
+                value={formik.values.deviceType}
+                touched={formik.touched.deviceType}
+                errors={formik.errors.deviceType}
               />
             </div>
 
@@ -237,27 +218,6 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
               />
             </div>
 
-            <div className=" form__password-modal ">
-              <Input
-                id={"password"}
-                name={"password"}
-                type={hidePassword ? "text" : "password"}
-                placeholder={"Password"}
-                className={"form-modal password"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                touched={formik.touched.password}
-                errors={formik.errors.password}
-              />
-              <span
-                className={hidePassword ? "hiding__icon-modal disabled" : "hiding__icon-modal"}
-                onClick={() => setHidePassword((prev) => !prev)}
-              >
-                <img src="img/mdi_eye.jpg" alt="eye" />
-              </span>
-            </div>
-
             <div className=" form__country ">
               <Input
                 id={"country"}
@@ -272,26 +232,39 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 errors={formik.errors.country}
               />
             </div>
+
             <div className=" form__town ">
               <Input
-                id={"town"}
-                name={"town"}
+                id={"city"}
+                name={"city"}
                 type={"text"}
-                placeholder={"Town"}
+                placeholder={"City"}
                 className={"form-modal town"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.town}
-                touched={formik.touched.town}
-                errors={formik.errors.town}
+                value={formik.values.city}
+                touched={formik.touched.city}
+                errors={formik.errors.city}
               />
             </div>
-            {props.children}
+            <div className=" form__town ">
+              <Input
+                id={"serialNumber"}
+                name={"serialNumber"}
+                type={"text"}
+                placeholder={"Serial Number"}
+                className={"form-modal town"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.serialNumber}
+                touched={formik.touched.serialNumber}
+                errors={formik.errors.serialNumber}
+              />
+            </div>
           </div>
+
           <div className="buttons">
-            <button className="cancel__button" onClick={() => props.setActive(false)}>
-              Cancel
-            </button>
+            <button className="cancel__button">Cancel</button>
 
             <button className="submit__button-modal" type="submit">
               Save
@@ -303,4 +276,4 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
   );
 };
 
-export default ModalProfile;
+export default ModalDevice;

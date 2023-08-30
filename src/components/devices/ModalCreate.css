@@ -121,17 +121,6 @@
   overflow-y: scroll;
 }
 
-.modal__content--additional {
-  width: 750px;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #fff;
-  height: 550px;
-  transform: scale(0.5);
-  transition: 0.5s all;
-  overflow-y: scroll;
-}
-
 .modal-delete {
   padding: 20px;
   border-radius: 5px;
@@ -143,10 +132,6 @@
 }
 
 .modal__content.active {
-  transform: scale(1);
-}
-
-.modal__content--additional.active {
   transform: scale(1);
 }
 
@@ -428,10 +413,6 @@
     margin: 0 auto;
     padding: 0 30px;
   }
-  .grid--additional {
-    width: 90%;
-    margin: 0 auto;
-  }
 }
 
 @media (max-width: 700px) {
@@ -496,18 +477,6 @@
   }
 }
 
-@media (max-width: 620px) {
-  .grid--additional {
-    margin-left: 100px;
-  }
-}
-
-@media (max-width: 535px) {
-  .grid--additional {
-    margin-left: 150px;
-  }
-}
-
 @media (max-width: 460px) {
   .modal-delete {
     width: 260px;
@@ -525,23 +494,11 @@
   .personal-details__info {
     font-size: 14px;
   }
-  .grid--additional {
-    margin-left: 200px;
-  }
 }
 
 @media (max-width: 420px) {
   .page-details__data {
     width: 290px;
-  }
-}
-
-@media (max-width: 370px) {
-  .modal__content--additional {
-    width: 340px;
-  }
-  .grid--additional {
-    margin-left: 250px;
   }
 }
 

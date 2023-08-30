@@ -1,3 +1,13 @@
+export type DeviceFormData = {
+  deviceName?: string;
+  deviceType?: string;
+  email?: string;
+  serialNumber?: string;
+  country?: string;
+  city?: string;
+  adress?: string;
+};
+
 export type FormData = {
   firstname?: string;
   lastname?: string;

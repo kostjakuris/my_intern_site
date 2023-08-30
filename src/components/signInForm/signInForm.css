@@ -154,6 +154,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  width: 250px;
 }
 
 ::placeholder {
@@ -245,6 +246,9 @@
   .form__password {
     margin: 0 auto;
     width: 220px;
+  }
+  .form__label {
+    width: 180px;
   }
 }
 

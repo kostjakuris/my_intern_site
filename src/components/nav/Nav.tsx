@@ -9,6 +9,7 @@ import { NavContent } from "../../App";
 import menuIcon from "../../icons/Group.svg";
 import Main from "../main/Main";
 import Users from "../users/Users";
+import Devices from "../devices/Devices";
 
 const Nav = ({ ...props }: NavContent) => {
   return (
@@ -25,6 +26,19 @@ const Nav = ({ ...props }: NavContent) => {
             />
           }
         />
+
+        <Route
+          path="/devices"
+          element={
+            <Devices
+              signActive={props.signActive}
+              setSignActive={props.setSignActive}
+              navActive={props.navActive}
+              setNavActive={props.setNavActive}
+            />
+          }
+        />
+
         <Route
           path="/users"
           element={
