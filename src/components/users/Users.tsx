@@ -28,6 +28,7 @@ type GridData = {
 };
 
 const Users = ({ ...props }: HookData) => {
+  let count = 0;
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -40,21 +41,29 @@ const Users = ({ ...props }: HookData) => {
       role: "",
     },
     validationSchema: EditUserSchema,
-    onSubmit: (values: FormData) => {
+    onSubmit: (values: FormData, { resetForm }) => {
+      onSubmit();
       console.log(values);
-      onSubmit(values);
+      createOneUser();
+      resetForm();
     },
   });
 
-  async function onSubmit(values: FormData) {
-    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json", {
-      method: "POST",
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-      });
+  function onSubmit() {
+    let newUser = {
+      id: count,
+      athlete: formik.values.firstname,
+      age: formik.values.lastname,
+      country: formik.values.email,
+      year: formik.values.password,
+      date: formik.values.country,
+      sport: formik.values.town,
+      gold: formik.values.adress,
+      silver: formik.values.adress,
+      total: formik.values.adress,
+    };
+    ++count;
+    return newUser;
   }
 
   const [createActive, setCreateActive] = useState(false);
@@ -73,7 +82,8 @@ const Users = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-  const gridRef = useRef<AgGridReact<GridData>>(null);
+
+  const gridRef = useRef<AgGridReact>(null);
 
   const [columnDefs, setColumnDefs] = useState<GridData[]>([
     { headerName: "Name", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
@@ -87,19 +97,8 @@ const Users = ({ ...props }: HookData) => {
     { headerName: "Updated at", field: "total" },
   ]);
 
-  const [rowData, setRowData] = useState([
-    {
-      athlete: formik.values.firstname,
-      age: formik.values.lastname,
-      country: formik.values.email,
-      year: formik.values.country,
-      date: formik.values.role,
-      sport: formik.values.town,
-      gold: formik.values.adress,
-      silver: formik.values.firstname,
-      total: formik.values.firstname,
-    },
-  ]);
+  let values = [...new Array(9)].map(() => onSubmit());
+  const [rowData, setRowData] = useState(values);
 
   const defaultColDef = useMemo(
     () => ({
@@ -116,6 +115,13 @@ const Users = ({ ...props }: HookData) => {
     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
       .then((result) => result.json())
       .then((rowData) => setRowData(rowData));
+  }, []);
+
+  const createOneUser = useCallback(() => {
+    const newUser = onSubmit();
+    values = [newUser, ...values];
+    setRowData(values);
+    console.log(values);
   }, []);
 
   const onPaginationChange = useCallback((pageSize: number) => {
@@ -619,9 +625,9 @@ const Users = ({ ...props }: HookData) => {
       <div className="ag-theme-alpine" style={{ height: "500px", marginTop: "40px" }}>
         <AgGridReact
           ref={gridRef}
+          rowData={rowData}
           animateRows={true}
           columnDefs={columnDefs}
-          rowData={rowData}
           rowSelection="multiple"
           defaultColDef={defaultColDef}
           pagination={true}

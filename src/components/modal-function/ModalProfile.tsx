@@ -13,8 +13,6 @@ export type ModalProfileData = {
   userRole?: string;
 };
 
-export function createOneUser() {}
-
 const ModalProfile = ({ ...props }: ModalProfileData) => {
   const [hidePassword, setHidePassword] = useState(false);
 
