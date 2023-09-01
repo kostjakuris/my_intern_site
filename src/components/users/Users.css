@@ -26,6 +26,10 @@
   margin-right: 10px;
 }
 
+.role {
+  background-color: #fff;
+}
+
 .data-pagination {
   border-color: transparent;
   border-radius: 5px;

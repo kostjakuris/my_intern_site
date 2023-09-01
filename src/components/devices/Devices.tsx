@@ -412,19 +412,19 @@ const Users = ({ ...props }: HookData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        <p className="page-details-text">About user</p>
+        <p className="page-details-text">About device</p>
         <div className="page-details__wrapper">
           <div className="page-details__icon">
             <img className="page-details__img" src={avatarIcon} alt="avatar" />
           </div>
           <div className="page-details__data">
             <div className="personal-details__titles">
+              <p className="personal-details__title">Serial number</p>
+              <p className="personal-details__title">Device Type</p>
               <p className="personal-details__title">Name</p>
-              <p className="personal-details__title">Surname</p>
-              <p className="personal-details__title">Email</p>
-              <p className="personal-details__title ">Phone number</p>
+              <p className="personal-details__title ">Email</p>
               <p className="personal-details__title">Country</p>
-              <p className="personal-details__title">Town</p>
+              <p className="personal-details__title">City</p>
               <p className="personal-details__title">Adress</p>
             </div>
 

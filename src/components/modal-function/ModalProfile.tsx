@@ -4,6 +4,7 @@ import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
 import { FormData } from "../input/inputVariables";
 import { ModalCreateSchema } from "../input/ModalCreateValidation";
+import Select from "../input/Select";
 
 export type ModalProfileData = {
   active: boolean;
@@ -25,6 +26,7 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
       town: "",
       password: "",
       adress: "",
+      role: "",
     },
     validationSchema: ModalCreateSchema,
     onSubmit: (values: FormData) => {
@@ -156,7 +158,36 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   errors={formik.errors.town}
                 />
               </div>
-              {props.children}
+              <div className=" form__select--desktop ">
+                <Select
+                  id={"role"}
+                  name={"role"}
+                  type={"text"}
+                  placeholder={"Role"}
+                  className={"form role"}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.role}
+                  touched={formik.touched.role}
+                  errors={formik.errors.role}
+                >
+                  <option value="" disabled selected className="date-pagination__option">
+                    Role
+                  </option>
+                  <option value="Customer" className="date-pagination__option">
+                    Customer
+                  </option>
+                  <option value="Device owner" className="date-pagination__option">
+                    Device owner
+                  </option>
+                  <option value="Regional admin" className="date-pagination__option">
+                    Regional admin
+                  </option>
+                  <option value="Super admin" className="date-pagination__option">
+                    Super admin
+                  </option>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -284,7 +315,37 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 errors={formik.errors.town}
               />
             </div>
-            {props.children}
+
+            <div className=" form__select ">
+              <Select
+                id={"role"}
+                name={"role"}
+                type={"text"}
+                placeholder={"Role"}
+                className={"form-modal role"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.role}
+                touched={formik.touched.role}
+                errors={formik.errors.role}
+              >
+                <option value="" disabled selected className="date-pagination__option">
+                  Role
+                </option>
+                <option value="Customer" className="date-pagination__option">
+                  Customer
+                </option>
+                <option value="Device owner" className="date-pagination__option">
+                  Device owner
+                </option>
+                <option value="Regional admin" className="date-pagination__option">
+                  Regional admin
+                </option>
+                <option value="Super admin" className="date-pagination__option">
+                  Super admin
+                </option>
+              </Select>
+            </div>
           </div>
           <div className="buttons">
             <button className="cancel__button" onClick={() => props.setActive(false)}>

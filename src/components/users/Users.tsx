@@ -18,6 +18,7 @@ import { useFormik } from "formik";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
 import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
+import Select from "../input/Select";
 
 type GridData = {
   headerName?: string;
@@ -28,7 +29,6 @@ type GridData = {
 };
 
 const Users = ({ ...props }: HookData) => {
-  let count = 0;
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -41,30 +41,13 @@ const Users = ({ ...props }: HookData) => {
       role: "",
     },
     validationSchema: EditUserSchema,
-    onSubmit: (values: FormData, { resetForm }) => {
-      onSubmit();
+    onSubmit: (values: FormData, actions) => {
       console.log(values);
       createOneUser();
-      resetForm();
+      onSubmit();
+      actions.resetForm();
     },
   });
-
-  function onSubmit() {
-    let newUser = {
-      id: count,
-      athlete: formik.values.firstname,
-      age: formik.values.lastname,
-      country: formik.values.email,
-      year: formik.values.password,
-      date: formik.values.country,
-      sport: formik.values.town,
-      gold: formik.values.adress,
-      silver: formik.values.adress,
-      total: formik.values.adress,
-    };
-    ++count;
-    return newUser;
-  }
 
   const [createActive, setCreateActive] = useState(false);
   const [deleteActive, setDeleteActive] = useState(false);
@@ -72,7 +55,6 @@ const Users = ({ ...props }: HookData) => {
   const [editUserActive, setEditUserActive] = useState(false);
   const [addGridActive, setAddGridActive] = useState(false);
   const [hidePassword, setHidePassword] = useState(false);
-  const [submitButton, setSubmitButton] = useState<boolean>(false);
 
   function changeState() {
     if (props.signActive) {
@@ -86,18 +68,34 @@ const Users = ({ ...props }: HookData) => {
   const gridRef = useRef<AgGridReact>(null);
 
   const [columnDefs, setColumnDefs] = useState<GridData[]>([
-    { headerName: "Name", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
-    { headerName: "Surname", field: "age" },
-    { headerName: "Email", field: "country" },
-    { headerName: "Role", field: "year" },
-    { headerName: "Country", field: "date" },
-    { headerName: "City", field: "sport" },
-    { headerName: "Adress", field: "gold" },
-    { headerName: "Created at", field: "silver" },
-    { headerName: "Updated at", field: "total" },
+    { headerName: "Name", field: "name", checkboxSelection: true, headerCheckboxSelection: true },
+    { headerName: "Surname", field: "surname" },
+    { headerName: "Email", field: "email" },
+    { headerName: "Role", field: "role" },
+    { headerName: "Country", field: "country" },
+    { headerName: "City", field: "city" },
+    { headerName: "Adress", field: "adress" },
+    { headerName: "Created at", field: "created_at" },
+    { headerName: "Updated at", field: "updated_at" },
   ]);
+  let count = 0;
+  function onSubmit() {
+    let newUser = {
+      name: formik.values.firstname,
+      surname: formik.values.lastname,
+      email: formik.values.email,
+      role: formik.values.role,
+      country: formik.values.country,
+      city: formik.values.town,
+      adress: formik.values.adress,
+      created_at: formik.values.adress,
+      updated_at: formik.values.adress,
+    };
+    enableAddGrid();
+    return newUser;
+  }
 
-  let values = [...new Array(9)].map(() => onSubmit());
+  let values = [...new Array(0)].map(() => onSubmit());
   const [rowData, setRowData] = useState(values);
 
   const defaultColDef = useMemo(
@@ -121,20 +119,14 @@ const Users = ({ ...props }: HookData) => {
     const newUser = onSubmit();
     values = [newUser, ...values];
     setRowData(values);
-    console.log(values);
   }, []);
 
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
   }, []);
 
-  const getTargetValue = async (userRole: string) => {
-    let role = userRole;
-    enableAddGrid(role);
-  };
-
-  const enableAddGrid = async (role?: string) => {
-    if (role == "Super admin") {
+  const enableAddGrid = async () => {
+    if (formik.values.role == "Super admin") {
       setAddGridActive(true);
     }
   };
@@ -272,13 +264,19 @@ const Users = ({ ...props }: HookData) => {
                 </div>
 
                 <div className=" form__select--desktop ">
-                  <select
-                    name="pagination"
-                    className="form select"
-                    defaultValue={"Role"}
-                    onChange={(e) => getTargetValue(e.target.value)}
+                  <Select
+                    id={"role"}
+                    name={"role"}
+                    type={"text"}
+                    placeholder={"Role"}
+                    className={"form role"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.role}
+                    touched={formik.touched.role}
+                    errors={formik.errors.role}
                   >
-                    <option value="Role" disabled className="date-pagination__option">
+                    <option value="" disabled selected className="date-pagination__option">
                       Role
                     </option>
                     <option value="Customer" className="date-pagination__option">
@@ -293,7 +291,7 @@ const Users = ({ ...props }: HookData) => {
                     <option value="Super admin" className="date-pagination__option">
                       Super admin
                     </option>
-                  </select>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -423,13 +421,19 @@ const Users = ({ ...props }: HookData) => {
               </div>
 
               <div className=" form__select ">
-                <select
-                  name="pagination"
-                  className="form-modal select "
-                  defaultValue={"Role"}
-                  onChange={(e) => getTargetValue(e.target.value)}
+                <Select
+                  id={"role"}
+                  name={"role"}
+                  type={"text"}
+                  placeholder={"Role"}
+                  className={"form-modal role"}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.role}
+                  touched={formik.touched.role}
+                  errors={formik.errors.role}
                 >
-                  <option value="Role" disabled className="date-pagination__option">
+                  <option value="" disabled selected className="date-pagination__option">
                     Role
                   </option>
                   <option value="Customer" className="date-pagination__option">
@@ -444,7 +448,7 @@ const Users = ({ ...props }: HookData) => {
                   <option value="Super admin" className="date-pagination__option">
                     Super admin
                   </option>
-                </select>
+                </Select>
               </div>
             </div>
             <div className="buttons">
@@ -482,46 +486,11 @@ const Users = ({ ...props }: HookData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        <ModalProfile active={editUserActive} setActive={setEditUserActive} activeClassName={"modal__content active"}>
-          <div className=" form__select--desktop ">
-            <select name="pagination" className="form select" defaultValue={"Role"}>
-              <option value="Role" disabled className="date-pagination__option">
-                Role
-              </option>
-              <option value="Customer" className="date-pagination__option">
-                Customer
-              </option>
-              <option value="Device owner" className="date-pagination__option">
-                Device owner
-              </option>
-              <option value="Regional admin" className="date-pagination__option">
-                Regional admin
-              </option>
-              <option value="Super admin" className="date-pagination__option">
-                Super admin
-              </option>
-            </select>
-          </div>
-          <div className=" form__select ">
-            <select name="pagination" className="form-modal select " defaultValue={"Role"}>
-              <option value="Role" disabled className="date-pagination__option">
-                Role
-              </option>
-              <option value="Customer" className="date-pagination__option">
-                Customer
-              </option>
-              <option value="Device owner" className="date-pagination__option">
-                Device owner
-              </option>
-              <option value="Regional admin" className="date-pagination__option">
-                Regional admin
-              </option>
-              <option value="Super admin" className="date-pagination__option">
-                Super admin
-              </option>
-            </select>
-          </div>
-        </ModalProfile>
+        <ModalProfile
+          active={editUserActive}
+          setActive={setEditUserActive}
+          activeClassName={"modal__content active"}
+        ></ModalProfile>
       </ModalFunction>
 
       <ModalFunction
@@ -575,6 +544,65 @@ const Users = ({ ...props }: HookData) => {
             </div>
           </div>
         </div>
+
+        {/* <div className="page-details__container">
+          <div className="page-details__first-wrapper">
+            <p className="page-details-text page-details_media-text">About user</p>
+            <div className="page-details__first-icon page-details__second-icon">
+              <img className="page-details__first-img" src={avatarIcon} alt="avatar" />
+            </div>
+            <div className="page-details__first-data">
+              <div className="personal-details__titles">
+                <p className="personal-details__title">Name</p>
+                <p className="personal-details__title">Surname</p>
+                <p className="personal-details__title">Email</p>
+                <p className="personal-details__title ">Phone number</p>
+                <p className="personal-details__title">Country</p>
+                <p className="personal-details__title">Town</p>
+                <p className="personal-details__title">Adress</p>
+              </div>
+
+              <div className="personal-details__information">
+                <p className="personal-details__info">Valentin</p>
+                <p className="personal-details__info">Kravchenko</p>
+                <p className="personal-details__info personal-details__desktop-email">example@gmail.com</p>
+                <p className="personal-details__info personal-details__mobile-email">example @gmail.com</p>
+                <p className="personal-details__info">069567830</p>
+                <p className="personal-details__info">Ukraine</p>
+                <p className="personal-details__info">Zaporozhye</p>
+                <p className="personal-details__info ">Zaporojskaya street 16</p>
+              </div>
+            </div>
+          </div>
+          <div className="page-details__first-wrapper">
+            <p className="page-details-text page-details-title page-details_media-text">About regional administrator</p>
+            <div className="page-details__first-icon">
+              <img className="page-details__first-img" src={avatarIcon} alt="avatar" />
+            </div>
+            <div className="page-details__first-data">
+              <div className="personal-details__titles">
+                <p className="personal-details__title">Name</p>
+                <p className="personal-details__title">Surname</p>
+                <p className="personal-details__title">Email</p>
+                <p className="personal-details__title ">Phone number</p>
+                <p className="personal-details__title">Country</p>
+                <p className="personal-details__title">Town</p>
+                <p className="personal-details__title">Adress</p>
+              </div>
+
+              <div className="personal-details__information">
+                <p className="personal-details__info">Valentin</p>
+                <p className="personal-details__info">Kravchenko</p>
+                <p className="personal-details__info personal-details__desktop-email">example@gmail.com</p>
+                <p className="personal-details__info personal-details__mobile-email">example @gmail.com</p>
+                <p className="personal-details__info">069567830</p>
+                <p className="personal-details__info">Ukraine</p>
+                <p className="personal-details__info">Zaporozhye</p>
+                <p className="personal-details__info ">Zaporojskaya street 16</p>
+              </div>
+            </div>
+          </div>
+        </div> */}
       </ModalFunction>
 
       <div className="grid-function">

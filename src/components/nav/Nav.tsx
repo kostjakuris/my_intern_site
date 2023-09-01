@@ -10,8 +10,16 @@ import menuIcon from "../../icons/Group.svg";
 import Main from "../main/Main";
 import Users from "../users/Users";
 import Devices from "../devices/Devices";
+import Map from "../map/Map";
+import { useJsApiLoader } from "@react-google-maps/api";
+
+const API_KEY: any = process.env.REACT_APP_API_KEY;
 
 const Nav = ({ ...props }: NavContent) => {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: API_KEY,
+  });
   return (
     <div>
       <Routes>
@@ -50,6 +58,8 @@ const Nav = ({ ...props }: NavContent) => {
             />
           }
         />
+
+        <Route path="/map" element={isLoaded ? <Map /> : "Page not found"} />
       </Routes>
       <div className="main__nav">
         <div className="header__nav-open">
