@@ -78,7 +78,6 @@ const Users = ({ ...props }: HookData) => {
     { headerName: "Created at", field: "created_at" },
     { headerName: "Updated at", field: "updated_at" },
   ]);
-  let count = 0;
   function onSubmit() {
     let newUser = {
       name: formik.values.firstname,

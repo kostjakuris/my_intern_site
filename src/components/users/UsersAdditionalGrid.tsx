@@ -1,6 +1,6 @@
 import React from "react";
 import "./ModalCreate.min.css";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -26,7 +26,9 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-  const [gridApi, setGridApi] = useState<AgGridReact<AddGridGridData>>();
+
+  const gridRef = useRef<AgGridReact>(null);
+
   const [columnDefs, setColumnDefs] = useState<AddGridGridData[]>([
     { headerName: "Name", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
     { headerName: "Surname", field: "age" },
@@ -34,6 +36,8 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
     { headerName: "City", field: "sport" },
     { headerName: "Adress", field: "gold" },
   ]);
+
+  const [rowData, setRowData] = useState();
 
   const defaultColDef = useMemo(
     () => ({
@@ -44,18 +48,15 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
     []
   );
 
-  const onGridReady = (params: any) => {
-    setGridApi(params);
+  useEffect(() => {
     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
       .then((result) => result.json())
-      .then((result) => {
-        params.api.applyTransaction({ add: result });
-      });
-  };
+      .then((rowData) => setRowData(rowData));
+  }, []);
 
-  const onPaginationChange = (pageSize: number) => {
-    gridApi?.api.paginationSetPageSize(pageSize);
-  };
+  const onPaginationChange = useCallback((pageSize: number) => {
+    gridRef.current?.api.paginationSetPageSize(pageSize);
+  }, []);
   return (
     <div className="users-additional-grid" onClick={() => changeState()}>
       <div className="grid-function ">
@@ -83,7 +84,8 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
       </div>
       <div className="ag-theme-alpine grid--additional" style={{ height: "350px", marginTop: "40px" }}>
         <AgGridReact
-          onGridReady={onGridReady}
+          ref={gridRef}
+          rowData={rowData}
           columnDefs={columnDefs}
           animateRows={true}
           rowSelection="multiple"
