@@ -1,5 +1,4 @@
 import * as yup from "yup";
-const passwordRules = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
 
 export const signUpSchema = yup.object().shape({
   firstname: yup.string().required("Firstname required").max(15, "Must be 15 characters or less"),
@@ -8,10 +7,7 @@ export const signUpSchema = yup.object().shape({
   phoneNumber: yup.string().required("Phonenumber required").min(10, { message: "Invalid phone number" }),
   country: yup.string().required("Country required"),
   town: yup.string().required("Town required"),
-  password: yup
-    .string()
-    .required("Password required")
-    .matches(passwordRules, { message: "Must be at least 1 letter,1 numeric digit and 6 another characters" }),
+  password: yup.string().required("Password required").min(8, "Must be at least 8 letters or more"),
   rePassword: yup
     .string()
     .required("RePassword required")
