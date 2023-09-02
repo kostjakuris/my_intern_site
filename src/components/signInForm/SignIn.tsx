@@ -5,6 +5,7 @@ import { useState } from "react";
 import Input from "../input/Input";
 import { SignInFormData } from "../input/inputVariables";
 import { signInSchema } from "../input/SignInValidation";
+import axios from "axios";
 const SignIn = () => {
   const [hidePassword, setHidePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -13,10 +14,22 @@ const SignIn = () => {
       password: "",
     },
     validationSchema: signInSchema,
-    onSubmit: (values: SignInFormData) => {
-      console.log(values);
+    onSubmit: () => {
+      onSubmitSignIn();
     },
   });
+
+  async function onSubmitSignIn() {
+    try {
+      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
+      return respons;
+    } catch (e: any) {
+      return e.message;
+    }
+  }
 
   return (
     <main className="main">

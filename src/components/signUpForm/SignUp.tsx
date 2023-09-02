@@ -24,23 +24,22 @@ const SignUp = () => {
       adress: "",
     },
     validationSchema: signUpSchema,
-    onSubmit: (values: FormData) => {
-      console.log(values);
-      onSubmit();
+    onSubmit: () => {
+      onSubmitSignUp();
     },
   });
-  async function onSubmit() {
+  async function onSubmitSignUp() {
     try {
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
-        name: "Regional",
-        surname: "Admin",
-        email: "RegionalAdmin1@gmail.com",
+        name: values.firstname,
+        surname: values.lastname,
+        email: values.email,
         role: "regional_admin",
-        password: "zaqxsw228",
-        country: "USA",
-        city: "Dnipro",
-        address: "123 Main Street",
-        phone_number: "+1 (555) 123-4567",
+        password: values.password,
+        country: values.country,
+        city: values.town,
+        address: values.adress,
+        phone_number: values.phoneNumber,
       });
       return respons;
     } catch (e: any) {
