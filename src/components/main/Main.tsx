@@ -1,8 +1,6 @@
 import "./Main.min.css";
 import { useState } from "react";
 import Modal from "../modal/Modal";
-import changeIcon from "../../icons/Vector.svg";
-import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
 import { HookData } from "../input/inputVariables";
 
 const Main = ({ ...props }: HookData) => {
@@ -27,7 +25,7 @@ const Main = ({ ...props }: HookData) => {
     <main className="main-page" onClick={() => changeState()}>
       <section className="main-page__info">
         <div className="page-info__icon">
-          <img className="page-info__img" src={avatarIcon} alt="avatar" />
+          <img className="page-info__img" src="icons/carbon_user-avatar-filled-alt.svg" alt="avatar" />
           <span className="change__img" onClick={() => setButton((prev) => !prev)}>
             <button
               className={button ? "change__img-button active" : "change__img-button"}
@@ -35,7 +33,7 @@ const Main = ({ ...props }: HookData) => {
             >
               Upload your photo
             </button>
-            <img className="change__img-icon" src={changeIcon} alt="pen" />
+            <img className="change__img-icon" src="icons/Vector.svg" alt="pen" />
           </span>
           <p className="page-info__username">Valentin Kravchenko</p>
         </div>

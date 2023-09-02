@@ -4,20 +4,14 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Users.css";
 import "./ModalCreate.min.css";
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import addUser from "../../icons/material-symbols_add.svg";
-import deleteUser from "../../icons/material-symbols_delete-outline.svg";
-import editUser from "../../icons/material-symbols_edit-outline.svg";
-import userDetails from "../../icons/openmoji_details.svg";
 import { HookData } from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import ModalProfile from "../modal-function/ModalProfile";
-import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
 import { FormData } from "../input/inputVariables";
 import { EditUserSchema } from "../input/EditUserValidation";
 import { useFormik } from "formik";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
 import Input from "../input/Input";
-import cross from "../../icons/system-uicons_cross.svg";
 import Select from "../input/Select";
 
 type GridData = {
@@ -141,7 +135,7 @@ const Users = ({ ...props }: HookData) => {
         <div className="modal__top">
           <h3 className="form-wrapper-modal__title">User Creation</h3>
           <span className="cross__wrapper" onClick={() => setCreateActive(false)}>
-            <img src={cross} alt="cross" />
+            <img src="icons/system-uicons_cross.svg" alt="cross" />
           </span>
         </div>
 
@@ -518,7 +512,7 @@ const Users = ({ ...props }: HookData) => {
         <p className="page-details-text">About user</p>
         <div className="page-details__wrapper">
           <div className="page-details__icon">
-            <img className="page-details__img" src={avatarIcon} alt="avatar" />
+            <img className="page-details__img" src="icons/carbon_user-avatar-filled-alt.svg" alt="avatar" />
           </div>
           <div className="page-details__data">
             <div className="personal-details__titles">
@@ -629,22 +623,22 @@ const Users = ({ ...props }: HookData) => {
         <div className="grid-buttons">
           <button className="users-grid__button" onClick={() => setCreateActive(true)}>
             <span className="users-grid__span">
-              <img className="users-grid__img" src={addUser} alt="add user" />
+              <img className="users-grid__img" src="icons/material-symbols_add.svg" alt="add user" />
             </span>
           </button>
           <button className="users-grid__button" onClick={() => setDeleteActive(true)}>
             <span className="users-grid__span">
-              <img className="users-grid__img" src={deleteUser} alt="delete user" />
+              <img className="users-grid__img" src="icons/material-symbols_delete-outline.svg" alt="delete user" />
             </span>
           </button>
           <button className="users-grid__button" onClick={() => setEditUserActive(true)}>
             <span className="users-grid__span">
-              <img className="users-grid__img" src={editUser} alt="edit user" />
+              <img className="users-grid__img" src="icons/material-symbols_edit-outline.svg" alt="edit user" />
             </span>
           </button>
           <button className="users-grid__button" onClick={() => setDetailsActive(true)}>
             <span className="users-grid__span">
-              <img className="users-grid__img" src={userDetails} alt="user details" />
+              <img className="users-grid__img" src="icons/openmoji_details.svg" alt="user details" />
             </span>
           </button>
         </div>
