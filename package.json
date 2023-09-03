@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
+    "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,6 +12,7 @@
     "@types/node": "^16.18.46",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/react-redux": "^7.1.26",
     "ag-grid-community": "^30.1.0",
     "ag-grid-react": "^30.1.0",
     "axios": "^1.5.0",
@@ -18,8 +20,10 @@
     "react": "^18.2.0",
     "react-cool-onclickoutside": "^1.7.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
+    "redux-persist": "^6.0.0",
     "typescript": "^4.9.5",
     "use-places-autocomplete": "^4.0.1",
     "web-vitals": "^2.1.4",
@@ -48,5 +52,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/redux": "^3.6.0"
   }
 }

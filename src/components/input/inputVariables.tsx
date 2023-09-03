@@ -9,16 +9,16 @@ export type DeviceFormData = {
 };
 
 export type FormData = {
-  firstname?: string;
-  lastname?: string;
+  name?: string;
+  surname?: string;
   email?: string;
-  phoneNumber?: string;
-  country?: string;
-  town?: string;
-  password?: string;
-  rePassword?: string;
-  adress?: string;
   role?: string;
+  password?: string;
+  country?: string;
+  city?: string;
+  rePassword?: string;
+  address?: string;
+  phone_number?: string;
 };
 
 export type SignInFormData = {

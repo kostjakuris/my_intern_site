@@ -19,13 +19,13 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
 
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      name: "",
+      surname: "",
       email: "",
       country: "",
-      town: "",
+      city: "",
       password: "",
-      adress: "",
+      address: "",
       role: "",
     },
     validationSchema: ModalCreateSchema,
@@ -39,7 +39,7 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
       <div className="modal__top">
         <h3 className="form-wrapper-modal__title">Edit user</h3>
         <span className="cross__wrapper" onClick={() => props.setActive(false)}>
-          <img src={cross} alt="cross" />
+          <img src="icons/system-uicons_cross.svg" alt="cross" />
         </span>
       </div>
       <div className="form-wrapper-modal ">
@@ -55,9 +55,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   className={"form firstName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.firstname}
-                  touched={formik.touched.firstname}
-                  errors={formik.errors.firstname}
+                  value={formik.values.name}
+                  touched={formik.touched.name}
+                  errors={formik.errors.name}
                 />
               </div>
 
@@ -100,9 +100,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   className={"form adress"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.adress}
-                  touched={formik.touched.adress}
-                  errors={formik.errors.adress}
+                  value={formik.values.address}
+                  touched={formik.touched.address}
+                  errors={formik.errors.address}
                 />
               </div>
             </div>
@@ -117,9 +117,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   className={"form lastName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.lastname}
-                  touched={formik.touched.lastname}
-                  errors={formik.errors.lastname}
+                  value={formik.values.surname}
+                  touched={formik.touched.surname}
+                  errors={formik.errors.surname}
                 />
               </div>
 
@@ -153,9 +153,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   className={"form town"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.town}
-                  touched={formik.touched.town}
-                  errors={formik.errors.town}
+                  value={formik.values.city}
+                  touched={formik.touched.city}
+                  errors={formik.errors.city}
                 />
               </div>
               <div className=" form__select--desktop ">
@@ -215,9 +215,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 className={"form-modal firstName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.firstname}
-                touched={formik.touched.firstname}
-                errors={formik.errors.firstname}
+                value={formik.values.name}
+                touched={formik.touched.name}
+                errors={formik.errors.name}
               />
             </div>
 
@@ -230,9 +230,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 className={"form-modal lastName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.lastname}
-                touched={formik.touched.lastname}
-                errors={formik.errors.lastname}
+                value={formik.values.surname}
+                touched={formik.touched.surname}
+                errors={formik.errors.surname}
               />
             </div>
 
@@ -260,9 +260,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 className={"form-modal adress"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.adress}
-                touched={formik.touched.adress}
-                errors={formik.errors.adress}
+                value={formik.values.address}
+                touched={formik.touched.address}
+                errors={formik.errors.address}
               />
             </div>
 
@@ -310,9 +310,9 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 className={"form-modal town"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.town}
-                touched={formik.touched.town}
-                errors={formik.errors.town}
+                value={formik.values.city}
+                touched={formik.touched.city}
+                errors={formik.errors.city}
               />
             </div>
 

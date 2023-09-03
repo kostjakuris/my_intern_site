@@ -5,7 +5,8 @@ import { useState } from "react";
 import Input from "../input/Input";
 import { SignInFormData } from "../input/inputVariables";
 import { signInSchema } from "../input/SignInValidation";
-import axios from "axios";
+import { useAppDispatch } from "../../Hook";
+import { getData, logIn, register } from "../../store/auth/opetations";
 const SignIn = () => {
   const [hidePassword, setHidePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -14,22 +15,13 @@ const SignIn = () => {
       password: "",
     },
     validationSchema: signInSchema,
-    onSubmit: () => {
-      onSubmitSignIn();
+    onSubmit: (values: SignInFormData) => {
+      dispatch(logIn(values));
+      dispatch(getData());
     },
   });
 
-  async function onSubmitSignIn() {
-    try {
-      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/login", {
-        email: values.email,
-        password: values.password,
-      });
-      return respons;
-    } catch (e: any) {
-      return e.message;
-    }
-  }
+  const dispatch = useAppDispatch();
 
   return (
     <main className="main">

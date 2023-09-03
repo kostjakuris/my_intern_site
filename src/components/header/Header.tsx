@@ -24,7 +24,7 @@ const Header = ({ ...props }: HookData) => {
       <div className="block"></div>
       <div className="header__wrapper">
         <div className="header__img">
-          <img src={headerAvatar} alt="avatar" />
+          <img src="icons/carbon_user-avatar-filled-alt1.svg" alt="avatar" />
         </div>
         <div className="header__info">
           <div className="header__info-title">Customer</div>
@@ -35,7 +35,7 @@ const Header = ({ ...props }: HookData) => {
         <span className="header__icon" onClick={() => props.setSignActive(true)}>
           <img
             className={props.signActive ? "header__icon-image active" : "header__icon-image"}
-            src={arrowDown}
+            src="icons/mdi_chevron-down.svg"
             alt="arrow"
           />
         </span>
@@ -45,7 +45,7 @@ const Header = ({ ...props }: HookData) => {
         >
           <Link to="/SignIn.tsx" className="header__button">
             <span className="button__img">
-              <img className="button__img-icon" src={signOutIcon} alt="door" />
+              <img className="button__img-icon" src="icons/mdi_chevron-down.svg" alt="door" />
             </span>
             Sign out
           </Link>

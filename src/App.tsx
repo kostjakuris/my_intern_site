@@ -15,10 +15,10 @@ function App() {
   const [nav, setNav] = useState(false);
   return (
     <div>
-      {/* <SignIn /> */}
+      <SignIn />
       {/* <SignUp /> */}
-      <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
-      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} />
+      {/* <Header signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
+      <Nav navActive={nav} setNavActive={setNav} signActive={menuActive} setSignActive={setMenuActive} /> */}
     </div>
   );
 }

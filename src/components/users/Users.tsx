@@ -25,13 +25,13 @@ type GridData = {
 const Users = ({ ...props }: HookData) => {
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      name: "",
+      surname: "",
       email: "",
       country: "",
-      town: "",
+      city: "",
       password: "",
-      adress: "",
+      address: "",
       role: "",
     },
     validationSchema: EditUserSchema,
@@ -74,15 +74,15 @@ const Users = ({ ...props }: HookData) => {
   ]);
   function onSubmit() {
     let newUser = {
-      name: formik.values.firstname,
-      surname: formik.values.lastname,
+      name: formik.values.name,
+      surname: formik.values.surname,
       email: formik.values.email,
       role: formik.values.role,
       country: formik.values.country,
-      city: formik.values.town,
-      adress: formik.values.adress,
-      created_at: formik.values.adress,
-      updated_at: formik.values.adress,
+      city: formik.values.city,
+      adress: formik.values.address,
+      created_at: formik.values.address,
+      updated_at: formik.values.address,
     };
     enableAddGrid();
     return newUser;
@@ -152,9 +152,9 @@ const Users = ({ ...props }: HookData) => {
                     className={"form firstName"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.firstname}
-                    touched={formik.touched.firstname}
-                    errors={formik.errors.firstname}
+                    value={formik.values.name}
+                    touched={formik.touched.name}
+                    errors={formik.errors.name}
                   />
                 </div>
 
@@ -197,9 +197,9 @@ const Users = ({ ...props }: HookData) => {
                     className={"form adress"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.adress}
-                    touched={formik.touched.adress}
-                    errors={formik.errors.adress}
+                    value={formik.values.address}
+                    touched={formik.touched.address}
+                    errors={formik.errors.address}
                   />
                 </div>
               </div>
@@ -214,9 +214,9 @@ const Users = ({ ...props }: HookData) => {
                     className={"form lastName"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.lastname}
-                    touched={formik.touched.lastname}
-                    errors={formik.errors.lastname}
+                    value={formik.values.surname}
+                    touched={formik.touched.surname}
+                    errors={formik.errors.surname}
                   />
                 </div>
 
@@ -250,9 +250,9 @@ const Users = ({ ...props }: HookData) => {
                     className={"form town"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.town}
-                    touched={formik.touched.town}
-                    errors={formik.errors.town}
+                    value={formik.values.city}
+                    touched={formik.touched.city}
+                    errors={formik.errors.city}
                   />
                 </div>
 
@@ -311,9 +311,9 @@ const Users = ({ ...props }: HookData) => {
                   className={"form-modal firstName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.firstname}
-                  touched={formik.touched.firstname}
-                  errors={formik.errors.firstname}
+                  value={formik.values.name}
+                  touched={formik.touched.name}
+                  errors={formik.errors.name}
                 />
               </div>
 
@@ -326,9 +326,9 @@ const Users = ({ ...props }: HookData) => {
                   className={"form-modal lastName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.lastname}
-                  touched={formik.touched.lastname}
-                  errors={formik.errors.lastname}
+                  value={formik.values.surname}
+                  touched={formik.touched.surname}
+                  errors={formik.errors.surname}
                 />
               </div>
 
@@ -356,9 +356,9 @@ const Users = ({ ...props }: HookData) => {
                   className={"form-modal adress"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.adress}
-                  touched={formik.touched.adress}
-                  errors={formik.errors.adress}
+                  value={formik.values.address}
+                  touched={formik.touched.address}
+                  errors={formik.errors.address}
                 />
               </div>
 
@@ -407,9 +407,9 @@ const Users = ({ ...props }: HookData) => {
                   className={"form-modal town"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.town}
-                  touched={formik.touched.town}
-                  errors={formik.errors.town}
+                  value={formik.values.city}
+                  touched={formik.touched.city}
+                  errors={formik.errors.city}
                 />
               </div>
 

@@ -5,47 +5,33 @@ import { useState } from "react";
 import Input from "../input/Input";
 import SignIn from "../signInForm/SignIn";
 import { FormData } from "../input/inputVariables";
+import { useAppDispatch } from "../../Hook";
 import { signUpSchema } from "../input/SignUpValidation";
 import axios from "axios";
+import { register } from "../../store/auth/opetations";
 
 const SignUp = () => {
   const [hidePassword, setHidePassword] = useState(false);
   const [hideRePassword, setHideRePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      name: "",
+      surname: "",
       email: "",
-      phoneNumber: "",
+      phone_number: "",
       country: "",
-      town: "",
+      city: "",
       password: "",
       rePassword: "",
-      adress: "",
+      address: "",
     },
     validationSchema: signUpSchema,
-    onSubmit: () => {
-      onSubmitSignUp();
+    onSubmit: (values: FormData) => {
+      dispatch(register(values));
     },
   });
-  async function onSubmitSignUp() {
-    try {
-      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
-        name: values.firstname,
-        surname: values.lastname,
-        email: values.email,
-        role: "regional_admin",
-        password: values.password,
-        country: values.country,
-        city: values.town,
-        address: values.adress,
-        phone_number: values.phoneNumber,
-      });
-      return respons;
-    } catch (e: any) {
-      return e.message;
-    }
-  }
+
+  const dispatch = useAppDispatch();
 
   return (
     <main className="main">
@@ -61,16 +47,16 @@ const SignUp = () => {
               <div className="left__form">
                 <div className=" form__firstname ">
                   <Input
-                    id={"firstname"}
-                    name={"firstname"}
+                    id={"name"}
+                    name={"name"}
                     type={"text"}
                     placeholder={"Firstname"}
                     className={"form--signUp firstName"}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.firstname}
-                    touched={touched.firstname}
-                    errors={errors.firstname}
+                    value={values.name}
+                    touched={touched.name}
+                    errors={errors.name}
                   />
                 </div>
 
@@ -126,16 +112,16 @@ const SignUp = () => {
                 </div>
                 <div className=" form__adress ">
                   <Input
-                    id={"adress"}
-                    name={"adress"}
+                    id={"address"}
+                    name={"address"}
                     type={"text"}
                     placeholder={"Adress"}
                     className={"form--signUp adress"}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.adress}
-                    touched={touched.adress}
-                    errors={errors.adress}
+                    value={values.address}
+                    touched={touched.address}
+                    errors={errors.address}
                   />
                 </div>
               </div>
@@ -143,46 +129,46 @@ const SignUp = () => {
               <div className="right__form">
                 <div className=" form__lastname">
                   <Input
-                    id={"lastname"}
-                    name={"lastname"}
+                    id={"surname"}
+                    name={"surname"}
                     type={"text"}
                     placeholder={"Lastname"}
                     className={"form--signUp lastName"}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.lastname}
-                    touched={touched.lastname}
-                    errors={errors.lastname}
+                    value={values.surname}
+                    touched={touched.surname}
+                    errors={errors.surname}
                   />
                 </div>
 
                 <div className=" form__phoneNumber ">
                   <Input
-                    id={"phoneNumber"}
-                    name={"phoneNumber"}
+                    id={"phone_number"}
+                    name={"phone_number"}
                     type={"tel"}
                     placeholder={"Phone number"}
                     className={"form--signUp phoneNumber"}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.phoneNumber}
-                    touched={touched.phoneNumber}
-                    errors={errors.phoneNumber}
+                    value={values.phone_number}
+                    touched={touched.phone_number}
+                    errors={errors.phone_number}
                   />
                 </div>
 
                 <div className=" form__town ">
                   <Input
-                    id={"town"}
-                    name={"town"}
+                    id={"city"}
+                    name={"city"}
                     type={"text"}
                     placeholder={"Town"}
                     className={"form--signUp town"}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.town}
-                    touched={touched.town}
-                    errors={errors.town}
+                    value={values.city}
+                    touched={touched.city}
+                    errors={errors.city}
                   />
                 </div>
 
@@ -231,31 +217,31 @@ const SignUp = () => {
             <div className="signUp__form">
               <div className=" form__firstname ">
                 <Input
-                  id={"firstname"}
-                  name={"firstname"}
+                  id={"name"}
+                  name={"name"}
                   type={"text"}
                   placeholder={"Firstname"}
                   className={"form--signUp firstName"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.firstname}
-                  touched={touched.firstname}
-                  errors={errors.firstname}
+                  value={values.name}
+                  touched={touched.name}
+                  errors={errors.name}
                 />
               </div>
 
               <div className=" form__lastname">
                 <Input
-                  id={"lastname"}
-                  name={"lastname"}
+                  id={"surname"}
+                  name={"surname"}
                   type={"text"}
                   placeholder={"Lastname"}
                   className={"form--signUp lastName"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.lastname}
-                  touched={touched.lastname}
-                  errors={errors.lastname}
+                  value={values.surname}
+                  touched={touched.surname}
+                  errors={errors.surname}
                 />
               </div>
 
@@ -276,31 +262,31 @@ const SignUp = () => {
 
               <div className=" form__phoneNumber ">
                 <Input
-                  id={"phoneNumber"}
-                  name={"phoneNumber"}
+                  id={"phone_number"}
+                  name={"phone_number"}
                   type={"tel"}
                   placeholder={"Phone number"}
                   className={"form--signUp phoneNumber"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.phoneNumber}
-                  touched={touched.phoneNumber}
-                  errors={errors.phoneNumber}
+                  value={values.phone_number}
+                  touched={touched.phone_number}
+                  errors={errors.phone_number}
                 />
               </div>
 
               <div className=" form__adress ">
                 <Input
-                  id={"adress"}
-                  name={"adress"}
+                  id={"address"}
+                  name={"address"}
                   type={"text"}
                   placeholder={"Adress"}
                   className={"form--signUp adress"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.adress}
-                  touched={touched.adress}
-                  errors={errors.adress}
+                  value={values.address}
+                  touched={touched.address}
+                  errors={errors.address}
                 />
               </div>
 
@@ -320,16 +306,16 @@ const SignUp = () => {
               </div>
               <div className=" form__town ">
                 <Input
-                  id={"town"}
-                  name={"town"}
+                  id={"city"}
+                  name={"city"}
                   type={"text"}
                   placeholder={"Town"}
                   className={"form--signUp town"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.town}
-                  touched={touched.town}
-                  errors={errors.town}
+                  value={values.city}
+                  touched={touched.city}
+                  errors={errors.city}
                 />
               </div>
 

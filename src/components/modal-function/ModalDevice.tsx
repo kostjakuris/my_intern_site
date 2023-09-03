@@ -30,7 +30,7 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
       <div className="modal__top">
         <h3 className="form-wrapper-modal__title">Edit Device</h3>
         <span className="cross__wrapper" onClick={() => props.setActive(false)}>
-          <img src={cross} alt="cross" />
+          <img src="icons/system-uicons_cross.svg" alt="cross" />
         </span>
       </div>
       <div className="form-wrapper-modal ">
