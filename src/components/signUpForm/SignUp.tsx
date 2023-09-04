@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import "./signUpForm.min.css";
 import { useState } from "react";
 import Input from "../input/Input";
@@ -203,9 +203,9 @@ const SignUp = () => {
           <div className="account__info-signUp">
             <p className="account__info-signUp-text">
               Already have an account?
-              <a href="/SignIn.tsx" className="account__info-link">
+              <Link to="/SignIn" className="account__info-link">
                 Sign In
-              </a>
+              </Link>
             </p>
           </div>
         </div>
@@ -369,9 +369,9 @@ const SignUp = () => {
           <div className="account__info-signUp">
             <p className="account__info-signUp-text">
               Already have an account?
-              <a href="/SignIn.tsx" className="account__info-signUp-link">
+              <Link to="/SignIn" className="account__info-signUp-link">
                 Sign In
-              </a>
+              </Link>
             </p>
           </div>
         </div>

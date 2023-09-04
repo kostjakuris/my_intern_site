@@ -28,7 +28,7 @@ export type AuthState = {
   isLoading: boolean;
   message: string | null;
 };
-const initialState: AuthState = {
+export const initialState: AuthState = {
   signInUser: {
     email: null,
     password: null,

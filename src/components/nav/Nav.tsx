@@ -1,11 +1,12 @@
 import "./Nav.min.css";
-import { Route, Routes, NavLink } from "react-router-dom";
+import { Route, Routes, NavLink, Navigate } from "react-router-dom";
 import { NavContent } from "../../App";
 import Main from "../main/Main";
 import Users from "../users/Users";
 import Devices from "../devices/Devices";
 import Map from "../map/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
+import { initialState } from "../../store/auth/slice";
 
 const API_KEY: any = process.env.REACT_APP_API_KEY;
 
@@ -14,7 +15,9 @@ const Nav = ({ ...props }: NavContent) => {
     id: "google-map-script",
     googleMapsApiKey: API_KEY,
   });
-  return (
+  return initialState.user.name === null ? (
+    <Navigate to="/SignUp" />
+  ) : (
     <div>
       <Routes>
         <Route

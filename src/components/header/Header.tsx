@@ -1,10 +1,11 @@
 import "./Header.min.css";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import signOutIcon from "../../icons/codicon_sign-out.svg";
 import { HookData } from "../input/inputVariables";
 import SignIn from "../signInForm/SignIn";
 import headerAvatar from "../../icons/carbon_user-avatar-filled-alt1.svg";
 import arrowDown from "../../icons/mdi_chevron-down.svg";
+import { initialState } from "../../store/auth/slice";
 
 const Header = ({ ...props }: HookData) => {
   function changeNavState() {
@@ -15,8 +16,9 @@ const Header = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-
-  return (
+  return initialState.user.name === null ? (
+    <Navigate to="/SignUp" />
+  ) : (
     <header className="header" onClick={() => changeNavState()}>
       <Routes>
         <Route path="/SignIn.tsx" element={<SignIn />} />

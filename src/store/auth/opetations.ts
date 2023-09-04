@@ -3,6 +3,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SignInFormData } from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
 import { accessToken } from "./selectors";
+import { useNavigate } from "react-router-dom";
+
+const setAuthHeader = (accessToken: any) => {
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+};
+
+const clearAuthHeader = () => {
+  axios.defaults.headers.common.Authorization = "";
+};
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -19,6 +28,7 @@ export const register = createAsyncThunk(
         address,
         phone_number,
       });
+      return respons;
     } catch (e: any) {
       return e.message;
     }
@@ -31,8 +41,8 @@ export const logIn = createAsyncThunk("auth/login", async ({ email, password }: 
       email,
       password,
     });
-    localStorage.setItem("accessToken", respons.data.accessToken);
-    localStorage.setItem("refreshToken", respons.data.refreshToken);
+    setAuthHeader(respons.data.accessToken);
+    return respons;
   } catch (e: any) {
     return e.message;
   }
@@ -46,8 +56,9 @@ export const getData = createAsyncThunk("auth/getData", async () => {
   }
 
   try {
+    setAuthHeader(persistedAccessToken);
     const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users/user-info", {
-      data: {
+      headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },

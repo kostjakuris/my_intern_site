@@ -2,7 +2,8 @@ import "./Main.min.css";
 import { useState } from "react";
 import Modal from "../modal/Modal";
 import { HookData } from "../input/inputVariables";
-
+import { Navigate } from "react-router-dom";
+import { initialState } from "../../store/auth/slice";
 const Main = ({ ...props }: HookData) => {
   const [modalActive, setModalActive] = useState(false);
   const [secondButton, setSecondButton] = useState(true);
@@ -20,8 +21,9 @@ const Main = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-
-  return (
+  return initialState.user.name === null ? (
+    <Navigate to="/SignUp" />
+  ) : (
     <main className="main-page" onClick={() => changeState()}>
       <section className="main-page__info">
         <div className="page-info__icon">
@@ -35,7 +37,9 @@ const Main = ({ ...props }: HookData) => {
             </button>
             <img className="change__img-icon" src="icons/Vector.svg" alt="pen" />
           </span>
-          <p className="page-info__username">Valentin Kravchenko</p>
+          <p className="page-info__username">
+            {initialState.user.name} {initialState.user.surname}
+          </p>
         </div>
         <Modal
           active={modalActive}
@@ -73,34 +77,34 @@ const Main = ({ ...props }: HookData) => {
             <div className="personal-data__left personal-data--mobile">
               <div className="personal-data__role personal-data__padding">
                 <p className="personal-data__title">Role</p>
-                <p className="personal-data__info">Customer</p>
+                <p className="personal-data__info">{initialState.user.role}</p>
               </div>
               <div className="personal-data__phonenumber personal-data__padding">
                 <p className="personal-data__title">Phone number</p>
-                <p className="personal-data__info">069567830</p>
+                <p className="personal-data__info">{initialState.user.phone_number}</p>
               </div>
             </div>
 
             <div className="personal-data__center personal-data--mobile">
               <div className="personal-data__email personal-data__padding">
                 <p className="personal-data__title">Email</p>
-                <p className="personal-data__info personal-data__desktop-email">example@gmail.com</p>
-                <p className="personal-data__info personal-data__mobile-email">example @gmail.com</p>
+                <p className="personal-data__info personal-data__desktop-email">{initialState.user.email}</p>
+                <p className="personal-data__info personal-data__mobile-email">{initialState.user.email}</p>
               </div>
               <div className="personal-data__adress personal-data__padding">
                 <p className="personal-data__title">Adress</p>
-                <p className="personal-data__info ">Zaporojskaya street 16</p>
+                <p className="personal-data__info ">{initialState.user.address}</p>
               </div>
             </div>
 
             <div className="personal-data__right personal-data--mobile">
               <div className="personal-data__country personal-data__padding">
                 <p className="personal-data__title">Country</p>
-                <p className="personal-data__info">Ukraine</p>
+                <p className="personal-data__info">{initialState.user.country}</p>
               </div>
               <div className="personal-data__town personal-data__padding">
                 <p className="personal-data__title">Town</p>
-                <p className="personal-data__info">Zaporozhye</p>
+                <p className="personal-data__info">{initialState.user.city}</p>
               </div>
             </div>
           </div>
