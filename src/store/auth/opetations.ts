@@ -2,8 +2,6 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SignInFormData } from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
-import { accessToken } from "./selectors";
-import { useNavigate } from "react-router-dom";
 
 const setAuthHeader = (accessToken: any) => {
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -48,15 +46,16 @@ export const logIn = createAsyncThunk("auth/login", async ({ email, password }: 
   }
 });
 
-export const getData = createAsyncThunk("auth/getData", async () => {
-  const persistedAccessToken = accessToken;
+export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
 
-  if (persistedAccessToken === null) {
-    return "Unable to fetch user";
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
   }
 
   try {
-    setAuthHeader(persistedAccessToken);
+    setAuthHeader(persistedToken);
     const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users/user-info", {
       headers: {
         "Content-Type": "application/json",
@@ -65,6 +64,6 @@ export const getData = createAsyncThunk("auth/getData", async () => {
     });
     return res.data;
   } catch (e: any) {
-    return e.message;
+    return thunkAPI.rejectWithValue(e.message);
   }
 });
