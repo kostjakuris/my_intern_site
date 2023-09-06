@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { register, logIn, getData } from "../auth/opetations";
+import { register, logIn, getData, logOut } from "../auth/opetations";
 
 type SignInUser = {
   email: string | null;
@@ -16,6 +16,7 @@ type User = {
   city: string | null;
   address: string | null;
   phone_number: string | null;
+  avatar?: string | undefined;
 };
 
 export type AuthState = {
@@ -43,7 +44,9 @@ export const initialState: AuthState = {
     city: null,
     address: null,
     phone_number: null,
+    avatar: undefined,
   },
+
   refreshToken: null,
   accessToken: null,
   isLoggedIn: false,
@@ -84,6 +87,20 @@ const authSlice = createSlice({
       )
       .addCase(logIn.rejected, (state) => {
         state.isLoading = false;
+      })
+
+      .addCase(logOut.pending, (state) => {
+        state.isRefreshing = true;
+      })
+
+      .addCase(logOut.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.accessToken = null;
+        state.refreshToken = null;
+      })
+
+      .addCase(logOut.rejected, (state) => {
+        state.isRefreshing = false;
       })
 
       .addCase(getData.pending, (state) => {

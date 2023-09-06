@@ -3,7 +3,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Devices.css";
 import "./ModalCreate.min.css";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import addUser from "../../icons/material-symbols_add.svg";
 import deleteUser from "../../icons/material-symbols_delete-outline.svg";
 import editUser from "../../icons/material-symbols_edit-outline.svg";
@@ -27,7 +27,27 @@ type GridData = {
   rowGroupPanelShow?: string;
 };
 
+type ResponseDeviceData = {
+  id?: number | null;
+  serial_number: string | null;
+  device_type: string | null;
+  name: string | null;
+  country: string | null;
+  city: string | null;
+  address: string | null;
+};
+
 const Users = ({ ...props }: HookData) => {
+  const devices: ResponseDeviceData = {
+    id: null,
+    serial_number: null,
+    device_type: null,
+    name: null,
+    country: null,
+    city: null,
+    address: null,
+  };
+
   const formik = useFormik<DeviceFormData>({
     initialValues: {
       deviceName: "",
@@ -71,16 +91,18 @@ const Users = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-  const [gridApi, setGridApi] = useState<AgGridReact<GridData>>();
+  const gridRef = useRef<AgGridReact>(null);
   const [columnDefs, setColumnDefs] = useState<GridData[]>([
-    { headerName: "Serial number", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
-    { headerName: "Device type", field: "age" },
-    { headerName: "Name", field: "country" },
-    { headerName: "Owner email", field: "year" },
-    { headerName: "Country", field: "date" },
-    { headerName: "City", field: "sport" },
-    { headerName: "Adress", field: "gold" },
+    { headerName: "Serial number", field: "serial_number", checkboxSelection: true, headerCheckboxSelection: true },
+    { headerName: "Device type", field: "device_type" },
+    { headerName: "Name", field: "name" },
+    { headerName: "Owner email", field: "email" },
+    { headerName: "Country", field: "country" },
+    { headerName: "City", field: "city" },
+    { headerName: "Address", field: "address" },
   ]);
+
+  const [rowData, setRowData] = useState<GridData[]>();
 
   const defaultColDef = useMemo(
     () => ({
@@ -93,36 +115,23 @@ const Users = ({ ...props }: HookData) => {
     []
   );
 
-  const onGridReady = (params: any) => {
-    setGridApi(params);
+  useEffect(() => {
     axios
-      .post("http://intern-project-backend.atwebpages.com/api/devices/create")
-      .then((result) => {
-        try {
-          return result;
-        } catch (e: any) {
-          return e.message;
+      .get("http://intern-project-backend.atwebpages.com/api/devices")
+      .then((response) => {
+        if (Array.isArray(response.data.devices)) {
+          setRowData(response.data.devices);
+        } else {
+          console.error("API response is not an array:", response.data);
         }
       })
-      .then((result) => {
-        params.api.applyTransaction({ add: result });
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-  };
-
-  const onPaginationChange = (pageSize: number) => {
-    gridApi?.api.paginationSetPageSize(pageSize);
-  };
-
-  const getTargetValue = async (userRole: string) => {
-    let role = userRole;
-    enableAddGrid(role);
-  };
-
-  const enableAddGrid = async (role?: string) => {
-    if (role == "Super admin") {
-      setAddGridActive(true);
-    }
-  };
+  }, []);
+  const onPaginationChange = useCallback((pageSize: number) => {
+    gridRef.current?.api.paginationSetPageSize(pageSize);
+  }, []);
 
   return (
     <div className="users-grid" onClick={() => changeState()}>
@@ -254,7 +263,7 @@ const Users = ({ ...props }: HookData) => {
             <div className="buttons">
               <button className="cancel__button">Cancel</button>
 
-              <button className="submit__button-modal" type="submit" onClick={() => enableAddGrid}>
+              <button className="submit__button-modal" type="submit">
                 Save
               </button>
             </div>
@@ -497,7 +506,8 @@ const Users = ({ ...props }: HookData) => {
       </div>
       <div className="ag-theme-alpine" style={{ height: "500px", marginTop: "40px" }}>
         <AgGridReact
-          onGridReady={onGridReady}
+          ref={gridRef}
+          rowData={rowData}
           columnDefs={columnDefs}
           animateRows={true}
           rowSelection="multiple"

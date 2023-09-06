@@ -9,8 +9,10 @@ import { useAppDispatch } from "../../Hook";
 import { signUpSchema } from "../input/SignUpValidation";
 import axios from "axios";
 import { register } from "../../store/auth/opetations";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(false);
   const [hideRePassword, setHideRePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -26,8 +28,9 @@ const SignUp = () => {
       address: "",
     },
     validationSchema: signUpSchema,
-    onSubmit: (values: FormData) => {
-      dispatch(register(values));
+    onSubmit: async (values: FormData) => {
+      await dispatch(register(values));
+      navigate("/SignIn");
     },
   });
 
@@ -36,7 +39,7 @@ const SignUp = () => {
   return (
     <main className="main">
       <Routes>
-        <Route path="/SignIn.tsx" element={<SignIn />} />
+        <Route path="SignIn" element={<SignIn />} />
       </Routes>
       <div className="main-content">
         <div className="form-wrapper-signUp ">

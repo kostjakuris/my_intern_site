@@ -1,5 +1,5 @@
-import { RootState } from "../store"; // Замените на путь к корневому редуктору вашего приложения
-import { AuthState } from "../auth/slice"; // Замените на путь к определению состояния авторизации
+import { RootState } from "../store";
+import { AuthState } from "../auth/slice";
 
 export const refreshToken = (state: RootState) => state.auth.refreshToken;
 export const accessToken = (state: RootState) => state.auth.accessToken;

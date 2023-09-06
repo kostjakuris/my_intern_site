@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, Routes, Route, Navigate } from "react-router-dom";
 import "./signInForm.min.css";
 import { useState } from "react";
 import Input from "../input/Input";
@@ -7,8 +7,8 @@ import { SignInFormData } from "../input/inputVariables";
 import { signInSchema } from "../input/SignInValidation";
 import { useAppDispatch } from "../../Hook";
 import { getData, logIn } from "../../store/auth/opetations";
+import SignUp from "../signUpForm/SignUp";
 import { useNavigate } from "react-router-dom";
-import { initialState } from "../../store/auth/slice";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const SignIn = () => {
     onSubmit: async (values: SignInFormData) => {
       await dispatch(logIn(values));
       await dispatch(getData());
-      await navigate("/");
+      navigate("/");
     },
   });
 
@@ -30,6 +30,9 @@ const SignIn = () => {
 
   return (
     <div className="main-content">
+      <Routes>
+        <Route path="SignUp" element={<SignUp />} />
+      </Routes>
       <div className="form-wrapper-signIn">
         <form onSubmit={handleSubmit} className="signIn__form" autoComplete="off">
           <h2 className="form-wrapper__title-signIn">Welcome back</h2>

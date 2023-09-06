@@ -5,8 +5,8 @@ import Main from "../main/Main";
 import Users from "../users/Users";
 import Devices from "../devices/Devices";
 import Map from "../map/Map";
+import Groups from "../groups/Groups";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { initialState } from "../../store/auth/slice";
 
 const API_KEY: any = process.env.REACT_APP_API_KEY;
 
@@ -15,49 +15,8 @@ const Nav = ({ ...props }: NavContent) => {
     id: "google-map-script",
     googleMapsApiKey: API_KEY,
   });
-  return initialState.user.name === null ? (
-    <Navigate to="/SignUp" />
-  ) : (
+  return (
     <div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Main
-              signActive={props.signActive}
-              setSignActive={props.setSignActive}
-              navActive={props.navActive}
-              setNavActive={props.setNavActive}
-            />
-          }
-        />
-
-        <Route
-          path="/devices"
-          element={
-            <Devices
-              signActive={props.signActive}
-              setSignActive={props.setSignActive}
-              navActive={props.navActive}
-              setNavActive={props.setNavActive}
-            />
-          }
-        />
-
-        <Route
-          path="/users"
-          element={
-            <Users
-              signActive={props.signActive}
-              setSignActive={props.setSignActive}
-              navActive={props.navActive}
-              setNavActive={props.setNavActive}
-            />
-          }
-        />
-
-        <Route path="/map" element={isLoaded ? <Map /> : "Page not found"} />
-      </Routes>
       <div className="main__nav">
         <div className="header__nav-open">
           <span className="header__nav-icon">

@@ -4,10 +4,8 @@ import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { EditUserSchema } from "../input/EditUserValidation";
-import { useFormik } from "formik";
-import { FormData } from "../input/inputVariables";
 import { HookData } from "../input/inputVariables";
+import axios from "axios";
 
 type AddGridGridData = {
   headerName?: string;
@@ -15,6 +13,24 @@ type AddGridGridData = {
   checkboxSelection?: boolean;
   headerCheckboxSelection?: boolean;
   rowGroupPanelShow?: string;
+};
+
+type AddResponseData = {
+  id?: number | null;
+  name: string | null;
+  surname: string | null;
+  country: string | null;
+  city: string | null;
+  address: string | null;
+};
+
+const users: AddResponseData = {
+  id: null,
+  name: null,
+  surname: null,
+  country: null,
+  city: null,
+  address: null,
 };
 
 const UsersAdditionalGrid = ({ ...props }: HookData) => {
@@ -30,14 +46,14 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
   const gridRef = useRef<AgGridReact>(null);
 
   const [columnDefs, setColumnDefs] = useState<AddGridGridData[]>([
-    { headerName: "Name", field: "athlete", checkboxSelection: true, headerCheckboxSelection: true },
-    { headerName: "Surname", field: "age" },
-    { headerName: "Country", field: "date" },
-    { headerName: "City", field: "sport" },
-    { headerName: "Adress", field: "gold" },
+    { headerName: "Name", field: "name", checkboxSelection: true, headerCheckboxSelection: true },
+    { headerName: "Surname", field: "surname" },
+    { headerName: "Country", field: "country" },
+    { headerName: "City", field: "city" },
+    { headerName: "Address", field: "address" },
   ]);
 
-  const [rowData, setRowData] = useState();
+  const [rowData, setRowData] = useState<AddGridGridData[]>();
 
   const defaultColDef = useMemo(
     () => ({
@@ -49,9 +65,18 @@ const UsersAdditionalGrid = ({ ...props }: HookData) => {
   );
 
   useEffect(() => {
-    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-      .then((result) => result.json())
-      .then((rowData) => setRowData(rowData));
+    axios
+      .get("http://intern-project-backend.atwebpages.com/api/users")
+      .then((response) => {
+        if (Array.isArray(response.data.users)) {
+          setRowData(response.data.users);
+        } else {
+          console.error("API response is not an array:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
 
   const onPaginationChange = useCallback((pageSize: number) => {

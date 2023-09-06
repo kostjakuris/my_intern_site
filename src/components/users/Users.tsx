@@ -13,6 +13,7 @@ import { useFormik } from "formik";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
 import Input from "../input/Input";
 import Select from "../input/Select";
+import axios from "axios";
 
 type GridData = {
   headerName?: string;
@@ -22,7 +23,30 @@ type GridData = {
   rowGroupPanelShow?: string;
 };
 
+type ResponseData = {
+  id?: number | null;
+  name: string | null;
+  surname: string | null;
+  role: string | null;
+  country: string | null;
+  city: string | null;
+  address: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
 const Users = ({ ...props }: HookData) => {
+  const users: ResponseData = {
+    id: null,
+    name: null,
+    surname: null,
+    role: null,
+    country: null,
+    city: null,
+    address: null,
+    created_at: null,
+    updated_at: null,
+  };
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -37,8 +61,8 @@ const Users = ({ ...props }: HookData) => {
     validationSchema: EditUserSchema,
     onSubmit: (values: FormData, actions) => {
       console.log(values);
-      createOneUser();
-      onSubmit();
+      // createOneUser();
+      // onSubmit();
       actions.resetForm();
     },
   });
@@ -68,7 +92,7 @@ const Users = ({ ...props }: HookData) => {
     { headerName: "Role", field: "role" },
     { headerName: "Country", field: "country" },
     { headerName: "City", field: "city" },
-    { headerName: "Adress", field: "adress" },
+    { headerName: "Address", field: "address" },
     { headerName: "Created at", field: "created_at" },
     { headerName: "Updated at", field: "updated_at" },
   ]);
@@ -88,8 +112,7 @@ const Users = ({ ...props }: HookData) => {
     return newUser;
   }
 
-  let values = [...new Array(0)].map(() => onSubmit());
-  const [rowData, setRowData] = useState(values);
+  const [rowData, setRowData] = useState<GridData[]>();
 
   const defaultColDef = useMemo(
     () => ({
@@ -103,16 +126,24 @@ const Users = ({ ...props }: HookData) => {
   );
 
   useEffect(() => {
-    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-      .then((result) => result.json())
-      .then((rowData) => setRowData(rowData));
+    axios
+      .get("http://intern-project-backend.atwebpages.com/api/users")
+      .then((response) => {
+        if (Array.isArray(response.data.users)) {
+          setRowData(response.data.users);
+        } else {
+          console.error("API response is not an array:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
-
-  const createOneUser = useCallback(() => {
-    const newUser = onSubmit();
-    values = [newUser, ...values];
-    setRowData(values);
-  }, []);
+  // const createOneUser = useCallback(() => {
+  //   const newUser = onSubmit();
+  //   values = [newUser, ...values];
+  //   setRowData(values);
+  // }, []);
 
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
@@ -646,9 +677,9 @@ const Users = ({ ...props }: HookData) => {
       <div className="ag-theme-alpine" style={{ height: "500px", marginTop: "40px" }}>
         <AgGridReact
           ref={gridRef}
+          columnDefs={columnDefs}
           rowData={rowData}
           animateRows={true}
-          columnDefs={columnDefs}
           rowSelection="multiple"
           defaultColDef={defaultColDef}
           pagination={true}

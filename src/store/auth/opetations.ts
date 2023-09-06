@@ -2,6 +2,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SignInFormData } from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
+import { AxiosResponse } from "axios";
 
 const setAuthHeader = (accessToken: any) => {
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -40,9 +41,17 @@ export const logIn = createAsyncThunk("auth/login", async ({ email, password }: 
       password,
     });
     setAuthHeader(respons.data.accessToken);
-    return respons;
+    return respons.data;
   } catch (e: any) {
     return e.message;
+  }
+});
+
+export const logOut = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
+  try {
+    clearAuthHeader();
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.code);
   }
 });
 

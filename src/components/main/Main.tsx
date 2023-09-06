@@ -3,12 +3,22 @@ import { useState } from "react";
 import Modal from "../modal/Modal";
 import { HookData } from "../input/inputVariables";
 import { Navigate } from "react-router-dom";
-import { initialState } from "../../store/auth/slice";
+import { useAppSelector } from "../../Hook";
+
 const Main = ({ ...props }: HookData) => {
   const [modalActive, setModalActive] = useState(false);
   const [secondButton, setSecondButton] = useState(true);
   const [thirdButton, setThirdButton] = useState(false);
   const [button, setButton] = useState(false);
+  const name = useAppSelector((state) => state.auth.user.name);
+  const surname = useAppSelector((state) => state.auth.user.surname);
+  const role = useAppSelector((state) => state.auth.user.role);
+  const phone_number = useAppSelector((state) => state.auth.user.phone_number);
+  const country = useAppSelector((state) => state.auth.user.country);
+  const email = useAppSelector((state) => state.auth.user.email);
+  const address = useAppSelector((state) => state.auth.user.address);
+  const city = useAppSelector((state) => state.auth.user.city);
+  const avatar = useAppSelector((state) => state.auth.user.avatar);
 
   function changeState() {
     if (props.signActive) {
@@ -21,13 +31,11 @@ const Main = ({ ...props }: HookData) => {
       props.setNavActive(false);
     }
   }
-  return initialState.user.name === null ? (
-    <Navigate to="/SignUp" />
-  ) : (
+  return (
     <main className="main-page" onClick={() => changeState()}>
       <section className="main-page__info">
         <div className="page-info__icon">
-          <img className="page-info__img" src="icons/carbon_user-avatar-filled-alt.svg" alt="avatar" />
+          <img className="page-info__img" src={avatar} alt="avatar" />
           <span className="change__img" onClick={() => setButton((prev) => !prev)}>
             <button
               className={button ? "change__img-button active" : "change__img-button"}
@@ -38,7 +46,7 @@ const Main = ({ ...props }: HookData) => {
             <img className="change__img-icon" src="icons/Vector.svg" alt="pen" />
           </span>
           <p className="page-info__username">
-            {initialState.user.name} {initialState.user.surname}
+            {name} {surname}
           </p>
         </div>
         <Modal
@@ -77,34 +85,34 @@ const Main = ({ ...props }: HookData) => {
             <div className="personal-data__left personal-data--mobile">
               <div className="personal-data__role personal-data__padding">
                 <p className="personal-data__title">Role</p>
-                <p className="personal-data__info">{initialState.user.role}</p>
+                <p className="personal-data__info">{role}</p>
               </div>
               <div className="personal-data__phonenumber personal-data__padding">
                 <p className="personal-data__title">Phone number</p>
-                <p className="personal-data__info">{initialState.user.phone_number}</p>
+                <p className="personal-data__info">{phone_number}</p>
               </div>
             </div>
 
             <div className="personal-data__center personal-data--mobile">
               <div className="personal-data__email personal-data__padding">
                 <p className="personal-data__title">Email</p>
-                <p className="personal-data__info personal-data__desktop-email">{initialState.user.email}</p>
-                <p className="personal-data__info personal-data__mobile-email">{initialState.user.email}</p>
+                <p className="personal-data__info personal-data__desktop-email">{email}</p>
+                <p className="personal-data__info personal-data__mobile-email personal-data__padding">{email}</p>
               </div>
               <div className="personal-data__adress personal-data__padding">
                 <p className="personal-data__title">Adress</p>
-                <p className="personal-data__info ">{initialState.user.address}</p>
+                <p className="personal-data__info ">{address}</p>
               </div>
             </div>
 
             <div className="personal-data__right personal-data--mobile">
               <div className="personal-data__country personal-data__padding">
                 <p className="personal-data__title">Country</p>
-                <p className="personal-data__info">{initialState.user.country}</p>
+                <p className="personal-data__info">{country}</p>
               </div>
               <div className="personal-data__town personal-data__padding">
                 <p className="personal-data__title">Town</p>
-                <p className="personal-data__info">{initialState.user.city}</p>
+                <p className="personal-data__info">{city}</p>
               </div>
             </div>
           </div>
