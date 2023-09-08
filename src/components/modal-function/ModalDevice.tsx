@@ -13,12 +13,13 @@ export type DeviceModalData = {
 const ModalDevice = ({ ...props }: DeviceModalData) => {
   const formik = useFormik({
     initialValues: {
-      deviceName: "",
-      deviceType: "",
+      name: "",
+      device_type: "",
       email: "",
       country: "",
       city: "",
-      adress: "",
+      address: "",
+      serial_number: "",
     },
     validationSchema: EditUserSchema,
     onSubmit: (values: DeviceFormData) => {
@@ -39,16 +40,16 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
             <div className="left__form--modal">
               <div className=" form__firstname ">
                 <Input
-                  id={"deviceName"}
-                  name={"deviceName"}
+                  id={"name"}
+                  name={"name"}
                   type={"text"}
                   placeholder={"Device Name"}
                   className={"form firstName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.deviceName}
-                  touched={formik.touched.deviceName}
-                  errors={formik.errors.deviceName}
+                  value={formik.values.name}
+                  touched={formik.touched.name}
+                  errors={formik.errors.name}
                 />
               </div>
 
@@ -91,9 +92,9 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
                   className={"form adress"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.adress}
-                  touched={formik.touched.adress}
-                  errors={formik.errors.adress}
+                  value={formik.values.address}
+                  touched={formik.touched.address}
+                  errors={formik.errors.address}
                 />
               </div>
             </div>
@@ -101,16 +102,16 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
             <div className="right__form--modal">
               <div className=" form__lastname">
                 <Input
-                  id={"deviceType"}
-                  name={"deviceType"}
+                  id={"device_type"}
+                  name={"device_type"}
                   type={"text"}
                   placeholder={"Device Type"}
                   className={"form lastName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.deviceType}
-                  touched={formik.touched.deviceType}
-                  errors={formik.errors.deviceType}
+                  value={formik.values.device_type}
+                  touched={formik.touched.device_type}
+                  errors={formik.errors.device_type}
                 />
               </div>
 
@@ -130,16 +131,16 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
               </div>
               <div className=" form__serialNumber ">
                 <Input
-                  id={"serialNumber"}
+                  id={"serial_number"}
                   name={"town"}
                   type={"text"}
                   placeholder={"Serial Number"}
                   className={"form serialNumber"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.serialNumber}
-                  touched={formik.touched.serialNumber}
-                  errors={formik.errors.serialNumber}
+                  value={formik.values.serial_number}
+                  touched={formik.touched.serial_number}
+                  errors={formik.errors.serial_number}
                 />
               </div>
             </div>
@@ -160,31 +161,31 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
           <div className="signUp__form--modal">
             <div className=" form__firstname ">
               <Input
-                id={"deviceName"}
-                name={"deviceName"}
+                id={"name"}
+                name={"name"}
                 type={"text"}
                 placeholder={"Device Name"}
                 className={"form-modal firstName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.deviceName}
-                touched={formik.touched.deviceName}
-                errors={formik.errors.deviceName}
+                value={formik.values.name}
+                touched={formik.touched.name}
+                errors={formik.errors.name}
               />
             </div>
 
             <div className=" form__lastname">
               <Input
-                id={"deviceType"}
-                name={"deviceType"}
+                id={"device_type"}
+                name={"device_type"}
                 type={"text"}
                 placeholder={"Device Type"}
                 className={"form-modal lastName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.deviceType}
-                touched={formik.touched.deviceType}
-                errors={formik.errors.deviceType}
+                value={formik.values.device_type}
+                touched={formik.touched.device_type}
+                errors={formik.errors.device_type}
               />
             </div>
 
@@ -212,9 +213,9 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
                 className={"form-modal adress"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.adress}
-                touched={formik.touched.adress}
-                errors={formik.errors.adress}
+                value={formik.values.address}
+                touched={formik.touched.address}
+                errors={formik.errors.address}
               />
             </div>
 
@@ -249,16 +250,16 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
             </div>
             <div className=" form__town ">
               <Input
-                id={"serialNumber"}
-                name={"serialNumber"}
+                id={"serial_number"}
+                name={"serial_number"}
                 type={"text"}
                 placeholder={"Serial Number"}
                 className={"form-modal town"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.serialNumber}
-                touched={formik.touched.serialNumber}
-                errors={formik.errors.serialNumber}
+                value={formik.values.serial_number}
+                touched={formik.touched.serial_number}
+                errors={formik.errors.serial_number}
               />
             </div>
           </div>

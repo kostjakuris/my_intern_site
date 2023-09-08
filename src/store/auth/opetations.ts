@@ -2,7 +2,9 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SignInFormData } from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
-import { AxiosResponse } from "axios";
+import { CreateUserData } from "../../components/input/inputVariables";
+import { useState } from "react";
+import { DeviceFormData } from "../../components/input/inputVariables";
 
 const setAuthHeader = (accessToken: any) => {
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -14,7 +16,7 @@ const clearAuthHeader = () => {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ name, surname, email, role, password, country, city, address, phone_number }: FormData) => {
+  async ({ name, surname, email, role, password, country, city, address, phone_number }: CreateUserData) => {
     try {
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
         name,
@@ -27,7 +29,7 @@ export const register = createAsyncThunk(
         address,
         phone_number,
       });
-      return respons;
+      return respons.data;
     } catch (e: any) {
       return e.message;
     }
@@ -76,3 +78,61 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(e.message);
   }
 });
+
+export const createUser = createAsyncThunk(
+  "auth/createuser",
+  async ({ name, surname, email, role, password, country, city, address, phone_number }: CreateUserData, thunkAPI) => {
+    const [addGridActive, setAddGridActive] = useState(false);
+    const state: any = thunkAPI.getState();
+    const persistedToken = state.auth.accessToken;
+    try {
+      setAuthHeader(persistedToken);
+      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/users/create-user", {
+        name,
+        surname,
+        email,
+        role,
+        password,
+        country,
+        city,
+        address,
+        phone_number,
+      });
+      const enableAddGrid = () => {
+        if (role == "Super admin") {
+          setAddGridActive(true);
+        }
+      };
+      enableAddGrid();
+      return respons.data;
+    } catch (e: any) {
+      return e.message;
+    }
+  }
+);
+
+export const createDevice = createAsyncThunk(
+  "auth/createdevice",
+  async ({ name, device_type, country, city, address, serial_number }: DeviceFormData, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const persistedToken = state.auth.accessToken;
+    try {
+      setAuthHeader(persistedToken);
+      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create", {
+        owner_id: Math.random(),
+        name,
+        device_type,
+        country,
+        city,
+        address,
+        serial_number,
+        phase_active: "true",
+        phase_type: "laptop",
+        sum_power: Math.random(),
+      });
+      return respons.data;
+    } catch (e: any) {
+      return e.message;
+    }
+  }
+);

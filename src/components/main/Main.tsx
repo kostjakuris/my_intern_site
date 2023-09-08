@@ -10,15 +10,7 @@ const Main = ({ ...props }: HookData) => {
   const [secondButton, setSecondButton] = useState(true);
   const [thirdButton, setThirdButton] = useState(false);
   const [button, setButton] = useState(false);
-  const name = useAppSelector((state) => state.auth.user.name);
-  const surname = useAppSelector((state) => state.auth.user.surname);
-  const role = useAppSelector((state) => state.auth.user.role);
-  const phone_number = useAppSelector((state) => state.auth.user.phone_number);
-  const country = useAppSelector((state) => state.auth.user.country);
-  const email = useAppSelector((state) => state.auth.user.email);
-  const address = useAppSelector((state) => state.auth.user.address);
-  const city = useAppSelector((state) => state.auth.user.city);
-  const avatar = useAppSelector((state) => state.auth.user.avatar);
+  const userState = useAppSelector((state) => state.auth.user);
 
   function changeState() {
     if (props.signActive) {
@@ -35,7 +27,7 @@ const Main = ({ ...props }: HookData) => {
     <main className="main-page" onClick={() => changeState()}>
       <section className="main-page__info">
         <div className="page-info__icon">
-          <img className="page-info__img" src={avatar} alt="avatar" />
+          <img className="page-info__img" src={userState.avatar} alt="avatar" />
           <span className="change__img" onClick={() => setButton((prev) => !prev)}>
             <button
               className={button ? "change__img-button active" : "change__img-button"}
@@ -46,7 +38,7 @@ const Main = ({ ...props }: HookData) => {
             <img className="change__img-icon" src="icons/Vector.svg" alt="pen" />
           </span>
           <p className="page-info__username">
-            {name} {surname}
+            {userState.name} {userState.surname}
           </p>
         </div>
         <Modal
@@ -85,34 +77,36 @@ const Main = ({ ...props }: HookData) => {
             <div className="personal-data__left personal-data--mobile">
               <div className="personal-data__role personal-data__padding">
                 <p className="personal-data__title">Role</p>
-                <p className="personal-data__info">{role}</p>
+                <p className="personal-data__info">{userState.role}</p>
               </div>
               <div className="personal-data__phonenumber personal-data__padding">
                 <p className="personal-data__title">Phone number</p>
-                <p className="personal-data__info">{phone_number}</p>
+                <p className="personal-data__info">{userState.phone_number}</p>
               </div>
             </div>
 
             <div className="personal-data__center personal-data--mobile">
               <div className="personal-data__email personal-data__padding">
                 <p className="personal-data__title">Email</p>
-                <p className="personal-data__info personal-data__desktop-email">{email}</p>
-                <p className="personal-data__info personal-data__mobile-email personal-data__padding">{email}</p>
+                <p className="personal-data__info personal-data__desktop-email">{userState.email}</p>
+                <p className="personal-data__info personal-data__mobile-email personal-data__padding">
+                  {userState.email}
+                </p>
               </div>
               <div className="personal-data__adress personal-data__padding">
                 <p className="personal-data__title">Adress</p>
-                <p className="personal-data__info ">{address}</p>
+                <p className="personal-data__info ">{userState.address}</p>
               </div>
             </div>
 
             <div className="personal-data__right personal-data--mobile">
               <div className="personal-data__country personal-data__padding">
                 <p className="personal-data__title">Country</p>
-                <p className="personal-data__info">{country}</p>
+                <p className="personal-data__info">{userState.country}</p>
               </div>
               <div className="personal-data__town personal-data__padding">
                 <p className="personal-data__title">Town</p>
-                <p className="personal-data__info">{city}</p>
+                <p className="personal-data__info">{userState.city}</p>
               </div>
             </div>
           </div>

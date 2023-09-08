@@ -9,8 +9,10 @@ import { useAppDispatch } from "../../Hook";
 import { getData, logIn } from "../../store/auth/opetations";
 import SignUp from "../signUpForm/SignUp";
 import { useNavigate } from "react-router-dom";
+import Layout from "../nav/Layout";
+import { HookData } from "../input/inputVariables";
 
-const SignIn = () => {
+const SignIn = ({ ...props }: HookData) => {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -30,9 +32,6 @@ const SignIn = () => {
 
   return (
     <div className="main-content">
-      <Routes>
-        <Route path="SignUp" element={<SignUp />} />
-      </Routes>
       <div className="form-wrapper-signIn">
         <form onSubmit={handleSubmit} className="signIn__form" autoComplete="off">
           <h2 className="form-wrapper__title-signIn">Welcome back</h2>

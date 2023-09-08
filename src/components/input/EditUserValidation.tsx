@@ -7,9 +7,9 @@ export const EditUserSchema = yup.object().shape({
   country: yup.string().required("Country required"),
   city: yup.string().required("Town required"),
   password: yup.string().required("Password required").min(8, "Must be at least 8 letters or more"),
-  address: yup.string().required("Adress required"),
+  address: yup.string().required("Address required"),
   role: yup
     .string()
-    .oneOf(["Customer", "Device owner", "Regional admin", "Super admin"], "Please select some role")
+    .oneOf(["customer", "device owner", "regional admin", "super admin"], "Please select some role")
     .required("Role required"),
 });

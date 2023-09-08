@@ -52,8 +52,14 @@ function App() {
         />
         <Route path="map" element={<Map />} />
       </Route>
-      <Route path="SignUp/*" element={<SignUp />} />
-      <Route path="SignIn/*" element={<SignIn />} />
+      <Route
+        path="SignUp"
+        element={<SignUp signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
+      />
+      <Route
+        path="SignIn"
+        element={<SignIn signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
+      />
     </Routes>
   );
 }

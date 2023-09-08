@@ -18,6 +18,9 @@ import { useFormik } from "formik";
 import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
 import axios from "axios";
+import { CreateDeviceSchema } from "../input/CreateDeviceValidation";
+import { useAppDispatch } from "../../Hook";
+import { createDevice } from "../../store/auth/opetations";
 
 type GridData = {
   headerName?: string;
@@ -38,6 +41,7 @@ type ResponseDeviceData = {
 };
 
 const Users = ({ ...props }: HookData) => {
+  const dispatch = useAppDispatch();
   const devices: ResponseDeviceData = {
     id: null,
     serial_number: null,
@@ -50,38 +54,26 @@ const Users = ({ ...props }: HookData) => {
 
   const formik = useFormik<DeviceFormData>({
     initialValues: {
-      deviceName: "",
-      deviceType: "",
+      name: "",
+      device_type: "",
       email: "",
       country: "",
       city: "",
-      adress: "",
+      address: "",
+      serial_number: "",
     },
-    validationSchema: EditUserSchema,
-    onSubmit: (values: DeviceFormData) => {
+    validationSchema: CreateDeviceSchema,
+    onSubmit: async (values: DeviceFormData) => {
       console.log(values);
-      onSubmit(values);
+      await dispatch(createDevice(values));
     },
   });
 
-  async function onSubmit(values: DeviceFormData) {
-    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json", {
-      method: "POST",
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-      });
-  }
-
-  const [createActive, setCreateActive] = useState(false);
-  const [deleteActive, setDeleteActive] = useState(false);
-  const [detailsActive, setDetailsActive] = useState(false);
-  const [editUserActive, setEditUserActive] = useState(false);
+  const [createDeviceActive, setCreateDeviceActive] = useState(false);
+  const [deleteDeviceActive, setDeleteDeviceActive] = useState(false);
+  const [deviceDetailsActive, setDeviceDetailsActive] = useState(false);
+  const [editDeviceActive, setEditDeviceActive] = useState(false);
   const [addGridActive, setAddGridActive] = useState(false);
-  const [hidePassword, setHidePassword] = useState(false);
-  const [submitButton, setSubmitButton] = useState<boolean>(false);
 
   function changeState() {
     if (props.signActive) {
@@ -103,6 +95,17 @@ const Users = ({ ...props }: HookData) => {
   ]);
 
   const [rowData, setRowData] = useState<GridData[]>();
+  const [selectedDevice, setSelectedDevice] = useState<any>([
+    {
+      serial_number: null,
+      device_type: null,
+      name: null,
+      email: null,
+      country: null,
+      city: null,
+      address: null,
+    },
+  ]);
 
   const defaultColDef = useMemo(
     () => ({
@@ -133,17 +136,34 @@ const Users = ({ ...props }: HookData) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
   }, []);
 
+  const getSelectedRows = useCallback(() => {
+    const selectedRows = gridRef.current?.api.getSelectedRows();
+
+    if (selectedRows) {
+      const updatedSelectedData = selectedRows.map((selectedData) => ({
+        serial_number: selectedData.serial_number,
+        device_type: selectedData.device_type,
+        name: selectedData.name,
+        email: selectedData.email,
+        country: selectedData.country,
+        city: selectedData.city,
+        address: selectedData.address,
+      }));
+      setSelectedDevice(updatedSelectedData);
+    }
+  }, []);
+
   return (
     <div className="users-grid" onClick={() => changeState()}>
       <ModalFunction
-        active={createActive}
-        setActive={setCreateActive}
+        active={createDeviceActive}
+        setActive={setCreateDeviceActive}
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
         <div className="modal__top">
           <h3 className="form-wrapper-modal__title">Device Creation</h3>
-          <span className="cross__wrapper" onClick={() => setCreateActive(false)}>
+          <span className="cross__wrapper" onClick={() => setCreateDeviceActive(false)}>
             <img src="icons/system-uicons_cross.svg" alt="cross" />
           </span>
         </div>
@@ -154,16 +174,16 @@ const Users = ({ ...props }: HookData) => {
               <div className="left__form--modal">
                 <div className=" form__firstname ">
                   <Input
-                    id={"deviceName"}
-                    name={"deviceName"}
+                    id={"name"}
+                    name={"name"}
                     type={"text"}
                     placeholder={"Device Name"}
                     className={"form firstName"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.deviceName}
-                    touched={formik.touched.deviceName}
-                    errors={formik.errors.deviceName}
+                    value={formik.values.name}
+                    touched={formik.touched.name}
+                    errors={formik.errors.name}
                   />
                 </div>
 
@@ -199,16 +219,16 @@ const Users = ({ ...props }: HookData) => {
 
                 <div className=" form__adress ">
                   <Input
-                    id={"adress"}
-                    name={"adress"}
+                    id={"address"}
+                    name={"address"}
                     type={"text"}
                     placeholder={"Adress"}
                     className={"form adress"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.adress}
-                    touched={formik.touched.adress}
-                    errors={formik.errors.adress}
+                    value={formik.values.address}
+                    touched={formik.touched.address}
+                    errors={formik.errors.address}
                   />
                 </div>
               </div>
@@ -216,16 +236,16 @@ const Users = ({ ...props }: HookData) => {
               <div className="right__form--modal">
                 <div className=" form__lastname">
                   <Input
-                    id={"deviceType"}
-                    name={"deviceType"}
+                    id={"device_type"}
+                    name={"device_type"}
                     type={"text"}
                     placeholder={"Device Type"}
                     className={"form lastName"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.deviceType}
-                    touched={formik.touched.deviceType}
-                    errors={formik.errors.deviceType}
+                    value={formik.values.device_type}
+                    touched={formik.touched.device_type}
+                    errors={formik.errors.device_type}
                   />
                 </div>
 
@@ -245,16 +265,16 @@ const Users = ({ ...props }: HookData) => {
                 </div>
                 <div className=" form__serialNumber ">
                   <Input
-                    id={"serialNumber"}
-                    name={"town"}
+                    id={"serial_number"}
+                    name={"serial_number"}
                     type={"text"}
                     placeholder={"Serial Number"}
                     className={"form serialNumber"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.serialNumber}
-                    touched={formik.touched.serialNumber}
-                    errors={formik.errors.serialNumber}
+                    value={formik.values.serial_number}
+                    touched={formik.touched.serial_number}
+                    errors={formik.errors.serial_number}
                   />
                 </div>
               </div>
@@ -275,31 +295,31 @@ const Users = ({ ...props }: HookData) => {
             <div className="signUp__form--modal">
               <div className=" form__firstname ">
                 <Input
-                  id={"deviceName"}
-                  name={"deviceName"}
+                  id={"name"}
+                  name={"name"}
                   type={"text"}
                   placeholder={"Device Name"}
                   className={"form-modal firstName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.deviceName}
-                  touched={formik.touched.deviceName}
-                  errors={formik.errors.deviceName}
+                  value={formik.values.name}
+                  touched={formik.touched.name}
+                  errors={formik.errors.name}
                 />
               </div>
 
               <div className=" form__lastname">
                 <Input
-                  id={"deviceType"}
-                  name={"deviceType"}
+                  id={"device_type"}
+                  name={"device_type"}
                   type={"text"}
                   placeholder={"Device Type"}
                   className={"form-modal lastName"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.deviceType}
-                  touched={formik.touched.deviceType}
-                  errors={formik.errors.deviceType}
+                  value={formik.values.device_type}
+                  touched={formik.touched.device_type}
+                  errors={formik.errors.device_type}
                 />
               </div>
 
@@ -327,9 +347,9 @@ const Users = ({ ...props }: HookData) => {
                   className={"form-modal adress"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.adress}
-                  touched={formik.touched.adress}
-                  errors={formik.errors.adress}
+                  value={formik.values.address}
+                  touched={formik.touched.address}
+                  errors={formik.errors.address}
                 />
               </div>
 
@@ -364,22 +384,22 @@ const Users = ({ ...props }: HookData) => {
               </div>
               <div className=" form__town ">
                 <Input
-                  id={"serialNumber"}
+                  id={"serial_number"}
                   name={"serialNumber"}
                   type={"text"}
                   placeholder={"Serial Number"}
                   className={"form-modal town"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.serialNumber}
-                  touched={formik.touched.serialNumber}
-                  errors={formik.errors.serialNumber}
+                  value={formik.values.serial_number}
+                  touched={formik.touched.serial_number}
+                  errors={formik.errors.serial_number}
                 />
               </div>
             </div>
 
             <div className="buttons">
-              <button className="cancel__button" onClick={() => setCreateActive(false)}>
+              <button className="cancel__button" onClick={() => setCreateDeviceActive(false)}>
                 Cancel
               </button>
 
@@ -392,14 +412,14 @@ const Users = ({ ...props }: HookData) => {
       </ModalFunction>
 
       <ModalFunction
-        active={deleteActive}
-        setActive={setDeleteActive}
+        active={deleteDeviceActive}
+        setActive={setDeleteDeviceActive}
         activeClassName={" modal-delete active"}
         className={"modal-delete"}
       >
         <p className="modal-delete__text">Are you sure you want to delete?</p>
         <div className="buttons-delete">
-          <button className="cancel__button cancel__button-delete" onClick={() => setDeleteActive(false)}>
+          <button className="cancel__button cancel__button-delete" onClick={() => setDeleteDeviceActive(false)}>
             Cancel
           </button>
 
@@ -408,12 +428,12 @@ const Users = ({ ...props }: HookData) => {
       </ModalFunction>
 
       <ModalFunction
-        active={editUserActive}
-        setActive={setEditUserActive}
+        active={editDeviceActive}
+        setActive={setEditDeviceActive}
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        <ModalDevice active={editUserActive} setActive={setEditUserActive} />
+        <ModalDevice active={editDeviceActive} setActive={setEditDeviceActive} />
       </ModalFunction>
 
       <ModalFunction
@@ -424,39 +444,41 @@ const Users = ({ ...props }: HookData) => {
       ></ModalFunction>
 
       <ModalFunction
-        active={detailsActive}
-        setActive={setDetailsActive}
+        active={deviceDetailsActive}
+        setActive={setDeviceDetailsActive}
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
         <p className="page-details-text">About device</p>
-        <div className="page-details__wrapper">
-          <div className="page-details__icon">
-            <img className="page-details__img" src="icons/carbon_user-avatar-filled-alt.svg" alt="avatar" />
-          </div>
-          <div className="page-details__data">
-            <div className="personal-details__titles">
-              <p className="personal-details__title">Serial number</p>
-              <p className="personal-details__title">Device Type</p>
-              <p className="personal-details__title">Name</p>
-              <p className="personal-details__title ">Email</p>
-              <p className="personal-details__title">Country</p>
-              <p className="personal-details__title">City</p>
-              <p className="personal-details__title">Adress</p>
+        {selectedDevice.map((data: any, index: any) => (
+          <div className="page-details__wrapper">
+            <div className="page-details__icon">
+              <img key={index} className="page-details__img" src={data.avatar} alt="avatar" />
             </div>
+            <div className="page-details__data">
+              <div className="personal-details__titles">
+                <p className="personal-details__title">Serial number</p>
+                <p className="personal-details__title">Device Type</p>
+                <p className="personal-details__title">Name</p>
+                <p className="personal-details__title ">Email</p>
+                <p className="personal-details__title">Country</p>
+                <p className="personal-details__title">City</p>
+                <p className="personal-details__title">Adress</p>
+              </div>
 
-            <div className="personal-details__information">
-              <p className="personal-details__info">Valentin</p>
-              <p className="personal-details__info">Kravchenko</p>
-              <p className="personal-details__info personal-details__desktop-email">example@gmail.com</p>
-              <p className="personal-details__info personal-details__mobile-email">example @gmail.com</p>
-              <p className="personal-details__info">069567830</p>
-              <p className="personal-details__info">Ukraine</p>
-              <p className="personal-details__info">Zaporozhye</p>
-              <p className="personal-details__info ">Zaporojskaya street 16</p>
+              <div className="personal-details__information">
+                <p className="personal-details__info">{data.serial_number}</p>
+                <p className="personal-details__info">{data.device_type}</p>
+                <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
+                <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
+                <p className="personal-details__info">{data.name}</p>
+                <p className="personal-details__info">{data.country}</p>
+                <p className="personal-details__info">{data.city}</p>
+                <p className="personal-details__info ">{data.address}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </ModalFunction>
 
       <div className="grid-function">
@@ -482,22 +504,22 @@ const Users = ({ ...props }: HookData) => {
           </select>
         </div>
         <div className="grid-buttons">
-          <button className="users-grid__button" onClick={() => setCreateActive(true)}>
+          <button className="users-grid__button" onClick={() => setCreateDeviceActive(true)}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/material-symbols_add.svg" alt="add user" />
             </span>
           </button>
-          <button className="users-grid__button" onClick={() => setDeleteActive(true)}>
+          <button className="users-grid__button" onClick={() => setDeleteDeviceActive(true)}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/material-symbols_delete-outline.svg" alt="delete user" />
             </span>
           </button>
-          <button className="users-grid__button" onClick={() => setEditUserActive(true)}>
+          <button className="users-grid__button" onClick={() => setEditDeviceActive(true)}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/material-symbols_edit-outline.svg" alt="edit user" />
             </span>
           </button>
-          <button className="users-grid__button" onClick={() => setDetailsActive(true)}>
+          <button className="users-grid__button" onClick={() => setDeviceDetailsActive(true)}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/openmoji_details.svg" alt="user details" />
             </span>
@@ -514,6 +536,7 @@ const Users = ({ ...props }: HookData) => {
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
+          onRowSelected={getSelectedRows}
         />
       </div>
     </div>

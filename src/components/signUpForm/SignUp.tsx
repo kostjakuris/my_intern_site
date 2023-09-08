@@ -4,14 +4,15 @@ import "./signUpForm.min.css";
 import { useState } from "react";
 import Input from "../input/Input";
 import SignIn from "../signInForm/SignIn";
-import { FormData } from "../input/inputVariables";
+import { FormData, HookData } from "../input/inputVariables";
 import { useAppDispatch } from "../../Hook";
 import { signUpSchema } from "../input/SignUpValidation";
 import axios from "axios";
 import { register } from "../../store/auth/opetations";
 import { useNavigate } from "react-router-dom";
+import Layout from "../nav/Layout";
 
-const SignUp = () => {
+const SignUp = ({ ...props }: HookData) => {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(false);
   const [hideRePassword, setHideRePassword] = useState(false);
@@ -38,9 +39,6 @@ const SignUp = () => {
 
   return (
     <main className="main">
-      <Routes>
-        <Route path="SignIn" element={<SignIn />} />
-      </Routes>
       <div className="main-content">
         <div className="form-wrapper-signUp ">
           <form onSubmit={handleSubmit}>
@@ -365,7 +363,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            <button className="submit__button-signUp" type="submit" onClick={(e) => e.preventDefault}>
+            <button className="submit__button-signUp" type="submit">
               Sign Up
             </button>
           </form>

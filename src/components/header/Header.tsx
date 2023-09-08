@@ -25,9 +25,6 @@ const Header = ({ ...props }: HookData) => {
   }
   return (
     <header className="header" onClick={() => changeNavState()}>
-      <Routes>
-        <Route path="/SignIn" element={<SignIn />} />
-      </Routes>
       <div className="block"></div>
       <div className="header__wrapper">
         <div className="header__img">
