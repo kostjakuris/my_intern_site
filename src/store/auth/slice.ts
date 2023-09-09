@@ -1,5 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { register, logIn, getData, logOut, createUser, createDevice } from "../auth/opetations";
+import {
+  register,
+  logIn,
+  getData,
+  logOut,
+  createUser,
+  createDevice,
+  deleteDevice,
+  editDevice,
+} from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
 
 type SignInUser = {
@@ -63,6 +72,7 @@ export const initialState: AuthState = {
   },
 
   newDevice: {
+    id: undefined,
     owner_id: null,
     name: null,
     device_type: null,
@@ -168,6 +178,14 @@ const authSlice = createSlice({
 
       .addCase(createDevice.rejected, (state) => {
         state.isRefreshing = false;
+      })
+
+      .addCase(deleteDevice.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+
+      .addCase(editDevice.fulfilled, (state, action: PayloadAction<{ newDevice: DeviceFormData }>) => {
+        state.newDevice = action.payload.newDevice;
       });
   },
 });

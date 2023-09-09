@@ -21,6 +21,8 @@ import axios from "axios";
 import { CreateDeviceSchema } from "../input/CreateDeviceValidation";
 import { useAppDispatch } from "../../Hook";
 import { createDevice } from "../../store/auth/opetations";
+import { deleteDevice as deleteDeviceAction } from "../../store/auth/opetations";
+import { useAppSelector } from "../../Hook";
 
 type GridData = {
   headerName?: string;
@@ -40,10 +42,10 @@ type ResponseDeviceData = {
   address: string | null;
 };
 
-const Users = ({ ...props }: HookData) => {
+const Devices = ({ ...props }: HookData) => {
+  const createDeviceState = useAppSelector((state) => state.auth.newDevice);
   const dispatch = useAppDispatch();
   const devices: ResponseDeviceData = {
-    id: null,
     serial_number: null,
     device_type: null,
     name: null,
@@ -64,8 +66,8 @@ const Users = ({ ...props }: HookData) => {
     },
     validationSchema: CreateDeviceSchema,
     onSubmit: async (values: DeviceFormData) => {
-      console.log(values);
       await dispatch(createDevice(values));
+      createOneUser();
     },
   });
 
@@ -95,8 +97,9 @@ const Users = ({ ...props }: HookData) => {
   ]);
 
   const [rowData, setRowData] = useState<GridData[]>();
-  const [selectedDevice, setSelectedDevice] = useState<any>([
+  const [selectedDevice, setSelectedDevice] = useState<any[]>([
     {
+      id: null,
       serial_number: null,
       device_type: null,
       name: null,
@@ -118,11 +121,18 @@ const Users = ({ ...props }: HookData) => {
     []
   );
 
+  const createOneUser = useCallback(() => {
+    if (Array.isArray(createDeviceState)) {
+      setRowData(createDeviceState);
+    }
+  }, []);
+
   useEffect(() => {
     axios
       .get("http://intern-project-backend.atwebpages.com/api/devices")
       .then((response) => {
         if (Array.isArray(response.data.devices)) {
+          console.log(response.data.devices);
           setRowData(response.data.devices);
         } else {
           console.error("API response is not an array:", response.data);
@@ -141,6 +151,7 @@ const Users = ({ ...props }: HookData) => {
 
     if (selectedRows) {
       const updatedSelectedData = selectedRows.map((selectedData) => ({
+        id: selectedData.id,
         serial_number: selectedData.serial_number,
         device_type: selectedData.device_type,
         name: selectedData.name,
@@ -150,6 +161,15 @@ const Users = ({ ...props }: HookData) => {
         address: selectedData.address,
       }));
       setSelectedDevice(updatedSelectedData);
+    }
+  }, []);
+
+  const deleteDevice = useCallback(() => {
+    const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
+    if (getSelectedNodes) {
+      const selectedId = getSelectedNodes.forEach((selectedData) => {
+        dispatch(deleteDeviceAction(selectedData.data.id));
+      });
     }
   }, []);
 
@@ -423,7 +443,9 @@ const Users = ({ ...props }: HookData) => {
             Cancel
           </button>
 
-          <button className="submit__button-modal submit__button-modal-delete">OK</button>
+          <button className="submit__button-modal submit__button-modal-delete" onClick={deleteDevice}>
+            OK
+          </button>
         </div>
       </ModalFunction>
 
@@ -433,15 +455,8 @@ const Users = ({ ...props }: HookData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        <ModalDevice active={editDeviceActive} setActive={setEditDeviceActive} />
+        <ModalDevice active={editDeviceActive} setActive={setEditDeviceActive} selectedDevice={selectedDevice} />
       </ModalFunction>
-
-      <ModalFunction
-        active={addGridActive}
-        setActive={setAddGridActive}
-        activeClassName={"modal__content active"}
-        className={"modal__content"}
-      ></ModalFunction>
 
       <ModalFunction
         active={deviceDetailsActive}
@@ -450,10 +465,10 @@ const Users = ({ ...props }: HookData) => {
         className={"modal__content"}
       >
         <p className="page-details-text">About device</p>
-        {selectedDevice.map((data: any, index: any) => (
+        {selectedDevice.map((data: any) => (
           <div className="page-details__wrapper">
             <div className="page-details__icon">
-              <img key={index} className="page-details__img" src={data.avatar} alt="avatar" />
+              <img className="page-details__img" src={data.avatar} alt="avatar" />
             </div>
             <div className="page-details__data">
               <div className="personal-details__titles">
@@ -542,4 +557,4 @@ const Users = ({ ...props }: HookData) => {
     </div>
   );
 };
-export default Users;
+export default Devices;

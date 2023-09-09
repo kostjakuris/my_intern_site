@@ -1,4 +1,5 @@
 export type DeviceFormData = {
+  id?: number;
   owner_id?: number | null;
   name?: string | null;
   device_type?: string | null;

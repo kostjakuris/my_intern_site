@@ -4,13 +4,17 @@ import { DeviceFormData } from "../input/inputVariables";
 import { EditUserSchema } from "../input/EditUserValidation";
 import cross from "../../icons/system-uicons_cross.svg";
 import Input from "../input/Input";
+import { useAppDispatch } from "../../Hook";
+import { editDevice } from "../../store/auth/opetations";
 
 export type DeviceModalData = {
   active: boolean;
   setActive: (active: boolean) => void;
+  selectedDevice: any;
 };
 
 const ModalDevice = ({ ...props }: DeviceModalData) => {
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -22,10 +26,16 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
       serial_number: "",
     },
     validationSchema: EditUserSchema,
-    onSubmit: (values: DeviceFormData) => {
+    onSubmit: async (values: DeviceFormData) => {
       console.log(values);
+      await props.selectedDevice.map((data: any) => {
+        const id = data.id;
+        const editValues = { id, values };
+        dispatch(editDevice(editValues));
+      });
     },
   });
+
   return (
     <div>
       <div className="modal__top">
@@ -85,8 +95,8 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
 
               <div className=" form__adress ">
                 <Input
-                  id={"adress"}
-                  name={"adress"}
+                  id={"address"}
+                  name={"address"}
                   type={"text"}
                   placeholder={"Adress"}
                   className={"form adress"}
@@ -132,7 +142,7 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
               <div className=" form__serialNumber ">
                 <Input
                   id={"serial_number"}
-                  name={"town"}
+                  name={"serial_number"}
                   type={"text"}
                   placeholder={"Serial Number"}
                   className={"form serialNumber"}
@@ -206,8 +216,8 @@ const ModalDevice = ({ ...props }: DeviceModalData) => {
 
             <div className=" form__adress-modal ">
               <Input
-                id={"adress"}
-                name={"adress"}
+                id={"address"}
+                name={"address"}
                 type={"text"}
                 placeholder={"Adress"}
                 className={"form-modal adress"}

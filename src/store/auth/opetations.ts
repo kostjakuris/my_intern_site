@@ -106,7 +106,7 @@ export const createUser = createAsyncThunk(
       enableAddGrid();
       return respons.data;
     } catch (e: any) {
-      return e.message;
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
@@ -132,7 +132,44 @@ export const createDevice = createAsyncThunk(
       });
       return respons.data;
     } catch (e: any) {
-      return e.message;
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const deleteDevice = createAsyncThunk("auth/deletedevice", async (id: number, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
+  try {
+    setAuthHeader(persistedToken);
+    const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/delete", {
+      id,
+    });
+    return respons.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
+
+export const editDevice = createAsyncThunk(
+  "auth/editdevice",
+  async ({ id, name, device_type, country, city, address, serial_number }: DeviceFormData, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const persistedToken = state.auth.accessToken;
+    try {
+      setAuthHeader(persistedToken);
+      const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/edit", {
+        id,
+        name,
+        device_type,
+        country,
+        city,
+        address,
+        serial_number,
+      });
+      return respons.data;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
