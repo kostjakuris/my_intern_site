@@ -38,6 +38,20 @@ export type CreateUserData = {
   phone_number?: string;
 };
 
+export type ValuesData = {
+  name: string | null;
+  surname: string | null;
+  email: string | null;
+  role: string | null;
+  country: string | null;
+  city: string | null;
+  password: string | null;
+  address: string | null;
+  phone_number: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
 export type SignInFormData = {
   email?: string;
   password?: string;

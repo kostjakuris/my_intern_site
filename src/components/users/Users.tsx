@@ -11,6 +11,9 @@ import ModalProfile from "../modal-function/ModalProfile";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
 import axios from "axios";
 import { useAppSelector } from "../../Hook";
+import { useAppDispatch } from "../../Hook";
+import { createUser } from "../../store/auth/opetations";
+import { ValuesData } from "../input/inputVariables";
 
 type GridData = {
   headerName?: string;
@@ -34,6 +37,7 @@ type ResponseData = {
 };
 
 const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
+  const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.auth.user);
   const users: ResponseData = {
     id: null,
@@ -47,6 +51,27 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     created_at: null,
     updated_at: null,
   };
+
+  const userValues: ValuesData = {
+    name: null,
+    surname: null,
+    email: null,
+    country: null,
+    city: null,
+    password: null,
+    address: null,
+    role: null,
+    phone_number: "098765434",
+  };
+
+  const setName = (value: string) => (userValues.name = value);
+  const setSurname = (value: string) => (userValues.surname = value);
+  const setEmail = (value: string) => (userValues.email = value);
+  const setCountry = (value: string) => (userValues.country = value);
+  const setCity = (value: string) => (userValues.city = value);
+  const setPassword = (value: string) => (userValues.password = value);
+  const setAddress = (value: string) => (userValues.address = value);
+  const setRole = (value: string) => (userValues.role = value);
 
   const [createActive, setCreateActive] = useState(false);
   const [deleteActive, setDeleteActive] = useState(false);
@@ -75,21 +100,9 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     { headerName: "Created at", field: "created_at" },
     { headerName: "Updated at", field: "updated_at" },
   ]);
-  // function onSubmit() {
-  //   let newUser = {
-  //     name: formik.values.name,
-  //     surname: formik.values.surname,
-  //     email: formik.values.email,
-  //     role: formik.values.role,
-  //     country: formik.values.country,
-  //     city: formik.values.city,
-  //     adress: formik.values.address,
-  //     created_at: formik.values.address,
-  //     updated_at: formik.values.address,
-  //   };
-  //   enableAddGrid();
-  //   return newUser;
-  // }
+  async function onCreateUserSubmit() {
+    await dispatch(createUser(userValues));
+  }
 
   const [rowData, setRowData] = useState<GridData[]>();
   const [selectedData, setSelectedData] = useState<any>([
@@ -172,6 +185,15 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
           setActive={setCreateActive}
           activeClassName={"modal__content active"}
           title={"User creation"}
+          setName={setName}
+          setSurname={setName}
+          setEmail={setName}
+          setCountry={setName}
+          setCity={setName}
+          setPassword={setName}
+          setAddress={setName}
+          setRole={setRole}
+          onCreateUserSubmit={onCreateUserSubmit}
         ></ModalProfile>
       </ModalFunction>
 
@@ -197,12 +219,12 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        <ModalProfile
+        {/* <ModalProfile
           active={editUserActive}
           setActive={setEditUserActive}
           activeClassName={"modal__content active"}
           title={"Edit user"}
-        ></ModalProfile>
+        ></ModalProfile> */}
       </ModalFunction>
 
       <ModalFunction

@@ -16,6 +16,15 @@ export type ModalProfileData = {
   children?: React.ReactNode;
   activeClassName: string;
   title?: string;
+  setName: (value: string) => void;
+  setSurname: (value: string) => void;
+  setEmail: (value: string) => void;
+  setCountry: (value: string) => void;
+  setCity: (value: string) => void;
+  setPassword: (value: string) => void;
+  setRole: (value: string) => void;
+  setAddress: (value: string) => void;
+  onCreateUserSubmit: () => void;
 };
 
 const ModalProfile = ({ ...props }: ModalProfileData) => {
@@ -35,13 +44,19 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
       phone_number: "098765434",
     },
     validationSchema: ModalCreateSchema,
-    onSubmit: async (values: CreateUserData) => {
-      console.log(values);
-      if (props.title == "User Creation") {
-        await dispatch(createUser(values));
-      }
+    onSubmit: async () => {
+      props.onCreateUserSubmit();
     },
   });
+
+  props.setName(values.name);
+  props.setSurname(values.surname);
+  props.setEmail(values.email);
+  props.setRole(values.role);
+  props.setPassword(values.password);
+  props.setAddress(values.address);
+  props.setCountry(values.country);
+  props.setCity(values.city);
 
   return (
     <div>

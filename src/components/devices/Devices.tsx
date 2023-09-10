@@ -10,7 +10,7 @@ import editUser from "../../icons/material-symbols_edit-outline.svg";
 import userDetails from "../../icons/openmoji_details.svg";
 import { HookData } from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
-import ModalDevice from "../modal-function/ModalDevice";
+import ModalDevice from "./ModalDevice";
 import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
 import { DeviceFormData } from "../input/inputVariables";
 import { EditUserSchema } from "../input/EditUserValidation";

@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SignInFormData } from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
 import { CreateUserData } from "../../components/input/inputVariables";
+import { ValuesData } from "../../components/input/inputVariables";
 import { useState } from "react";
 import { DeviceFormData } from "../../components/input/inputVariables";
 
@@ -81,7 +82,7 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
 
 export const createUser = createAsyncThunk(
   "auth/createuser",
-  async ({ name, surname, email, role, password, country, city, address, phone_number }: CreateUserData, thunkAPI) => {
+  async ({ name, surname, email, role, password, country, city, address, phone_number }: ValuesData, thunkAPI) => {
     const [addGridActive, setAddGridActive] = useState(false);
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
