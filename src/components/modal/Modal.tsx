@@ -2,14 +2,17 @@ import "./Modal.min.css";
 import ModalFunction from "../modal-function/ModalFunction";
 import { ModalData } from "../modal-function/ModalFunction";
 import ModalProfile from "../modal-function/ModalProfile";
-import { FormData } from "../input/inputVariables";
+import { ValuesData } from "../input/inputVariables";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Input from "../input/Input";
 import cross from "../../icons/system-uicons_cross.svg";
 import { ModalEditSchema } from "../input/ModalEditValidation";
+import { useAppDispatch } from "../../Hook";
+import { editUser } from "../../store/auth/opetations";
 
 const Modal = ({ active, setActive }: ModalData) => {
+  const dispatch = useAppDispatch();
   const [hidePassword, setHidePassword] = useState(false);
 
   const formik = useFormik({
@@ -23,8 +26,8 @@ const Modal = ({ active, setActive }: ModalData) => {
       address: "",
     },
     validationSchema: ModalEditSchema,
-    onSubmit: (values: FormData) => {
-      console.log(values);
+    onSubmit: async (values: ValuesData) => {
+      await dispatch(editUser(values));
     },
   });
   return (
@@ -46,8 +49,8 @@ const Modal = ({ active, setActive }: ModalData) => {
             <div className="left__form--modal">
               <div className=" form__firstname ">
                 <Input
-                  id={"firstname"}
-                  name={"firstname"}
+                  id={"name"}
+                  name={"name"}
                   type={"text"}
                   placeholder={"Firstname"}
                   className={"form firstName"}
@@ -91,8 +94,8 @@ const Modal = ({ active, setActive }: ModalData) => {
 
               <div className=" form__adress ">
                 <Input
-                  id={"adress"}
-                  name={"adress"}
+                  id={"address"}
+                  name={"address"}
                   type={"text"}
                   placeholder={"Adress"}
                   className={"form adress"}
@@ -108,8 +111,8 @@ const Modal = ({ active, setActive }: ModalData) => {
             <div className="right__form--modal">
               <div className=" form__lastname">
                 <Input
-                  id={"lastname"}
-                  name={"lastname"}
+                  id={"surname"}
+                  name={"surname"}
                   type={"text"}
                   placeholder={"Lastname"}
                   className={"form lastName"}
@@ -144,8 +147,8 @@ const Modal = ({ active, setActive }: ModalData) => {
 
               <div className=" form__town ">
                 <Input
-                  id={"town"}
-                  name={"town"}
+                  id={"city"}
+                  name={"city"}
                   type={"text"}
                   placeholder={"Town"}
                   className={"form town"}
@@ -176,8 +179,8 @@ const Modal = ({ active, setActive }: ModalData) => {
           <div className="signUp__form--modal">
             <div className=" form__firstname ">
               <Input
-                id={"firstname"}
-                name={"firstname"}
+                id={"name"}
+                name={"name"}
                 type={"text"}
                 placeholder={"Firstname"}
                 className={"form-modal firstName"}
@@ -191,8 +194,8 @@ const Modal = ({ active, setActive }: ModalData) => {
 
             <div className=" form__lastname">
               <Input
-                id={"lastname"}
-                name={"lastname"}
+                id={"surname"}
+                name={"surname"}
                 type={"text"}
                 placeholder={"Lastname"}
                 className={"form-modal lastName"}
@@ -221,8 +224,8 @@ const Modal = ({ active, setActive }: ModalData) => {
 
             <div className=" form__adress-modal ">
               <Input
-                id={"adress"}
-                name={"adress"}
+                id={"address"}
+                name={"address"}
                 type={"text"}
                 placeholder={"Adress"}
                 className={"form-modal adress"}
@@ -271,8 +274,8 @@ const Modal = ({ active, setActive }: ModalData) => {
             </div>
             <div className=" form__town ">
               <Input
-                id={"town"}
-                name={"town"}
+                id={"city"}
+                name={"city"}
                 type={"text"}
                 placeholder={"Town"}
                 className={"form-modal town"}

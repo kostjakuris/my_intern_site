@@ -9,6 +9,7 @@ import Select from "../input/Select";
 import { useAppDispatch } from "../../Hook";
 import { createUser } from "../../store/auth/opetations";
 import { CreateUserData } from "../input/inputVariables";
+import { ValuesData } from "../input/inputVariables";
 
 export type ModalProfileData = {
   active: boolean;
@@ -24,7 +25,7 @@ export type ModalProfileData = {
   setPassword: (value: string) => void;
   setRole: (value: string) => void;
   setAddress: (value: string) => void;
-  onCreateUserSubmit: () => void;
+  onCreateUserSubmit: (values: ValuesData) => void;
 };
 
 const ModalProfile = ({ ...props }: ModalProfileData) => {
@@ -45,7 +46,7 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
     },
     validationSchema: ModalCreateSchema,
     onSubmit: async () => {
-      props.onCreateUserSubmit();
+      props.onCreateUserSubmit(values);
     },
   });
 

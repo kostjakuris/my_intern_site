@@ -8,6 +8,7 @@ import {
   createDevice,
   deleteDevice,
   editDevice,
+  editUser,
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
 
@@ -69,6 +70,7 @@ export const initialState: AuthState = {
     city: null,
     address: null,
     phone_number: null,
+    avatar: undefined,
   },
 
   newDevice: {
@@ -184,8 +186,17 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(editDevice.fulfilled, (state, action: PayloadAction<{ newDevice: DeviceFormData }>) => {
-        state.newDevice = action.payload.newDevice;
+      .addCase(editUser.pending, (state) => {
+        state.isRefreshing = true;
+      })
+
+      .addCase(editUser.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
+        state.user = action.payload.user;
+        state.isLoading = false;
+      })
+
+      .addCase(editUser.rejected, (state) => {
+        state.isRefreshing = false;
       });
   },
 });

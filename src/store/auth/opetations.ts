@@ -23,7 +23,7 @@ export const register = createAsyncThunk(
         name,
         surname,
         email,
-        role,
+        role: "customer",
         password,
         country,
         city,
@@ -86,6 +86,7 @@ export const createUser = createAsyncThunk(
     const [addGridActive, setAddGridActive] = useState(false);
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
+
     try {
       setAuthHeader(persistedToken);
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/users/create-user", {
@@ -99,6 +100,8 @@ export const createUser = createAsyncThunk(
         address,
         phone_number,
       });
+      console.log(name, surname, email, role, password, country, city, address, phone_number);
+
       const enableAddGrid = () => {
         if (role == "Super admin") {
           setAddGridActive(true);
@@ -112,24 +115,49 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const editUser = createAsyncThunk(
+  "auth/edituser",
+  async ({ name, surname, email, password, country, city, address, phone_number }: ValuesData, thunkAPI) => {
+    const state: any = thunkAPI.getState();
+    const persistedToken = state.auth.accessToken;
+    try {
+      setAuthHeader(persistedToken);
+      const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+        name,
+        surname,
+        email,
+        password,
+        country,
+        city,
+        address,
+        phone_number,
+      });
+      return respons.data;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
 export const createDevice = createAsyncThunk(
   "auth/createdevice",
-  async ({ name, device_type, country, city, address, serial_number }: DeviceFormData, thunkAPI) => {
+  async ({ name, device_type, address, serial_number }: DeviceFormData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
     try {
       setAuthHeader(persistedToken);
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create", {
-        owner_id: Math.random(),
+        owner_id: 3,
         name,
         device_type,
-        country,
-        city,
         address,
         serial_number,
-        phase_active: "true",
+        phase_active: true,
         phase_type: "laptop",
-        sum_power: Math.random(),
+        sum_power: 155.9,
+        group_id: 1,
+        location: "{}",
+        administrator_id: 2,
       });
       return respons.data;
     } catch (e: any) {
@@ -143,8 +171,26 @@ export const deleteDevice = createAsyncThunk("auth/deletedevice", async (id: num
   const persistedToken = state.auth.accessToken;
   try {
     setAuthHeader(persistedToken);
-    const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/delete", {
-      id,
+    const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/devices/delete", {
+      data: {
+        id,
+      },
+    });
+    return respons.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
+
+export const deleteUser = createAsyncThunk("auth/deleteuser", async (id: number, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
+  try {
+    setAuthHeader(persistedToken);
+    const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/users/delete-user", {
+      data: {
+        id,
+      },
     });
     return respons.data;
   } catch (e: any) {
@@ -154,7 +200,7 @@ export const deleteDevice = createAsyncThunk("auth/deletedevice", async (id: num
 
 export const editDevice = createAsyncThunk(
   "auth/editdevice",
-  async ({ id, name, device_type, country, city, address, serial_number }: DeviceFormData, thunkAPI) => {
+  async ({ id, name, device_type, country, email, city, address, serial_number }: DeviceFormData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
     try {
@@ -163,6 +209,7 @@ export const editDevice = createAsyncThunk(
         id,
         name,
         device_type,
+        email,
         country,
         city,
         address,

@@ -14,6 +14,7 @@ import { useAppSelector } from "../../Hook";
 import { useAppDispatch } from "../../Hook";
 import { createUser } from "../../store/auth/opetations";
 import { ValuesData } from "../input/inputVariables";
+import { deleteUser as deleteUserAction } from "../../store/auth/opetations";
 
 type GridData = {
   headerName?: string;
@@ -100,8 +101,9 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     { headerName: "Created at", field: "created_at" },
     { headerName: "Updated at", field: "updated_at" },
   ]);
-  async function onCreateUserSubmit() {
-    await dispatch(createUser(userValues));
+  async function onCreateUserSubmit(values: ValuesData) {
+    await dispatch(createUser(values));
+    console.log(values);
   }
 
   const [rowData, setRowData] = useState<GridData[]>();
@@ -128,6 +130,15 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     }),
     []
   );
+
+  const deleteUser = useCallback(() => {
+    const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
+    if (getSelectedNodes) {
+      const selectedId = getSelectedNodes.forEach((selectedData) => {
+        dispatch(deleteUserAction(selectedData.data.id));
+      });
+    }
+  }, []);
 
   useEffect(() => {
     axios
@@ -186,12 +197,12 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
           activeClassName={"modal__content active"}
           title={"User creation"}
           setName={setName}
-          setSurname={setName}
-          setEmail={setName}
-          setCountry={setName}
-          setCity={setName}
-          setPassword={setName}
-          setAddress={setName}
+          setSurname={setSurname}
+          setEmail={setEmail}
+          setCountry={setCountry}
+          setCity={setCity}
+          setPassword={setPassword}
+          setAddress={setAddress}
           setRole={setRole}
           onCreateUserSubmit={onCreateUserSubmit}
         ></ModalProfile>
@@ -209,7 +220,9 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
             Cancel
           </button>
 
-          <button className="submit__button-modal submit__button-modal-delete">OK</button>
+          <button className="submit__button-modal submit__button-modal-delete" onClick={deleteUser}>
+            OK
+          </button>
         </div>
       </ModalFunction>
 
@@ -219,12 +232,21 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        {/* <ModalProfile
+        <ModalProfile
           active={editUserActive}
           setActive={setEditUserActive}
           activeClassName={"modal__content active"}
           title={"Edit user"}
-        ></ModalProfile> */}
+          setName={setName}
+          setSurname={setSurname}
+          setEmail={setEmail}
+          setCountry={setCountry}
+          setCity={setCity}
+          setPassword={setPassword}
+          setAddress={setAddress}
+          setRole={setRole}
+          onCreateUserSubmit={onCreateUserSubmit}
+        ></ModalProfile>
       </ModalFunction>
 
       <ModalFunction

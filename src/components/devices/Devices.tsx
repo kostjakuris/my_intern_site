@@ -67,7 +67,6 @@ const Devices = ({ ...props }: HookData) => {
     validationSchema: CreateDeviceSchema,
     onSubmit: async (values: DeviceFormData) => {
       await dispatch(createDevice(values));
-      createOneUser();
     },
   });
 
@@ -90,7 +89,7 @@ const Devices = ({ ...props }: HookData) => {
     { headerName: "Serial number", field: "serial_number", checkboxSelection: true, headerCheckboxSelection: true },
     { headerName: "Device type", field: "device_type" },
     { headerName: "Name", field: "name" },
-    { headerName: "Owner email", field: "email" },
+    { headerName: "Owner email", field: "owner_email" },
     { headerName: "Country", field: "country" },
     { headerName: "City", field: "city" },
     { headerName: "Address", field: "address" },
@@ -121,11 +120,12 @@ const Devices = ({ ...props }: HookData) => {
     []
   );
 
-  const createOneUser = useCallback(() => {
-    if (Array.isArray(createDeviceState)) {
-      setRowData(createDeviceState);
-    }
-  }, []);
+  // const createOneUser = useCallback(() => {
+  //   if (Array.isArray(createDeviceState)) {
+  //     setRowData(createDeviceState);
+  //     console.log(createDeviceState);
+  //   }
+  // }, [formik.handleSubmit]);
 
   useEffect(() => {
     axios
@@ -141,7 +141,7 @@ const Devices = ({ ...props }: HookData) => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [formik.handleSubmit]);
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
   }, []);

@@ -1,3 +1,5 @@
+import { NumericLiteral } from "typescript";
+
 export type DeviceFormData = {
   id?: number;
   owner_id?: number | null;
@@ -11,6 +13,8 @@ export type DeviceFormData = {
   phase_active?: boolean | null;
   phase_type?: string | null;
   sum_power?: number | null;
+  group_id?: number | null;
+  location?: string | null;
 };
 
 export type FormData = {
@@ -42,12 +46,12 @@ export type ValuesData = {
   name: string | null;
   surname: string | null;
   email: string | null;
-  role: string | null;
+  role?: string | null;
   country: string | null;
   city: string | null;
   password: string | null;
   address: string | null;
-  phone_number: string | null;
+  phone_number?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
 };
