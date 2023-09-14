@@ -2,7 +2,6 @@ import "./Main.min.css";
 import { useState } from "react";
 import Modal from "../modal/Modal";
 import { HookData } from "../input/inputVariables";
-import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../Hook";
 
 const Main = ({ ...props }: HookData) => {

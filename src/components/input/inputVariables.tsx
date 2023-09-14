@@ -1,4 +1,3 @@
-import { NumericLiteral } from "typescript";
 
 export type DeviceFormData = {
   id?: number;

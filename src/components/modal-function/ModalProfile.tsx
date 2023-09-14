@@ -1,14 +1,9 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import React, { useState } from "react";
 import Input from "../input/Input";
-import cross from "../../icons/system-uicons_cross.svg";
-import { FormData } from "../input/inputVariables";
 import { ModalCreateSchema } from "../input/ModalCreateValidation";
-import { ModalEditSchema } from "../input/ModalEditValidation";
 import Select from "../input/Select";
 import { useAppDispatch } from "../../Hook";
-import { createUser } from "../../store/auth/opetations";
-import { CreateUserData } from "../input/inputVariables";
 import { ValuesData } from "../input/inputVariables";
 
 export type ModalProfileData = {

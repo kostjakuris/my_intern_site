@@ -134,7 +134,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   const deleteUser = useCallback(() => {
     const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
     if (getSelectedNodes) {
-      const selectedId = getSelectedNodes.forEach((selectedData) => {
+       getSelectedNodes.forEach((selectedData) => {
         dispatch(deleteUserAction(selectedData.data.id));
       });
     }

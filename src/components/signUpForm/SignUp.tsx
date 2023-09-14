@@ -31,7 +31,6 @@ const SignUp = ({ ...props }: HookData) => {
     validationSchema: signUpSchema,
     onSubmit: async (values: FormData) => {
       await dispatch(register(values));
-      navigate("/SignIn");
     },
   });
 

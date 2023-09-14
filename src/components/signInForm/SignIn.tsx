@@ -24,7 +24,6 @@ const SignIn = ({ ...props }: HookData) => {
     onSubmit: async (values: SignInFormData) => {
       await dispatch(logIn(values));
       await dispatch(getData());
-      navigate("/");
     },
   });
 

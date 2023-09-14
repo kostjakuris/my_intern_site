@@ -17,7 +17,7 @@ const clearAuthHeader = () => {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ name, surname, email, role, password, country, city, address, phone_number }: CreateUserData) => {
+  async ({ name, surname, email, password, country, city, address, phone_number }: CreateUserData) => {
     try {
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
         name,
@@ -117,12 +117,15 @@ export const createUser = createAsyncThunk(
 
 export const editUser = createAsyncThunk(
   "auth/edituser",
-  async ({ name, surname, email, password, country, city, address, phone_number }: ValuesData, thunkAPI) => {
+  async ({ name, surname, email, password, country, city, address }: ValuesData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
+    const id =state.auth.user.id
+
     try {
       setAuthHeader(persistedToken);
       const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+        id,
         name,
         surname,
         email,
@@ -130,7 +133,6 @@ export const editUser = createAsyncThunk(
         country,
         city,
         address,
-        phone_number,
       });
       return respons.data;
     } catch (e: any) {

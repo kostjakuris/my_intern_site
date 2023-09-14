@@ -1,5 +1,5 @@
 import "./Nav.min.css";
-import { Route, Routes, NavLink, Navigate } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import { NavContent } from "../../App";
 import { useJsApiLoader } from "@react-google-maps/api";
 
