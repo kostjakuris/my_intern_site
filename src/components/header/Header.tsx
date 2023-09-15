@@ -12,9 +12,7 @@ import { logOut } from "../../store/auth/opetations";
 
 const Header = ({ ...props }: HookData) => {
   const dispatch = useAppDispatch();
-  const email = useAppSelector((state) => state.auth.user.email);
-  const avatar = useAppSelector((state) => state.auth.user.avatar);
-  const role = useAppSelector((state) => state.auth.user.role);
+  const userState = useAppSelector((state) => state.auth.user);
   function changeNavState() {
     if (props.signActive) {
       props.setSignActive(false);
@@ -28,12 +26,12 @@ const Header = ({ ...props }: HookData) => {
       <div className="block"></div>
       <div className="header__wrapper">
         <div className="header__img">
-          <img className="header__img-icon" src={avatar} alt="avatar" />
+          <img className="header__img-icon" src={userState.avatar} alt="avatar" />
         </div>
         <div className="header__info">
-          <div className="header__info-title">{role}</div>
+          <div className="header__info-title">{userState.role}</div>
           <a href="mailto:" className="header__info-email">
-            {email}
+            {userState.email}
           </a>
         </div>
         <span className="header__icon" onClick={() => props.setSignActive(true)}>

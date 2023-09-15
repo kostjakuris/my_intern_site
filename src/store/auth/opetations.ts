@@ -51,6 +51,8 @@ export const logIn = createAsyncThunk("auth/login", async ({ email, password }: 
 });
 
 export const logOut = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+
   try {
     clearAuthHeader();
   } catch (e: any) {
@@ -80,8 +82,33 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
   }
 });
 
+export const refreshUser = createAsyncThunk(
+    'auth/refreshUser',
+    async (_, thunkAPI) => {
+      const state:any = thunkAPI.getState();
+      const persistedToken = state.auth.accessToken;
+
+      if (persistedToken === null) {
+        return thunkAPI.rejectWithValue('Unable to fetch user');
+      }
+
+      try {
+        setAuthHeader(persistedToken);
+        const res = await axios.get('http://intern-project-backend.atwebpages.com/api/users/user-info',{
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        return res.data;
+      } catch (e:any) {
+        return e.message
+      }
+    }
+);
+
 export const createUser = createAsyncThunk(
-  "auth/createuser",
+  "auth/createUser",
   async ({ name, surname, email, role, password, country, city, address, phone_number }: ValuesData, thunkAPI) => {
     const [addGridActive, setAddGridActive] = useState(false);
     const state: any = thunkAPI.getState();
@@ -116,7 +143,7 @@ export const createUser = createAsyncThunk(
 );
 
 export const editUser = createAsyncThunk(
-  "auth/edituser",
+  "auth/editUser",
   async ({ name, surname, email, password, country, city, address }: ValuesData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
@@ -142,7 +169,7 @@ export const editUser = createAsyncThunk(
 );
 
 export const createDevice = createAsyncThunk(
-  "auth/createdevice",
+  "auth/createDevice",
   async ({ name, device_type, address, serial_number }: DeviceFormData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
@@ -201,7 +228,7 @@ export const deleteUser = createAsyncThunk("auth/deleteuser", async (id: number,
 });
 
 export const editDevice = createAsyncThunk(
-  "auth/editdevice",
+  "auth/editDevice",
   async ({ id, name, device_type, country, email, city, address, serial_number }: DeviceFormData, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;

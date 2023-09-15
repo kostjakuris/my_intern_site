@@ -1,14 +1,16 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import SignUp from "./components/signUpForm/SignUp";
 import SignIn from "./components/signInForm/SignIn";
 import Main from "./components/main/Main";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import Layout from "./components/nav/Layout";
 import Users from "./components/users/Users";
 import Devices from "./components/devices/Devices";
 import Map from "./components/map/Map";
 import Groups from "./components/groups/Groups";
-import {useAppSelector} from "./Hook";
+import {useAppDispatch, useAppSelector} from "./Hook";
+import {getData, refreshUser} from "./store/auth/opetations";
+import {replace} from "formik";
 
 export type NavContent = {
   navActive: boolean;
@@ -17,13 +19,29 @@ export type NavContent = {
   setSignActive: (signActive: boolean) => void;
 };
 function App() {
+    const dispatch=useAppDispatch()
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const isRefreshing = useAppSelector((state) => state.auth.isRefreshing);
     console.log(isLoggedIn)
   const [menuActive, setMenuActive] = useState(false);
   const [nav, setNav] = useState(false);
+  const navigate=useNavigate()
+
+    useEffect(()=>{
+
+  if (isLoggedIn) {
+     navigate('/')
+  }
+    },[isLoggedIn])
+
+    useEffect(()=>{
+
+        dispatch(getData())
+
+    },[dispatch])
   return (
-      <>
-        {isLoggedIn ? (
+
+
             <Routes>
             <Route
                 path="/"
@@ -55,9 +73,7 @@ function App() {
                 />
                 <Route path="map" element={<Map />} />
             </Route>
-            </Routes>
-        ):(
-            <Routes>
+
                 <Route
                     path="SignUp"
                     element={<SignUp signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
@@ -67,8 +83,8 @@ function App() {
                     element={<SignIn signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
             </Routes>
-        )}
 
-      </>
+
+
   )}
 export default App;

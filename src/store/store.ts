@@ -9,9 +9,8 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: "accessToken",
+  key: "root",
   storage,
-  whitelist: ["accessToken"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

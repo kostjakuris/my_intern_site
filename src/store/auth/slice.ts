@@ -9,8 +9,10 @@ import {
   deleteDevice,
   editDevice,
   editUser,
+refreshUser,
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
+import {string} from "yup";
 
 type SignInUser = {
   email: string | null;
@@ -40,7 +42,7 @@ export type AuthState = {
   isLoggedIn: boolean;
   isRefreshing: boolean;
   isLoading: boolean;
-  message: string | null;
+  message: null;
 };
 export const initialState: AuthState = {
   signInUser: {
@@ -126,21 +128,16 @@ const authSlice = createSlice({
           state.isLoading = false;
         }
       )
-      .addCase(logIn.rejected, (state) => {
-        state.isLoading = false;
-      })
 
-      .addCase(logOut.pending, (state) => {
-        state.isRefreshing = true;
-      })
 
       .addCase(logOut.fulfilled, (state) => {
         state.isLoggedIn = false;
         state.accessToken = null;
         state.refreshToken = null;
+
       })
 
-      .addCase(logOut.rejected, (state) => {
+      .addCase(logOut.rejected, (state,) => {
         state.isRefreshing = false;
       })
 
@@ -152,8 +149,9 @@ const authSlice = createSlice({
         state.isRefreshing = false;
         state.user = action.payload.user;
       })
-      .addCase(getData.rejected, (state) => {
+      .addCase(getData.rejected, (state,action) => {
         state.isRefreshing = false;
+
       })
 
       .addCase(createUser.pending, (state) => {
@@ -197,7 +195,19 @@ const authSlice = createSlice({
 
       .addCase(editUser.rejected, (state) => {
         state.isRefreshing = false;
-      });
+      })
+
+        .addCase(refreshUser.pending, (state, action) => {
+          state.isRefreshing = true;
+        })
+        .addCase(refreshUser.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
+          state.isLoggedIn = true;
+          state.isRefreshing = false;
+          state.user = action.payload.user;
+        })
+        .addCase(refreshUser.rejected, (state, action) => {
+          state.isRefreshing = false;
+        })
   },
 });
 
