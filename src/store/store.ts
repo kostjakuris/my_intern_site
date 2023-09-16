@@ -1,6 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import {accessToken} from "./auth/selectors";
+import {selectUser} from "./auth/selectors";
 
 import authReducer from "./auth/slice";
 

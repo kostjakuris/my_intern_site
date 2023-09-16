@@ -4,23 +4,15 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Devices.css";
 import "./ModalCreate.min.css";
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
-import addUser from "../../icons/material-symbols_add.svg";
-import deleteUser from "../../icons/material-symbols_delete-outline.svg";
-import editUser from "../../icons/material-symbols_edit-outline.svg";
-import userDetails from "../../icons/openmoji_details.svg";
 import { HookData } from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import ModalDevice from "./ModalDevice";
-import avatarIcon from "../../icons/carbon_user-avatar-filled-alt.svg";
 import { DeviceFormData } from "../input/inputVariables";
-import { EditUserSchema } from "../input/EditUserValidation";
 import { useFormik } from "formik";
 import Input from "../input/Input";
-import cross from "../../icons/system-uicons_cross.svg";
-import axios from "axios";
 import { CreateDeviceSchema } from "../input/CreateDeviceValidation";
 import { useAppDispatch } from "../../Hook";
-import { createDevice } from "../../store/auth/opetations";
+import {createDevice, getDevices} from "../../store/auth/opetations";
 import { deleteDevice as deleteDeviceAction } from "../../store/auth/opetations";
 import { useAppSelector } from "../../Hook";
 
@@ -32,27 +24,11 @@ type GridData = {
   rowGroupPanelShow?: string;
 };
 
-type ResponseDeviceData = {
-  id?: number | null;
-  serial_number: string | null;
-  device_type: string | null;
-  name: string | null;
-  country: string | null;
-  city: string | null;
-  address: string | null;
-};
 
 const Devices = ({ ...props }: HookData) => {
-  const createDeviceState = useAppSelector((state) => state.auth.newDevice);
+  const userRole = useAppSelector((state) => state.auth.user.role);
+  const devicesArray = useAppSelector((state) => state.auth.devices);
   const dispatch = useAppDispatch();
-  const devices: ResponseDeviceData = {
-    serial_number: null,
-    device_type: null,
-    name: null,
-    country: null,
-    city: null,
-    address: null,
-  };
 
   const formik = useFormik<DeviceFormData>({
     initialValues: {
@@ -120,28 +96,19 @@ const Devices = ({ ...props }: HookData) => {
     []
   );
 
-  // const createOneUser = useCallback(() => {
-  //   if (Array.isArray(createDeviceState)) {
-  //     setRowData(createDeviceState);
-  //     console.log(createDeviceState);
-  //   }
-  // }, [formik.handleSubmit]);
 
-  useEffect(() => {
-    axios
-      .get("http://intern-project-backend.atwebpages.com/api/devices")
-      .then((response) => {
-        if (Array.isArray(response.data.devices)) {
-          console.log(response.data.devices);
-          setRowData(response.data.devices);
-        } else {
-          console.error("API response is not an array:", response.data);
+      useEffect(() => {
+        if (userRole!=="customer") {
+        dispatch(getDevices())
+        if (Array.isArray(devicesArray)) {
+          setRowData(devicesArray);
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [formik.handleSubmit]);
+        }
+      }, []);
+
+
+
+
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
   }, []);
@@ -167,13 +134,15 @@ const Devices = ({ ...props }: HookData) => {
   const deleteDevice = useCallback(() => {
     const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
     if (getSelectedNodes) {
-      const selectedId = getSelectedNodes.forEach((selectedData) => {
+      getSelectedNodes.forEach((selectedData) => {
         dispatch(deleteDeviceAction(selectedData.data.id));
       });
     }
   }, []);
 
-  return (
+  return userRole=="customer" ? (
+      <div>You don`t have a permissions to see this page</div>
+      ): (
     <div className="users-grid" onClick={() => changeState()}>
       <ModalFunction
         active={createDeviceActive}

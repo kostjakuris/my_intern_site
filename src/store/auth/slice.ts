@@ -9,10 +9,12 @@ import {
   deleteDevice,
   editDevice,
   editUser,
-refreshUser,
+  getUsers,
+  getDevices,
+  getGroups
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
-import {string} from "yup";
+
 
 type SignInUser = {
   email: string | null;
@@ -32,10 +34,46 @@ type User = {
   avatar?: string | undefined;
 };
 
+type ResponseData = {
+  id?: number | null;
+  name: string | null;
+  surname: string | null;
+  email: string | null;
+  role: string | null;
+  country: string | null;
+  city: string | null;
+  address: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type ResponseDeviceData = {
+  id?: number | null;
+  serial_number: string | null;
+  device_type: string | null;
+  owner_email:string|null;
+  name: string | null;
+  country: string | null;
+  city: string | null;
+  address: string | null;
+  deviceCount?:number|null
+};
+
+type ResponseGroupsData = {
+  id?: number | null;
+  name: string | null;
+  administrator_id: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
 export type AuthState = {
   signInUser: SignInUser;
   user: User;
   newUser: User;
+  users:ResponseData;
+  devices:ResponseDeviceData;
+  groups:ResponseGroupsData
   newDevice: DeviceFormData;
   refreshToken: string | null;
   accessToken: string | null;
@@ -88,6 +126,38 @@ export const initialState: AuthState = {
     phase_active: null,
     phase_type: null,
     sum_power: null,
+  },
+
+  users: {
+  id: null,
+  name: null,
+  surname: null,
+  email: null,
+  role: null,
+  country: null,
+  city: null,
+  address: null,
+  created_at: null,
+  updated_at: null,
+},
+
+  devices: {
+  serial_number: null,
+  device_type: null,
+  owner_email:null,
+  name: null,
+  country: null,
+  city: null,
+  address: null,
+    deviceCount:null,
+},
+
+  groups: {
+    id: null,
+    name: null,
+    administrator_id:null,
+    created_at: null,
+    updated_at: null,
   },
 
   refreshToken: null,
@@ -197,16 +267,19 @@ const authSlice = createSlice({
         state.isRefreshing = false;
       })
 
-        .addCase(refreshUser.pending, (state, action) => {
-          state.isRefreshing = true;
+        .addCase(getUsers.fulfilled, (state, action: PayloadAction<{ users: ResponseData }>) => {
+          state.users = action.payload.users;
+          state.isLoading = false;
         })
-        .addCase(refreshUser.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
-          state.isLoggedIn = true;
-          state.isRefreshing = false;
-          state.user = action.payload.user;
+
+        .addCase(getDevices.fulfilled, (state, action: PayloadAction<{ devices: ResponseDeviceData }>) => {
+          state.devices = action.payload.devices;
+          state.isLoading = false;
         })
-        .addCase(refreshUser.rejected, (state, action) => {
-          state.isRefreshing = false;
+
+        .addCase(getGroups.fulfilled, (state, action: PayloadAction<{ groups: ResponseGroupsData }>) => {
+          state.groups = action.payload.groups;
+          state.isLoading = false;
         })
   },
 });

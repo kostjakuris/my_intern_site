@@ -9,8 +9,6 @@ import Devices from "./components/devices/Devices";
 import Map from "./components/map/Map";
 import Groups from "./components/groups/Groups";
 import {useAppDispatch, useAppSelector} from "./Hook";
-import {getData, refreshUser} from "./store/auth/opetations";
-import {replace} from "formik";
 
 export type NavContent = {
   navActive: boolean;
@@ -34,11 +32,7 @@ function App() {
   }
     },[isLoggedIn])
 
-    useEffect(()=>{
 
-        dispatch(getData())
-
-    },[dispatch])
   return (
 
 

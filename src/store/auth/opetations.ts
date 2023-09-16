@@ -82,30 +82,27 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
   }
 });
 
-export const refreshUser = createAsyncThunk(
-    'auth/refreshUser',
-    async (_, thunkAPI) => {
-      const state:any = thunkAPI.getState();
-      const persistedToken = state.auth.accessToken;
+export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
 
-      if (persistedToken === null) {
-        return thunkAPI.rejectWithValue('Unable to fetch user');
-      }
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
+  }
 
-      try {
-        setAuthHeader(persistedToken);
-        const res = await axios.get('http://intern-project-backend.atwebpages.com/api/users/user-info',{
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
-        return res.data;
-      } catch (e:any) {
-        return e.message
-      }
-    }
-);
+  try {
+    setAuthHeader(persistedToken);
+    const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return res.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
 
 export const createUser = createAsyncThunk(
   "auth/createUser",
@@ -167,6 +164,28 @@ export const editUser = createAsyncThunk(
     }
   }
 );
+
+export const getDevices = createAsyncThunk("auth/getDevices", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
+
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
+  }
+
+  try {
+    setAuthHeader(persistedToken);
+    const res = await axios.get("http://intern-project-backend.atwebpages.com/api/devices", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return res.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
 
 export const createDevice = createAsyncThunk(
   "auth/createDevice",
@@ -250,3 +269,25 @@ export const editDevice = createAsyncThunk(
     }
   }
 );
+
+export const getGroups = createAsyncThunk("auth/getGroups", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
+
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
+  }
+
+  try {
+    setAuthHeader(persistedToken);
+    const res = await axios.get("http://intern-project-backend.atwebpages.com/api/groups", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return res.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});

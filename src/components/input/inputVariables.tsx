@@ -1,3 +1,4 @@
+import React from "react";
 
 export type DeviceFormData = {
   id?: number;
@@ -67,6 +68,8 @@ export type HookData = {
   setNavActive: (navActive: boolean) => void;
   addGridActive?: boolean;
   setAddGridActive?: (addGridActive: boolean) => void;
+  group_id?:number
+  grid_id?:number
   content?: React.ReactNode;
 };
 

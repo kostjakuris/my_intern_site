@@ -9,10 +9,9 @@ import { AddGridData } from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import ModalProfile from "../modal-function/ModalProfile";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
-import axios from "axios";
 import { useAppSelector } from "../../Hook";
 import { useAppDispatch } from "../../Hook";
-import { createUser } from "../../store/auth/opetations";
+import {createUser, getUsers} from "../../store/auth/opetations";
 import { ValuesData } from "../input/inputVariables";
 import { deleteUser as deleteUserAction } from "../../store/auth/opetations";
 
@@ -24,35 +23,11 @@ type GridData = {
   rowGroupPanelShow?: string;
 };
 
-type ResponseData = {
-  id?: number | null;
-  name: string | null;
-  surname: string | null;
-  email: string | null;
-  role: string | null;
-  country: string | null;
-  city: string | null;
-  address: string | null;
-  created_at: string | null;
-  updated_at: string | null;
-};
 
 const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   const dispatch = useAppDispatch();
-  const userState = useAppSelector((state) => state.auth.user);
-  const users: ResponseData = {
-    id: null,
-    name: null,
-    surname: null,
-    email: null,
-    role: null,
-    country: null,
-    city: null,
-    address: null,
-    created_at: null,
-    updated_at: null,
-  };
-
+  const usersArray = useAppSelector((state) => state.auth.users);
+  const userRole = useAppSelector((state) => state.auth.user.role);
   const userValues: ValuesData = {
     name: null,
     surname: null,
@@ -141,24 +116,12 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://intern-project-backend.atwebpages.com/api/users")
-      .then((response) => {
-        if (Array.isArray(response.data.users)) {
-          setRowData(response.data.users);
-        } else {
-          console.error("API response is not an array:", response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-  // const createOneUser = useCallback(() => {
-  //   const newUser = onSubmit();
-  //   values = [newUser, ...values];
-  //   setRowData(values);
-  // }, []);
+    dispatch(getUsers())
+  if (Array.isArray(usersArray)) {
+    setRowData(usersArray);
+  }
+  }, [dispatch]);
+
 
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
@@ -183,7 +146,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     }
   }, []);
 
-  return (
+  return  (
     <div className="users-grid" onClick={() => changeState()}>
       <ModalFunction
         active={createActive}

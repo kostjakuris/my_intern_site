@@ -1,22 +1,37 @@
-import React from "react";
+import React, {createContext, useEffect} from "react";
 import "./Groups.css";
 import { useState } from "react";
 import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import { HookData } from "../input/inputVariables";
+import {useAppSelector} from "../../Hook";
 
 const GroupCard = ({ ...props }: HookData) => {
   const [groupDetailsActive, setGroupDetailsActive] = useState(false);
   const [openActive, setOpenActive] = useState(false);
+  const groupsArray = useAppSelector((state) => state.auth.groups);
+    const [groupData, setGroupData] = useState<any[]|undefined>()
   function changeMenu() {
     if (openActive) {
       setOpenActive(false);
     }
   }
+  useEffect(()=>{
+
+  if (Array.isArray(groupsArray)) {
+      setGroupData(groupsArray)
+  }
+  },[])
+
+
   return (
     <div className="groups__card" onClick={changeMenu}>
       <div className="groups__card-top">
-        <div className="groups__card-name">Name</div>
+
+          {groupData ? groupData.map((data: any) => (
+        <div className="groups__card-name">{props.group_id==data.id ? data.name :"Name"}</div>
+          )):null}
+
         <div className="groups__card-menu">
           <span className="groups__card-open" onClick={() => setOpenActive((prev) => !prev)}>
             <img src="icons/charm_menu-kebab.svg" alt="menu" />
@@ -29,7 +44,7 @@ const GroupCard = ({ ...props }: HookData) => {
           </span>
         </div>
       </div>
-      <div className="groups__card-devices">17 Devices</div>
+      <div className="groups__card-devices">0 Devices</div>
       <div className="groups__card-button">
         <button className="submit__button-groups" onClick={() => setGroupDetailsActive(true)}>
           Details
