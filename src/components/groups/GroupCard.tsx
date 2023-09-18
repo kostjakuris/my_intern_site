@@ -40,8 +40,8 @@ const dispatch=useAppDispatch()
     <div className="groups__card" onClick={changeMenu}>
       <div className="groups__card-top">
 
-          {groupData ? groupData.map((data: any) => (
-        <div className="groups__card-name">{props.group_id==data.id ? data.name :"Name"}</div>
+          {groupData ? groupData.map((data: any,index:number) => (
+        <div key={index} className="groups__card-name">{props.group_id==data.id ? data.name :"Name"}</div>
           )):null}
 
         <div className="groups__card-menu">
@@ -56,9 +56,9 @@ const dispatch=useAppDispatch()
           </span>
         </div>
       </div>
-        {groupData ? groupData.map((data: any) => (
+        {groupData ? groupData.map((data: any,index:number) => (
 
-      <div className="groups__card-devices">{props.group_id==data.id ? length :0} Devices</div>
+      <div key={index} className="groups__card-devices">{props.group_id==data.id ? length :0} Devices</div>
         )):null}
       <div className="groups__card-button">
         <button className="submit__button-groups" onClick={() => setGroupDetailsActive(true)}>
@@ -74,8 +74,8 @@ const dispatch=useAppDispatch()
         <div className="modal__top">
           <h3 className="form-wrapper-modal__title">User`s info</h3>
         </div>
-          {groupData ? groupData.map((data: any) => (
-           props.group_id==data.id ?  (<GroupGrid
+          {groupData ? groupData.map((data: any,index:number) => (
+            props.group_id==data.id ?  (<GroupGrid key={index}
                    signActive={props.signActive}
                    setSignActive={props.setSignActive}
                    navActive={props.navActive}

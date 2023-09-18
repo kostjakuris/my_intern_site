@@ -191,19 +191,19 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                   touched={touched.role}
                   errors={errors.role}
                 >
-                  <option value="" disabled selected className="date-pagination__option">
+                  <option value="" disabled defaultValue={"Role"} className="date-pagination__option">
                     Role
                   </option>
                   <option value="customer" className="date-pagination__option">
                     Customer
                   </option>
-                  <option value="device owner" className="date-pagination__option">
+                  <option value="device_owner" className="date-pagination__option">
                     Device owner
                   </option>
-                  <option value="regional admin" className="date-pagination__option">
+                  <option value="regional_admin" className="date-pagination__option">
                     Regional admin
                   </option>
-                  <option value="super admin" className="date-pagination__option">
+                  <option value="super_admin" className="date-pagination__option">
                     Super admin
                   </option>
                 </Select>
@@ -349,19 +349,19 @@ const ModalProfile = ({ ...props }: ModalProfileData) => {
                 touched={touched.role}
                 errors={errors.role}
               >
-                <option value="" disabled selected className="date-pagination__option">
+                <option value="" disabled defaultValue={"Role"} className="date-pagination__option">
                   Role
                 </option>
                 <option value="customer" className="date-pagination__option">
                   Customer
                 </option>
-                <option value="device owner" className="date-pagination__option">
+                <option value="device_owner" className="date-pagination__option">
                   Device owner
                 </option>
-                <option value="regional admin" className="date-pagination__option">
+                <option value="regional_admin" className="date-pagination__option">
                   Regional admin
                 </option>
-                <option value="super admin" className="date-pagination__option">
+                <option value="super_admin" className="date-pagination__option">
                   Super admin
                 </option>
               </Select>

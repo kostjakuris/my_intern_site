@@ -63,8 +63,9 @@ const GroupGrid = ({ ...props }: HookData) => {
   useEffect(() => {
 
       dispatch(getDevices())
-      if (Array.isArray(groupDevicesArray)) {
-        setRowData(groupDevicesArray);
+      if ( groupId && Array.isArray(groupDevicesArray)) {
+        const filteredDevices=groupDevicesArray.filter((device)=>(device.group_id==groupId))
+        setRowData(filteredDevices);
       }
   }, []);
 

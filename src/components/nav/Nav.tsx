@@ -3,13 +3,13 @@ import {  NavLink } from "react-router-dom";
 import { NavContent } from "../../App";
 import { useJsApiLoader } from "@react-google-maps/api";
 
-const API_KEY: any = process.env.REACT_APP_API_KEY;
+// const API_KEY: any = process.env.REACT_APP_API_KEY;
 
 const Nav = ({ ...props }: NavContent) => {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: API_KEY,
-  });
+  // const { isLoaded } = useJsApiLoader({
+  //   id: "google-map-script",
+  //   googleMapsApiKey: API_KEY,
+  // });
   return (
     <div>
       <div className="main__nav">
@@ -60,12 +60,12 @@ const Nav = ({ ...props }: NavContent) => {
             </span>
             Groups
           </NavLink>
-          <NavLink className="main__nav-button" to="map">
-            <span className="main__nav-icon">
-              <img className="main__nav-img" src="icons/uil_map.svg" alt="map" />
-            </span>
-            Map
-          </NavLink>
+          {/*<NavLink className="main__nav-button" to="map">*/}
+          {/*  <span className="main__nav-icon">*/}
+          {/*    <img className="main__nav-img" src="icons/uil_map.svg" alt="map" />*/}
+          {/*  </span>*/}
+          {/*  Map*/}
+          {/*</NavLink>*/}
         </div>
       </nav>
     </div>

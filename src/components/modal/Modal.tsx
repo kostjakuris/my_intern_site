@@ -15,7 +15,7 @@ const Modal = ({ active, setActive }: ModalData) => {
   const dispatch = useAppDispatch();
   const [hidePassword, setHidePassword] = useState(false);
 
-  const formik = useFormik({
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       name: "",
       surname: "",
@@ -44,7 +44,7 @@ const Modal = ({ active, setActive }: ModalData) => {
         </span>
       </div>
       <div className="form-wrapper-modal ">
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="signUp__form--modal">
             <div className="left__form--modal">
               <div className=" form__firstname ">
@@ -54,11 +54,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={"text"}
                   placeholder={"Firstname"}
                   className={"form firstName"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.name}
-                  touched={formik.touched.name}
-                  errors={formik.errors.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  touched={touched.name}
+                  errors={errors.name}
                 />
               </div>
 
@@ -69,11 +69,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={"email"}
                   placeholder={"Email"}
                   className={"form email"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  touched={formik.touched.email}
-                  errors={formik.errors.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  touched={touched.email}
+                  errors={errors.email}
                 />
               </div>
 
@@ -84,11 +84,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={"text"}
                   placeholder={"Country"}
                   className={"form country"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.country}
-                  touched={formik.touched.country}
-                  errors={formik.errors.country}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.country}
+                  touched={touched.country}
+                  errors={errors.country}
                 />
               </div>
 
@@ -97,13 +97,13 @@ const Modal = ({ active, setActive }: ModalData) => {
                   id={"address"}
                   name={"address"}
                   type={"text"}
-                  placeholder={"Adress"}
+                  placeholder={"Address"}
                   className={"form adress"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.address}
-                  touched={formik.touched.address}
-                  errors={formik.errors.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.address}
+                  touched={touched.address}
+                  errors={errors.address}
                 />
               </div>
             </div>
@@ -116,11 +116,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={"text"}
                   placeholder={"Lastname"}
                   className={"form lastName"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.surname}
-                  touched={formik.touched.surname}
-                  errors={formik.errors.surname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.surname}
+                  touched={touched.surname}
+                  errors={errors.surname}
                 />
               </div>
 
@@ -131,11 +131,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={hidePassword ? "text" : "password"}
                   placeholder={"Password"}
                   className={"form password"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  touched={formik.touched.password}
-                  errors={formik.errors.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  touched={touched.password}
+                  errors={errors.password}
                 />
                 <span
                   className={hidePassword ? "hiding__icon-modal disabled" : "hiding__icon-modal"}
@@ -152,11 +152,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                   type={"text"}
                   placeholder={"Town"}
                   className={"form town"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.city}
-                  touched={formik.touched.city}
-                  errors={formik.errors.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.city}
+                  touched={touched.city}
+                  errors={errors.city}
                 />
               </div>
             </div>
@@ -175,7 +175,7 @@ const Modal = ({ active, setActive }: ModalData) => {
       </div>
 
       <div className="form-wrapper-modal--mobile ">
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="signUp__form--modal">
             <div className=" form__firstname ">
               <Input
@@ -184,11 +184,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={"text"}
                 placeholder={"Firstname"}
                 className={"form-modal firstName"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-                touched={formik.touched.name}
-                errors={formik.errors.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.name}
+                touched={touched.name}
+                errors={errors.name}
               />
             </div>
 
@@ -199,11 +199,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={"text"}
                 placeholder={"Lastname"}
                 className={"form-modal lastName"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.surname}
-                touched={formik.touched.surname}
-                errors={formik.errors.surname}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.surname}
+                touched={touched.surname}
+                errors={errors.surname}
               />
             </div>
 
@@ -214,11 +214,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={"email"}
                 placeholder={"Email"}
                 className={"form-modal email"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                touched={formik.touched.email}
-                errors={formik.errors.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                touched={touched.email}
+                errors={errors.email}
               />
             </div>
 
@@ -227,13 +227,13 @@ const Modal = ({ active, setActive }: ModalData) => {
                 id={"address"}
                 name={"address"}
                 type={"text"}
-                placeholder={"Adress"}
+                placeholder={"Address"}
                 className={"form-modal adress"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.address}
-                touched={formik.touched.address}
-                errors={formik.errors.address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.address}
+                touched={touched.address}
+                errors={errors.address}
               />
             </div>
 
@@ -244,11 +244,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={hidePassword ? "text" : "password"}
                 placeholder={"Password"}
                 className={"form-modal password"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                touched={formik.touched.password}
-                errors={formik.errors.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                touched={touched.password}
+                errors={errors.password}
               />
               <span
                 className={hidePassword ? "hiding__icon-modal disabled" : "hiding__icon-modal"}
@@ -265,11 +265,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={"text"}
                 placeholder={"Country"}
                 className={"form-modal country"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.country}
-                touched={formik.touched.country}
-                errors={formik.errors.country}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.country}
+                touched={touched.country}
+                errors={errors.country}
               />
             </div>
             <div className=" form__town ">
@@ -279,11 +279,11 @@ const Modal = ({ active, setActive }: ModalData) => {
                 type={"text"}
                 placeholder={"Town"}
                 className={"form-modal town"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.city}
-                touched={formik.touched.city}
-                errors={formik.errors.city}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.city}
+                touched={touched.city}
+                errors={errors.city}
               />
             </div>
           </div>

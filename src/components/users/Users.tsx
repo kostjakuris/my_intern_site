@@ -235,7 +235,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        {selectedData.map((data: any) => (
+        {selectedData.map((data: any,index:number) => (
           <div className="page-details__wrapper">
             {data.role !== "owner" ? (
               <div className="page-container">

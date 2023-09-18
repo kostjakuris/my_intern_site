@@ -18,12 +18,11 @@ export type NavContent = {
 };
 function App() {
     const dispatch=useAppDispatch()
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    let isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isRefreshing = useAppSelector((state) => state.auth.isRefreshing);
   const [menuActive, setMenuActive] = useState(false);
   const [nav, setNav] = useState(false);
   const navigate=useNavigate()
-
     useEffect(()=>{
 
   if (isLoggedIn) {
@@ -64,15 +63,15 @@ function App() {
                         <Groups signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />
                     }
                 />
-                <Route path="map" element={<Map />} />
+                {/*<Route path="map" element={<Map />} />*/}
             </Route>
 
                 <Route
-                    path="SignUp"
+                    path="/SignUp"
                     element={<SignUp signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
                 <Route
-                    path="SignIn"
+                    path="/SignIn"
                     element={<SignIn signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
             </Routes>
