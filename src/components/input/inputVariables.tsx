@@ -61,6 +61,14 @@ export type SignInFormData = {
   password?: string;
 };
 
+export type AddGridGridData = {
+  headerName?: string;
+  field?: string;
+  checkboxSelection?: boolean;
+  headerCheckboxSelection?: boolean;
+  rowGroupPanelShow?: string;
+};
+
 export type HookData = {
   signActive: boolean;
   setSignActive: (setSignActive: boolean) => void;
@@ -70,7 +78,10 @@ export type HookData = {
   setAddGridActive?: (addGridActive: boolean) => void;
   group_id?:number
   grid_id?:number
+  rowData?: AddGridGridData[]|undefined
+  setRowData?: (rowData: AddGridGridData[]|undefined) => void;
   content?: React.ReactNode;
+  addContent?: React.ReactNode;
 };
 
 export type AddGridData = {

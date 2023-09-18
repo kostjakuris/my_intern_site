@@ -5,12 +5,18 @@ import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import { HookData } from "../input/inputVariables";
 import {useAppSelector} from "../../Hook";
+import {useAppDispatch} from "../../Hook";
+import {getDevices} from "../../store/auth/opetations";
 
 const GroupCard = ({ ...props }: HookData) => {
   const [groupDetailsActive, setGroupDetailsActive] = useState(false);
   const [openActive, setOpenActive] = useState(false);
   const groupsArray = useAppSelector((state) => state.auth.groups);
+  const groupsName = useAppSelector((state) => state.auth.groups.name);
+const dispatch=useAppDispatch()
     const [groupData, setGroupData] = useState<any[]|undefined>()
+    const [addRowData, setAddRowData] = useState<any[]|undefined>()
+    const groupDevicesArray = useAppSelector((state) => state.auth.devices);
   function changeMenu() {
     if (openActive) {
       setOpenActive(false);
@@ -21,8 +27,14 @@ const GroupCard = ({ ...props }: HookData) => {
   if (Array.isArray(groupsArray)) {
       setGroupData(groupsArray)
   }
+
+      dispatch(getDevices())
+      if (Array.isArray(groupDevicesArray)) {
+          setAddRowData(groupDevicesArray);
+      }
   },[])
 
+    let length=addRowData?.length
 
   return (
     <div className="groups__card" onClick={changeMenu}>
@@ -44,7 +56,10 @@ const GroupCard = ({ ...props }: HookData) => {
           </span>
         </div>
       </div>
-      <div className="groups__card-devices">0 Devices</div>
+        {groupData ? groupData.map((data: any) => (
+
+      <div className="groups__card-devices">{props.group_id==data.id ? length :0} Devices</div>
+        )):null}
       <div className="groups__card-button">
         <button className="submit__button-groups" onClick={() => setGroupDetailsActive(true)}>
           Details
@@ -59,12 +74,15 @@ const GroupCard = ({ ...props }: HookData) => {
         <div className="modal__top">
           <h3 className="form-wrapper-modal__title">User`s info</h3>
         </div>
-        <GroupGrid
-          signActive={props.signActive}
-          setSignActive={props.setSignActive}
-          navActive={props.navActive}
-          setNavActive={props.setNavActive}
-        />
+          {groupData ? groupData.map((data: any) => (
+           props.group_id==data.id ?  (<GroupGrid
+                   signActive={props.signActive}
+                   setSignActive={props.setSignActive}
+                   navActive={props.navActive}
+                   setNavActive={props.setNavActive}
+               /> ):null
+          )):null}
+
       </ModalFunction>
     </div>
   );

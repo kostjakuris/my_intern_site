@@ -20,7 +20,6 @@ function App() {
     const dispatch=useAppDispatch()
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     const isRefreshing = useAppSelector((state) => state.auth.isRefreshing);
-    console.log(isLoggedIn)
   const [menuActive, setMenuActive] = useState(false);
   const [nav, setNav] = useState(false);
   const navigate=useNavigate()

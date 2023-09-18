@@ -60,7 +60,7 @@ type ResponseDeviceData = {
 };
 
 type ResponseGroupsData = {
-  id?: number | null;
+  id?: number | undefined;
   name: string | null;
   administrator_id: string | null;
   created_at: string | null;
@@ -153,7 +153,7 @@ export const initialState: AuthState = {
 },
 
   groups: {
-    id: null,
+    id: undefined,
     name: null,
     administrator_id:null,
     created_at: null,
