@@ -6,7 +6,7 @@ import { CreateUserData } from "../../components/input/inputVariables";
 import { ValuesData } from "../../components/input/inputVariables";
 import { useState } from "react";
 import { DeviceFormData } from "../../components/input/inputVariables";
-
+import {persistor} from "../store";
 const setAuthHeader = (accessToken: any) => {
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 };
@@ -54,6 +54,7 @@ export const logOut = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
   const state: any = thunkAPI.getState();
 
   try {
+    await persistor.purge();
     clearAuthHeader();
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.code);
@@ -76,6 +77,7 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
         Accept: "application/json",
       },
     });
+    window.location.reload()
     return res.data;
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.message);
@@ -158,6 +160,7 @@ export const editUser = createAsyncThunk(
         city,
         address,
       });
+      window.location.reload()
       return respons.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue(e.message);
@@ -207,6 +210,7 @@ export const createDevice = createAsyncThunk(
         location: "{}",
         administrator_id: 2,
       });
+      window.location.reload()
       return respons.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue(e.message);
@@ -224,6 +228,7 @@ export const deleteDevice = createAsyncThunk("auth/deletedevice", async (id: num
         id,
       },
     });
+    window.location.reload()
     return respons.data;
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.message);
@@ -240,6 +245,7 @@ export const deleteUser = createAsyncThunk("auth/deleteuser", async (id: number,
         id,
       },
     });
+    window.location.reload()
     return respons.data;
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.message);
@@ -263,6 +269,7 @@ export const editDevice = createAsyncThunk(
         address,
         serial_number,
       });
+      window.location.reload()
       return respons.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue(e.message);

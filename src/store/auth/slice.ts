@@ -14,6 +14,8 @@ import {
   getGroups
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
+import {persistor} from "../store";
+import {PURGE} from "redux-persist";
 
 
 type SignInUser = {
@@ -171,9 +173,16 @@ export const initialState: AuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearResults(){
+
+    },
+  },
   extraReducers: (builder) => {
     builder
+        .addCase(PURGE, () => {
+          return initialState;
+        })
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
@@ -205,10 +214,12 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.refreshToken = null;
 
+
       })
 
       .addCase(logOut.rejected, (state,) => {
         state.isRefreshing = false;
+
       })
 
       .addCase(getData.pending, (state) => {

@@ -2,13 +2,14 @@ import {useEffect, useState} from "react";
 import SignUp from "./components/signUpForm/SignUp";
 import SignIn from "./components/signInForm/SignIn";
 import Main from "./components/main/Main";
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import { Route, Routes, useNavigate} from "react-router-dom";
 import Layout from "./components/nav/Layout";
 import Users from "./components/users/Users";
 import Devices from "./components/devices/Devices";
 import Map from "./components/map/Map";
 import Groups from "./components/groups/Groups";
 import {useAppDispatch, useAppSelector} from "./Hook";
+
 
 export type NavContent = {
   navActive: boolean;
@@ -26,7 +27,9 @@ function App() {
     useEffect(()=>{
 
   if (isLoggedIn) {
-     navigate('/')
+     navigate('/',{replace:true} )
+  }else  {
+      navigate('/SignIn' ,{replace:true} )
   }
     },[isLoggedIn])
 
@@ -67,11 +70,11 @@ function App() {
             </Route>
 
                 <Route
-                    path="/SignUp"
+                    path="SignUp"
                     element={<SignUp signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
                 <Route
-                    path="/SignIn"
+                    path="SignIn"
                     element={<SignIn signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
             </Routes>

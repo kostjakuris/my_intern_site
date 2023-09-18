@@ -14,6 +14,7 @@ import { useAppDispatch } from "../../Hook";
 import {createUser, getUsers} from "../../store/auth/opetations";
 import { ValuesData } from "../input/inputVariables";
 import { deleteUser as deleteUserAction } from "../../store/auth/opetations";
+import {useNavigate} from "react-router-dom";
 
 type GridData = {
   headerName?: string;
@@ -25,6 +26,7 @@ type GridData = {
 
 
 const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
+  const navigate=useNavigate()
   const dispatch = useAppDispatch();
   const usersArray = useAppSelector((state) => state.auth.users);
   const userRole = useAppSelector((state) => state.auth.user.role);
@@ -115,12 +117,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
     }
   }, []);
 
-  useEffect(() => {
-    dispatch(getUsers())
-  if (Array.isArray(usersArray)) {
-    setRowData(usersArray);
-  }
-  }, [dispatch]);
+
 
 
   const onPaginationChange = useCallback((pageSize: number) => {
@@ -143,6 +140,13 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
         address: selectedData.address,
       }));
       setSelectedData(updatedSelectedData);
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUsers())
+    if (Array.isArray(usersArray)) {
+      setRowData(usersArray);
     }
   }, []);
 
@@ -235,7 +239,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
         activeClassName={"modal__content active"}
         className={"modal__content"}
       >
-        {selectedData.map((data: any,index:number) => (
+        {selectedData.map((data: any) => (
           <div className="page-details__wrapper">
             {data.role !== "owner" ? (
               <div className="page-container">
@@ -295,7 +299,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
                         <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
                         <p className="personal-details__info">{data.phone_number}</p>
                         <p className="personal-details__info">{data.country}</p>
-                        <p className="personal-details__info">{data.town}</p>
+                        <p className="personal-details__info">{data.city}</p>
                         <p className="personal-details__info ">{data.address}</p>
                       </div>
                     </div>
@@ -326,7 +330,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
                         <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
                         <p className="personal-details__info">{data.phone_number}</p>
                         <p className="personal-details__info">{data.country}</p>
-                        <p className="personal-details__info">{data.town}</p>
+                        <p className="personal-details__info">{data.city}</p>
                         <p className="personal-details__info ">{data.address}</p>
                       </div>
                     </div>

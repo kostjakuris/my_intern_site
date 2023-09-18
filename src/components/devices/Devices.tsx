@@ -15,6 +15,7 @@ import { useAppDispatch } from "../../Hook";
 import {createDevice, getDevices} from "../../store/auth/opetations";
 import { deleteDevice as deleteDeviceAction } from "../../store/auth/opetations";
 import { useAppSelector } from "../../Hook";
+import {useNavigate} from "react-router-dom";
 
 type GridData = {
   headerName?: string;
@@ -26,6 +27,7 @@ type GridData = {
 
 
 const Devices = ({ ...props }: HookData) => {
+  const navigate=useNavigate()
   const userRole = useAppSelector((state) => state.auth.user.role);
   const devicesArray = useAppSelector((state) => state.auth.devices);
   const dispatch = useAppDispatch();
@@ -97,18 +99,6 @@ const Devices = ({ ...props }: HookData) => {
   );
 
 
-      useEffect(() => {
-        if (userRole!=="customer") {
-        dispatch(getDevices())
-        if (Array.isArray(devicesArray)) {
-          setRowData(devicesArray);
-        }
-        }
-      }, []);
-
-
-
-
   const onPaginationChange = useCallback((pageSize: number) => {
     gridRef.current?.api.paginationSetPageSize(pageSize);
   }, []);
@@ -137,6 +127,15 @@ const Devices = ({ ...props }: HookData) => {
       getSelectedNodes.forEach((selectedData) => {
         dispatch(deleteDeviceAction(selectedData.data.id));
       });
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (userRole!=="customer") {
+      dispatch(getDevices())
+      if (Array.isArray(devicesArray)) {
+        setRowData(devicesArray);
+      }
     }
   }, []);
 
