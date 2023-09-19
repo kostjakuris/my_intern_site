@@ -201,7 +201,6 @@ const authSlice = createSlice({
         logIn.fulfilled,
         (state, action: PayloadAction<{ signInUser: SignInUser; refreshToken: string; accessToken: string }>) => {
           state.signInUser = action.payload.signInUser;
-          state.isLoggedIn = true;
           state.refreshToken = action.payload.refreshToken;
           state.accessToken = action.payload.accessToken;
           state.isLoading = false;
@@ -213,8 +212,6 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.accessToken = null;
         state.refreshToken = null;
-
-
       })
 
       .addCase(logOut.rejected, (state,) => {

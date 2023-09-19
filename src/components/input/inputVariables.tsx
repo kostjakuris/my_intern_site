@@ -76,10 +76,10 @@ export type HookData = {
   setNavActive: (navActive: boolean) => void;
   addGridActive?: boolean;
   setAddGridActive?: (addGridActive: boolean) => void;
-  group_id?:number
-  grid_id?:number
-  rowData?: AddGridGridData[]|undefined
-  setRowData?: (rowData: AddGridGridData[]|undefined) => void;
+  group_id?: number;
+  grid_id?: number;
+  rowData?: AddGridGridData[] | undefined;
+  setRowData?: (rowData: AddGridGridData[] | undefined) => void;
   content?: React.ReactNode;
   addContent?: React.ReactNode;
 };

@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Link, Routes, Route, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./signInForm.min.css";
 import { useState } from "react";
 import Input from "../input/Input";
@@ -7,13 +7,10 @@ import { SignInFormData } from "../input/inputVariables";
 import { signInSchema } from "../input/SignInValidation";
 import { useAppDispatch } from "../../Hook";
 import { getData, logIn } from "../../store/auth/opetations";
-import SignUp from "../signUpForm/SignUp";
-import { useNavigate } from "react-router-dom";
-import Layout from "../nav/Layout";
 import { HookData } from "../input/inputVariables";
 
 const SignIn = ({ ...props }: HookData) => {
-  const navigate = useNavigate();
+
   const [hidePassword, setHidePassword] = useState(false);
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
