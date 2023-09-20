@@ -3,6 +3,10 @@
   margin-left: 210px;
 }
 
+.users-grid.disabled {
+  display: none;
+}
+
 .users-additional-grid {
   padding-top: 40px;
 }
@@ -64,6 +68,11 @@
 .users-grid__img {
   background-color: transparent;
 }
+
+.warn_message.disabled {
+  display: none;
+}
+
 
 @media (max-width: 900px) {
   .users-grid {

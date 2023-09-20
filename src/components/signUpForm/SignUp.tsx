@@ -378,7 +378,7 @@ const SignUp = ({ ...props }: HookData) => {
         </div>
         <aside className="aside-content--signUp">
           <div className="img__wrapper">
-            <img className="aside__img" src="img/twemoji_battery.jpg" alt="batery" />
+            <img className="aside__img" src="icons/twemoji_battery.jpg" alt="batery" />
           </div>
         </aside>
       </div>

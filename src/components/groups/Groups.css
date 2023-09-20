@@ -97,6 +97,19 @@
   cursor: pointer;
 }
 
+.warn_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;;
+}
+
 @media (max-width: 1050px) {
   .groups__card {
     width: 300px;
@@ -142,6 +155,10 @@
 @media (max-width: 550px) {
   .groups__container {
     margin-left: 0;
+  }
+
+  .warn_message {
+    font-size: 14px;
   }
 }
 

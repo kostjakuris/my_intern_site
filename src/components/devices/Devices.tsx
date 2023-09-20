@@ -140,7 +140,7 @@ const Devices = ({ ...props }: HookData) => {
   }, []);
 
   return userRole=="customer" ? (
-      <div>You don`t have a permissions to see this page</div>
+      <div className="warn_message" onClick={() => changeState()}>You don`t have any permissions to see this page</div>
       ): (
     <div className="users-grid" onClick={() => changeState()}>
       <ModalFunction

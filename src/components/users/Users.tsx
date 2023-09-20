@@ -144,14 +144,20 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getUsers())
-    if (Array.isArray(usersArray)) {
-      setRowData(usersArray);
+    if (userRole=="admin" || userRole=="regional_admin") {
+      dispatch(getUsers())
+      if (Array.isArray(usersArray)) {
+        setRowData(usersArray);
+      }
     }
   }, []);
 
-  return  (
-    <div className="users-grid" onClick={() => changeState()}>
+  return  userRole!=="regional_admin" ? (
+          <div className={userRole!=="regional_admin" || "admin"? "warn_message":"warn_message disabled"} onClick={() => changeState()}>You don`t have any permissions to see this page</div>
+      )
+      :
+      (
+    <div className={userRole=="regional_admin" || "admin"? "users-grid":"users-grid disabled"} onClick={() => changeState()}>
       <ModalFunction
         active={createActive}
         setActive={setCreateActive}

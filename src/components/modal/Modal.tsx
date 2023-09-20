@@ -1,12 +1,10 @@
 import "./Modal.min.css";
 import ModalFunction from "../modal-function/ModalFunction";
 import { ModalData } from "../modal-function/ModalFunction";
-import ModalProfile from "../modal-function/ModalProfile";
 import { ValuesData } from "../input/inputVariables";
 import { useFormik } from "formik";
 import { useState } from "react";
 import Input from "../input/Input";
-import cross from "../../icons/system-uicons_cross.svg";
 import { ModalEditSchema } from "../input/ModalEditValidation";
 import { useAppDispatch } from "../../Hook";
 import { editUser } from "../../store/auth/opetations";
@@ -44,6 +42,11 @@ const Modal = ({ active, setActive }: ModalData) => {
         </span>
       </div>
       <div className="form-wrapper-modal ">
+        <div className="form-wrapper-warn__message">
+          <p className="warn_message-info">Owner and customer can only change password,address and phone number</p>
+          <p className="warn_message-info">Regional admin can`t change email,country and town</p>
+          <p className="warn_message-info">Admin can change everything</p>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="signUp__form--modal">
             <div className="left__form--modal">
@@ -162,7 +165,7 @@ const Modal = ({ active, setActive }: ModalData) => {
             </div>
           </div>
 
-          <div className="buttons">
+          <div className="buttons-modal">
             <button className="cancel__button" onClick={() => setActive(false)}>
               Cancel
             </button>
@@ -175,6 +178,11 @@ const Modal = ({ active, setActive }: ModalData) => {
       </div>
 
       <div className="form-wrapper-modal--mobile ">
+        <div className="form-wrapper-warn__message">
+          <p className="warn_message-info">Owner and customer can only change password,address and phone number</p>
+          <p className="warn_message-info">Regional admin can`t change email,country and town</p>
+          <p className="warn_message-info">Admin can change everything</p>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="signUp__form--modal">
             <div className=" form__firstname ">

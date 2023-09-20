@@ -87,6 +87,7 @@ const SignIn = ({ ...props }: HookData) => {
           <img className="aside__img" src="img/twemoji_battery.jpg" alt="battery" />
         </div>
       </aside>
+      
     </div>
   );
 };
