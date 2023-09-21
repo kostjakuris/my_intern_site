@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import Input from "../input/Input";
 import { CreateDeviceSchema } from "../input/CreateDeviceValidation";
 import { useAppDispatch } from "../../Hook";
-import {createDevice, getDevices} from "../../store/auth/opetations";
+import {createDevice, getData, getDevices} from "../../store/auth/opetations";
 import { deleteDevice as deleteDeviceAction } from "../../store/auth/opetations";
 import { useAppSelector } from "../../Hook";
 import {useNavigate} from "react-router-dom";
@@ -53,6 +53,7 @@ const Devices = ({ ...props }: HookData) => {
   const [deviceDetailsActive, setDeviceDetailsActive] = useState(false);
   const [editDeviceActive, setEditDeviceActive] = useState(false);
   const [addGridActive, setAddGridActive] = useState(false);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   function changeState() {
     if (props.signActive) {
@@ -128,14 +129,15 @@ const Devices = ({ ...props }: HookData) => {
         dispatch(deleteDeviceAction(selectedData.data.id));
       });
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (userRole!=="customer") {
-      dispatch(getDevices())
+      dispatch(getDevices()).then(()=>{
       if (Array.isArray(devicesArray)) {
         setRowData(devicesArray);
       }
+      })
     }
   }, []);
 

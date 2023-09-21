@@ -80,6 +80,7 @@ const dispatch=useAppDispatch()
                    setSignActive={props.setSignActive}
                    navActive={props.navActive}
                    setNavActive={props.setNavActive}
+                                                   group_id={props.group_id}
                /> ):null
           )):null}
 

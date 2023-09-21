@@ -77,7 +77,6 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
         Accept: "application/json",
       },
     });
-    window.location.reload()
     return res.data;
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.message);
@@ -95,10 +94,6 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) =>
   try {
     setAuthHeader(persistedToken);
     const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
     });
     return res.data;
   } catch (e: any) {

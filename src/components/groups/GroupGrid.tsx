@@ -5,8 +5,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { HookData } from "../input/inputVariables";
-import axios from "axios";
-import {getDevices, logIn} from "../../store/auth/opetations";
+import {getDevices} from "../../store/auth/opetations";
 import {useAppDispatch, useAppSelector} from "../../Hook";
 
 
@@ -21,7 +20,7 @@ type AddGridGridData = {
 const GroupGrid = ({ ...props }: HookData) => {
   const dispatch = useAppDispatch();
   const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-  const groupId = useAppSelector((state) => state.auth.groups.id);
+
   function changeState() {
     if (props.signActive) {
       props.setSignActive(false);
@@ -61,11 +60,10 @@ const GroupGrid = ({ ...props }: HookData) => {
   }, []);
 
   useEffect(() => {
-
       dispatch(getDevices())
-      if ( groupId && Array.isArray(groupDevicesArray)) {
-        const filteredDevices=groupDevicesArray.filter((device)=>(device.group_id==groupId))
-        setRowData(filteredDevices);
+      if (Array.isArray(groupDevicesArray)) {
+        let filteredDevices=groupDevicesArray.filter((device)=>(device.group_id===props.group_id))
+            setRowData(filteredDevices)
       }
   }, []);
 

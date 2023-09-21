@@ -62,7 +62,7 @@ type ResponseDeviceData = {
 };
 
 type ResponseGroupsData = {
-  id?: number | undefined;
+  id?: number;
   name: string | null;
   administrator_id: string | null;
   created_at: string | null;
@@ -183,20 +183,25 @@ const authSlice = createSlice({
         .addCase(PURGE, () => {
           return initialState;
         })
+
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
+
       .addCase(register.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
         state.user = action.payload.user;
         state.isLoggedIn = true;
         state.isLoading = false;
       })
+
       .addCase(register.rejected, (state) => {
         state.isLoading = false;
       })
+
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;
       })
+
       .addCase(
         logIn.fulfilled,
         (state, action: PayloadAction<{ signInUser: SignInUser; refreshToken: string; accessToken: string }>) => {
@@ -206,7 +211,6 @@ const authSlice = createSlice({
           state.isLoading = false;
         }
       )
-
 
       .addCase(logOut.fulfilled, (state) => {
         state.isLoggedIn = false;
@@ -221,15 +225,18 @@ const authSlice = createSlice({
 
       .addCase(getData.pending, (state) => {
         state.isRefreshing = true;
+        state.isLoading = true;
       })
+
       .addCase(getData.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
         state.isLoggedIn = true;
         state.isRefreshing = false;
         state.user = action.payload.user;
+        state.isLoading = false;
       })
+
       .addCase(getData.rejected, (state,action) => {
         state.isRefreshing = false;
-
       })
 
       .addCase(createUser.pending, (state) => {

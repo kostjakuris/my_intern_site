@@ -1,0 +1,21 @@
+.loader__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.loader {
+    position: relative;
+}
+
+.loader__text {
+    position: absolute;
+    top: 95px;
+    left: 8px;
+    font-family: Inter,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

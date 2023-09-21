@@ -11,7 +11,7 @@ import ModalProfile from "../modal-function/ModalProfile";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
 import { useAppSelector } from "../../Hook";
 import { useAppDispatch } from "../../Hook";
-import {createUser, getUsers} from "../../store/auth/opetations";
+import {createUser, getData, getUsers} from "../../store/auth/opetations";
 import { ValuesData } from "../input/inputVariables";
 import { deleteUser as deleteUserAction } from "../../store/auth/opetations";
 import {useNavigate} from "react-router-dom";
@@ -55,6 +55,7 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   const [deleteActive, setDeleteActive] = useState(false);
   const [detailsActive, setDetailsActive] = useState(false);
   const [editUserActive, setEditUserActive] = useState(false);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   function changeState() {
     if (props.signActive) {
@@ -146,9 +147,12 @@ const Users = ({ ...props }: HookData, { ...propses }: AddGridData) => {
   useEffect(() => {
     if (userRole=="admin" || userRole=="regional_admin") {
       dispatch(getUsers())
-      if (Array.isArray(usersArray)) {
-        setRowData(usersArray);
-      }
+          .then(() => {
+            if (Array.isArray(usersArray)) {
+              setRowData(usersArray);
+            }
+          })
+
     }
   }, []);
 

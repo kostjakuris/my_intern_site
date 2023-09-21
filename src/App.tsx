@@ -8,7 +8,8 @@ import Users from "./components/users/Users";
 import Devices from "./components/devices/Devices";
 import Map from "./components/map/Map";
 import Groups from "./components/groups/Groups";
-import {useAppDispatch, useAppSelector} from "./Hook";
+import { useAppSelector} from "./Hook";
+import Loader from "./components/loader/Loader";
 
 
 export type NavContent = {
@@ -18,12 +19,12 @@ export type NavContent = {
   setSignActive: (signActive: boolean) => void;
 };
 function App() {
-    const dispatch=useAppDispatch()
-    let isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-    const isRefreshing = useAppSelector((state) => state.auth.isRefreshing);
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const isLoading = useAppSelector((state) => state.auth.isLoading);
   const [menuActive, setMenuActive] = useState(false);
   const [nav, setNav] = useState(false);
   const navigate=useNavigate()
+
     useEffect(()=>{
 
   if (isLoggedIn) {
@@ -34,9 +35,7 @@ function App() {
     },[isLoggedIn])
 
 
-  return (
-
-
+  return isLoading ? <Loader/> :(
             <Routes>
             <Route
                 path="/"
@@ -78,8 +77,5 @@ function App() {
                     element={<SignIn signActive={menuActive} setSignActive={setMenuActive} navActive={nav} setNavActive={setNav} />}
                 />
             </Routes>
-
-
-
   )}
 export default App;

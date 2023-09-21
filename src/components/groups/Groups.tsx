@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./Groups.css";
 import GroupCard from "./GroupCard";
 import {useAppDispatch, useAppSelector} from "../../Hook";
-import {getGroups} from "../../store/auth/opetations";
+import {getData, getGroups} from "../../store/auth/opetations";
 
 const Groups = ({ ...props }: HookData) => {
   const [addGroup, setAddGroup] = useState(false);
@@ -32,10 +32,11 @@ const Groups = ({ ...props }: HookData) => {
 
   useEffect(()=>{
     if (userRole=="regional_admin") {
-      dispatch(getGroups())
+      dispatch(getGroups()).then(()=>{
       if (Array.isArray(groupsArray)) {
         setGroupData(groupsArray)
       }
+      })
     }
   },[])
 
