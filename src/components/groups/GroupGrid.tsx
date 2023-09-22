@@ -20,6 +20,7 @@ type AddGridGridData = {
 const GroupGrid = ({ ...props }: HookData) => {
   const dispatch = useAppDispatch();
   const groupDevicesArray = useAppSelector((state) => state.auth.devices);
+  const groupsArray = useAppSelector((state) => state.auth.groups)
 
   function changeState() {
     if (props.signActive) {
@@ -62,8 +63,9 @@ const GroupGrid = ({ ...props }: HookData) => {
   useEffect(() => {
       dispatch(getDevices())
       if (Array.isArray(groupDevicesArray)) {
-        let filteredDevices=groupDevicesArray.filter((device)=>(device.group_id===props.group_id))
+        let filteredDevices=groupDevicesArray.filter((device)=>(device.group_id===groupsArray.id))
             setRowData(filteredDevices)
+        console.log(filteredDevices)
       }
   }, []);
 

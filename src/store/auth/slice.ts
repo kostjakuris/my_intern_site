@@ -11,7 +11,7 @@ import {
   editUser,
   getUsers,
   getDevices,
-  getGroups
+  getGroups, createGroup
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
 import {persistor} from "../store";
@@ -293,6 +293,11 @@ const authSlice = createSlice({
         })
 
         .addCase(getGroups.fulfilled, (state, action: PayloadAction<{ groups: ResponseGroupsData }>) => {
+          state.groups = action.payload.groups;
+          state.isLoading = false;
+        })
+
+        .addCase(createGroup.fulfilled, (state, action: PayloadAction<{ groups: ResponseGroupsData }>) => {
           state.groups = action.payload.groups;
           state.isLoading = false;
         })

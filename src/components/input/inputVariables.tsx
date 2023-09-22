@@ -78,10 +78,10 @@ export type HookData = {
   setAddGridActive?: (addGridActive: boolean) => void;
   group_id?: number;
   grid_id?: number;
+  groupData?:any[];
   rowData?: AddGridGridData[] | undefined;
   setRowData?: (rowData: AddGridGridData[] | undefined) => void;
   content?: React.ReactNode;
-  addContent?: React.ReactNode;
 };
 
 export type AddGridData = {
@@ -93,3 +93,7 @@ export type AddGridData = {
   setAddGridActive: (addGridActive: boolean) => void;
   content?: React.ReactNode;
 };
+
+export type createGroupData  = {
+  name:string
+}

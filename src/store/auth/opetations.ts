@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { SignInFormData } from "../../components/input/inputVariables";
+import {createGroupData, SignInFormData} from "../../components/input/inputVariables";
 import { FormData } from "../../components/input/inputVariables";
 import { CreateUserData } from "../../components/input/inputVariables";
 import { ValuesData } from "../../components/input/inputVariables";
@@ -272,7 +272,8 @@ export const editDevice = createAsyncThunk(
   }
 );
 
-export const getGroups = createAsyncThunk("auth/getGroups", async (_, thunkAPI) => {
+export const getGroups = createAsyncThunk("auth/getGroups",
+    async (_, thunkAPI) => {
   const state: any = thunkAPI.getState();
   const persistedToken = state.auth.accessToken;
 
@@ -288,6 +289,27 @@ export const getGroups = createAsyncThunk("auth/getGroups", async (_, thunkAPI) 
         Accept: "application/json",
       },
     });
+    return res.data;
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
+
+export const createGroup = createAsyncThunk("auth/createGroup",
+    async ({name}:createGroupData, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.accessToken;
+
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
+  }
+
+  try {
+    setAuthHeader(persistedToken);
+    const res = await axios.post("http://intern-project-backend.atwebpages.com/api/groups/create", {
+      name
+    });
+
     return res.data;
   } catch (e: any) {
     return thunkAPI.rejectWithValue(e.message);

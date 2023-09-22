@@ -1,10 +1,18 @@
-import React,{useEffect} from "react";
-import { HookData } from "../input/inputVariables";
+import React, {useCallback, useEffect} from "react";
+import {HookData, SignInFormData} from "../input/inputVariables";
 import { useState } from "react";
 import "./Groups.css";
 import GroupCard from "./GroupCard";
 import {useAppDispatch, useAppSelector} from "../../Hook";
-import {getData, getGroups} from "../../store/auth/opetations";
+import {createGroup, deleteUser as deleteUserAction, getData, getGroups, logIn} from "../../store/auth/opetations";
+import Input from "../input/Input";
+import ModalFunction from "../modal-function/ModalFunction";
+import {useFormik} from "formik";
+import {createGroupData} from '../input/inputVariables'
+import * as yup from "yup";
+import {string} from "yup";
+
+
 
 const Groups = ({ ...props }: HookData) => {
   const [addGroup, setAddGroup] = useState(false);
@@ -13,8 +21,22 @@ const Groups = ({ ...props }: HookData) => {
   const dispatch =useAppDispatch()
   const [openActive, setOpenActive] = useState(false);
   const groupsArray = useAppSelector((state) => state.auth.groups);
-  const [groupData, setGroupData] = useState<any[]|undefined>()
+  const [groupData, setGroupData] = useState<any[]|undefined>([])
   const userRole = useAppSelector((state) => state.auth.user.role);
+
+  const createGroupSchema = yup.object().shape({
+    name: yup.string().required("Name required")
+  });
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      name: "",
+    },
+    validationSchema: createGroupSchema,
+    onSubmit: async (values:createGroupData) => {
+      await dispatch((createGroup(values)))
+    },
+  });
   function changeMenu() {
     if (openActive) {
       setOpenActive(false);
@@ -59,37 +81,47 @@ const Groups = ({ ...props }: HookData) => {
             </button>
           </div>
         </div>
+
+        <ModalFunction
+            active={addGroup}
+            setActive={setAddGroup}
+            activeClassName={" modal-createGroup active"}
+            className={"modal-createGroup"}
+        >
+          <p>Create new group</p>
+          <form onSubmit={handleSubmit}>
+          <Input
+              id={"name"}
+              name={"name"}
+              type={"text"}
+              placeholder={"Group name"}
+              className={"email--signIn group-create"}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
+              touched={touched.name}
+              errors={errors.name}
+          />
+          <div className="buttons-group">
+
+          <button className="cancel__button cancel__button-delete" onClick={() => setAddGroup(false)}>
+            Cancel
+          </button>
+
+          <button className="submit__button-modal submit__button-modal-delete" type="submit">
+            Create
+          </button>
+          </div>
+          </form>
+        </ModalFunction>
         <div className="cards">
           <div className="first-card">
             <GroupCard
+                groupData={groupData}
                 signActive={props.signActive}
                 setSignActive={props.setSignActive}
                 navActive={props.navActive}
                 setNavActive={props.setNavActive}
-                group_id={1}
-            />
-            <GroupCard
-                signActive={props.signActive}
-                setSignActive={props.setSignActive}
-                navActive={props.navActive}
-                setNavActive={props.setNavActive}
-                group_id={2}
-            />
-          </div>
-          <div className="first-card">
-            <GroupCard
-                signActive={props.signActive}
-                setSignActive={props.setSignActive}
-                navActive={props.navActive}
-                setNavActive={props.setNavActive}
-                group_id={3}
-            />
-            <GroupCard
-                signActive={props.signActive}
-                setSignActive={props.setSignActive}
-                navActive={props.navActive}
-                setNavActive={props.setNavActive}
-                group_id={4}
             />
           </div>
         </div>

@@ -97,6 +97,30 @@
   cursor: pointer;
 }
 
+.modal-createGroup {
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 400px;
+  height: 120px;
+  transform: scale(0.5);
+  transition: 0.5s all;
+}
+
+.modal-createGroup.active {
+  transform: scale(1);
+}
+
+.buttons-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.group-create {
+  width: 390px;
+}
+
 .warn_message {
   display: flex;
   justify-content: center;

@@ -11,7 +11,7 @@ const Loader = () => {
                 height="90"
                 width="90"
                 ariaLabel="hourglass-loading"
-                wrapperStyle={{justifyContent:"center",alignItems:'center'}}
+                wrapperStyle={{}}
                 wrapperClass=""
                 colors={['#146fe7', '#72a1ed']}
             />
