@@ -66,6 +66,20 @@
   padding-bottom: 75px;
 }
 
+.form-wrapper__errorText.active {
+  display: block;
+  color: #e31717;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.form-wrapper__errorText {
+  display: none;
+}
+
 .form__password {
   position: relative;
 }

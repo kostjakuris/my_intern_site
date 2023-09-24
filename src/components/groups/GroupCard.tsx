@@ -1,13 +1,11 @@
-import React, {createContext, useEffect} from "react";
+import React from "react";
 import "./Groups.css";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import {HookData} from "../input/inputVariables";
 import {useAppSelector} from "../../Hook";
 import {useAppDispatch} from "../../Hook";
-import {getDevices} from "../../store/auth/opetations";
-import Input from "../input/Input";
 
 const GroupCard = ({groupData,navActive,setNavActive,signActive,setSignActive}: HookData) => {
     const [groupDetailsActive, setGroupDetailsActive] = useState(false);
@@ -16,7 +14,7 @@ const GroupCard = ({groupData,navActive,setNavActive,signActive,setSignActive}: 
     const dispatch = useAppDispatch()
     const [addRowData, setAddRowData] = useState<any[] | undefined>()
     const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-
+    const [length, setLength] = useState<number>()
     function changeMenu() {
         if (openActive) {
             setOpenActive(false);
@@ -24,24 +22,28 @@ const GroupCard = ({groupData,navActive,setNavActive,signActive,setSignActive}: 
     }
 
     useEffect(() => {
-        dispatch(getDevices())
-        if (Array.isArray(groupDevicesArray)) {
-            setAddRowData(groupDevicesArray);
+
+        if (Array.isArray(groupDevicesArray) && Array.isArray(groupData)) {
+            groupData.forEach((group) => {
+                const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
+                setAddRowData(filteredDevices)
+                setLength(filteredDevices.length)
+            });
         }
     }, [])
 
-    let length = addRowData?.length
+
     return (
-        <div>
-            {groupData ? groupData.map((data:any) => (
-            <div className="groups__card" onClick={changeMenu}>
+        <div className="groups__wrapper">
+            {groupData ? groupData.map((data) => (
+            <div key={data.id} className="groups__card" onClick={changeMenu}>
 
                 <div className="groups__card-top">
                     <div
                          className="groups__card-name">{data.name}
                     </div>
 
-                    <div className="groups__card-menu">
+                    <div key={data.id} className="groups__card-menu">
                         <span className="groups__card-open" onClick={() => setOpenActive((prev) => !prev)}>
                             <img src="icons/charm_menu-kebab.svg" alt="menu"/>
                         </span>
@@ -72,14 +74,14 @@ const GroupCard = ({groupData,navActive,setNavActive,signActive,setSignActive}: 
                     <div className="modal__top">
                         <h3 className="form-wrapper-modal__title">User`s info</h3>
                     </div>
-                    <div key={groupsArray.id}>
+                    <div>
 
                     <GroupGrid
                         signActive={signActive}
                         setSignActive={setSignActive}
                         navActive={navActive}
                         setNavActive={setNavActive}
-                        group_id={groupsArray.id}
+                        groupData={groupData}
                     />
                     </div>
 

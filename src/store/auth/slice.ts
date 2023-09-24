@@ -14,7 +14,6 @@ import {
   getGroups, createGroup
 } from "../auth/opetations";
 import { DeviceFormData } from "../../components/input/inputVariables";
-import {persistor} from "../store";
 import {PURGE} from "redux-persist";
 
 
@@ -82,7 +81,7 @@ export type AuthState = {
   isLoggedIn: boolean;
   isRefreshing: boolean;
   isLoading: boolean;
-  message: null;
+  message:string|null;
 };
 export const initialState: AuthState = {
   signInUser: {
@@ -167,7 +166,7 @@ export const initialState: AuthState = {
   isLoggedIn: false,
   isRefreshing: false,
   isLoading: false,
-  message: null,
+  message:null,
 };
 
 const authSlice = createSlice({
@@ -194,8 +193,9 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(register.rejected, (state) => {
+      .addCase(register.rejected, (state,action:PayloadAction<any>) => {
         state.isLoading = false;
+        state.message=action.payload.message;
       })
 
       .addCase(logIn.pending, (state) => {
@@ -212,32 +212,40 @@ const authSlice = createSlice({
         }
       )
 
-      .addCase(logOut.fulfilled, (state) => {
-        state.isLoggedIn = false;
-        state.accessToken = null;
-        state.refreshToken = null;
-      })
-
-      .addCase(logOut.rejected, (state,) => {
-        state.isRefreshing = false;
-
-      })
+        .addCase(logIn.rejected, (state,action:PayloadAction<any>) => {
+          state.isLoading=false;
+          state.message=action.payload.message;
+        })
 
       .addCase(getData.pending, (state) => {
         state.isRefreshing = true;
         state.isLoading = true;
       })
 
-      .addCase(getData.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
+      .addCase(getData.fulfilled, (state, action:PayloadAction<{ user:User }>) => {
         state.isLoggedIn = true;
         state.isRefreshing = false;
         state.user = action.payload.user;
         state.isLoading = false;
       })
 
-      .addCase(getData.rejected, (state,action) => {
+      .addCase(getData.rejected, (state,action:PayloadAction<any>) => {
+        state.message=action.payload.message;
         state.isRefreshing = false;
+        state.isLoading=false;
       })
+
+        .addCase(logOut.fulfilled, (state) => {
+          state.isLoggedIn = false;
+          state.accessToken = null;
+          state.refreshToken = null;
+        })
+
+        .addCase(logOut.rejected, (state,action:PayloadAction<any>) => {
+          state.isRefreshing = false;
+          state.message=action.payload.message;
+          state.isLoading=false;
+        })
 
       .addCase(createUser.pending, (state) => {
         state.isRefreshing = true;
@@ -248,8 +256,10 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(createUser.rejected, (state) => {
+      .addCase(createUser.rejected, (state,action:PayloadAction<any>) => {
         state.isRefreshing = false;
+        state.message=action.payload.message;
+        state.isLoading=false;
       })
 
       .addCase(createDevice.pending, (state) => {
@@ -261,13 +271,20 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(createDevice.rejected, (state) => {
+      .addCase(createDevice.rejected, (state,action:PayloadAction<any>) => {
         state.isRefreshing = false;
+        state.message=action.payload.message;
+        state.isLoading=false;
       })
 
       .addCase(deleteDevice.fulfilled, (state) => {
         state.isLoading = false;
       })
+
+        .addCase(deleteDevice.rejected, (state,action:PayloadAction<any>) => {
+          state.isLoading = false;
+          state.message=action.payload.message;
+        })
 
       .addCase(editUser.pending, (state) => {
         state.isRefreshing = true;
@@ -278,8 +295,10 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(editUser.rejected, (state) => {
+      .addCase(editUser.rejected, (state,action:PayloadAction<any>) => {
         state.isRefreshing = false;
+        state.message=action.payload.message;
+        state.isLoading = false;
       })
 
         .addCase(getUsers.fulfilled, (state, action: PayloadAction<{ users: ResponseData }>) => {
@@ -287,9 +306,19 @@ const authSlice = createSlice({
           state.isLoading = false;
         })
 
+        .addCase(getUsers.rejected, (state,action:PayloadAction<any>) => {
+          state.isRefreshing = false;
+          state.message=action.payload.message;
+        })
+
         .addCase(getDevices.fulfilled, (state, action: PayloadAction<{ devices: ResponseDeviceData }>) => {
           state.devices = action.payload.devices;
           state.isLoading = false;
+        })
+
+        .addCase(getDevices.rejected, (state,action:PayloadAction<any>) => {
+          state.isRefreshing = false;
+          state.message=action.payload.message;
         })
 
         .addCase(getGroups.fulfilled, (state, action: PayloadAction<{ groups: ResponseGroupsData }>) => {
@@ -297,9 +326,19 @@ const authSlice = createSlice({
           state.isLoading = false;
         })
 
+        .addCase(getGroups.rejected, (state,action:PayloadAction<any>) => {
+          state.isRefreshing = false;
+          state.message=action.payload.message;
+        })
+
         .addCase(createGroup.fulfilled, (state, action: PayloadAction<{ groups: ResponseGroupsData }>) => {
           state.groups = action.payload.groups;
           state.isLoading = false;
+        })
+
+        .addCase(createGroup.rejected, (state,action:PayloadAction<any>) => {
+          state.isRefreshing = false;
+          state.message=action.payload.message;
         })
   },
 });

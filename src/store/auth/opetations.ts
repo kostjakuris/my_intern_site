@@ -17,7 +17,7 @@ const clearAuthHeader = () => {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ name, surname, email, password, country, city, address, phone_number }: CreateUserData) => {
+  async ({ name, surname, email, password, country, city, address, phone_number }: CreateUserData,thunkAPI) => {
     try {
       const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
         name,
@@ -32,12 +32,12 @@ export const register = createAsyncThunk(
       });
       return respons.data;
     } catch (e: any) {
-      return e.message;
+      return thunkAPI.rejectWithValue(e.response.data);
     }
   }
 );
 
-export const logIn = createAsyncThunk("auth/login", async ({ email, password }: SignInFormData) => {
+export const logIn = createAsyncThunk("auth/login", async ({ email, password }: SignInFormData,thunkAPI) => {
   try {
     const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/login", {
       email,
@@ -46,18 +46,7 @@ export const logIn = createAsyncThunk("auth/login", async ({ email, password }: 
     setAuthHeader(respons.data.accessToken);
     return respons.data;
   } catch (e: any) {
-    return e.message;
-  }
-});
-
-export const logOut = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
-  const state: any = thunkAPI.getState();
-
-  try {
-    await persistor.purge();
-    clearAuthHeader();
-  } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.code);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -65,9 +54,6 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
   const state: any = thunkAPI.getState();
   const persistedToken = state.auth.accessToken;
 
-  if (persistedToken === null) {
-    return thunkAPI.rejectWithValue("Unable to fetch user");
-  }
 
   try {
     setAuthHeader(persistedToken);
@@ -79,9 +65,22 @@ export const getData = createAsyncThunk("auth/getData", async (_, thunkAPI) => {
     });
     return res.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
+
+export const logOut = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+
+  try {
+    await persistor.purge();
+    clearAuthHeader();
+  } catch (e: any) {
+    return thunkAPI.rejectWithValue(e.response.data);
+  }
+});
+
+
 
 export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) => {
   const state: any = thunkAPI.getState();
@@ -97,7 +96,7 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) =>
     });
     return res.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -131,7 +130,7 @@ export const createUser = createAsyncThunk(
       enableAddGrid();
       return respons.data;
     } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.message);
+      return thunkAPI.rejectWithValue(e.response.data);
     }
   }
 );
@@ -158,7 +157,7 @@ export const editUser = createAsyncThunk(
       window.location.reload()
       return respons.data;
     } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.message);
+      return thunkAPI.rejectWithValue(e.response.data);
     }
   }
 );
@@ -181,7 +180,7 @@ export const getDevices = createAsyncThunk("auth/getDevices", async (_, thunkAPI
     });
     return res.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -208,7 +207,7 @@ export const createDevice = createAsyncThunk(
       window.location.reload()
       return respons.data;
     } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.message);
+      return thunkAPI.rejectWithValue(e.response.data);
     }
   }
 );
@@ -226,7 +225,7 @@ export const deleteDevice = createAsyncThunk("auth/deletedevice", async (id: num
     window.location.reload()
     return respons.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -243,7 +242,7 @@ export const deleteUser = createAsyncThunk("auth/deleteuser", async (id: number,
     window.location.reload()
     return respons.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -267,7 +266,7 @@ export const editDevice = createAsyncThunk(
       window.location.reload()
       return respons.data;
     } catch (e: any) {
-      return thunkAPI.rejectWithValue(e.message);
+      return thunkAPI.rejectWithValue(e.response.data);
     }
   }
 );
@@ -291,7 +290,7 @@ export const getGroups = createAsyncThunk("auth/getGroups",
     });
     return res.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });
 
@@ -312,6 +311,6 @@ export const createGroup = createAsyncThunk("auth/createGroup",
 
     return res.data;
   } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
 });

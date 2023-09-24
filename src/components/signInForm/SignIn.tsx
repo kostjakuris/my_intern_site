@@ -1,17 +1,22 @@
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import "./signInForm.min.css";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Input from "../input/Input";
 import { SignInFormData } from "../input/inputVariables";
 import { signInSchema } from "../input/SignInValidation";
-import { useAppDispatch } from "../../Hook";
+import {useAppDispatch, useAppSelector} from "../../Hook";
 import { getData, logIn } from "../../store/auth/opetations";
 import { HookData } from "../input/inputVariables";
+
 
 const SignIn = ({ ...props }: HookData) => {
 
   const [hidePassword, setHidePassword] = useState(false);
+  const [wrongData, setWrongData] = useState(false);
+  const error = useAppSelector((state) => state.auth.message);
+
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       email: "",
@@ -26,12 +31,19 @@ const SignIn = ({ ...props }: HookData) => {
 
   const dispatch = useAppDispatch();
 
+  useEffect(()=>{
+    if (error=="Unauthenticated.") {
+      setWrongData(true)
+    }
+  },[])
+
   return (
     <div className="main-content">
       <div className="form-wrapper-signIn">
         <form onSubmit={handleSubmit} className="signIn__form" autoComplete="off">
           <h2 className="form-wrapper__title-signIn">Welcome back</h2>
           <p className="form-wrapper__info-signIn">Welcome back! Please enter your details </p>
+          <p className={wrongData ? "form-wrapper__errorText active":"form-wrapper__errorText"}>You entered wrong email or password</p>
           <div className=" form__email">
             <Input
               id={"email"}

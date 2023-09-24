@@ -18,9 +18,8 @@ type AddGridGridData = {
 };
 
 const GroupGrid = ({ ...props }: HookData) => {
-  const dispatch = useAppDispatch();
   const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-  const groupsArray = useAppSelector((state) => state.auth.groups)
+
 
   function changeState() {
     if (props.signActive) {
@@ -61,12 +60,14 @@ const GroupGrid = ({ ...props }: HookData) => {
   }, []);
 
   useEffect(() => {
-      dispatch(getDevices())
-      if (Array.isArray(groupDevicesArray)) {
-        let filteredDevices=groupDevicesArray.filter((device)=>(device.group_id===groupsArray.id))
-            setRowData(filteredDevices)
-        console.log(filteredDevices)
-      }
+    if (Array.isArray(groupDevicesArray) && Array.isArray(props.groupData)) {
+      const updatedRowData:any[] = [];
+      props.groupData.forEach((group) => {
+        const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
+        updatedRowData.push(...filteredDevices);
+      });
+      setRowData(updatedRowData);
+    }
   }, []);
 
   return (

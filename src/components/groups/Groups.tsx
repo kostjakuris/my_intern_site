@@ -1,18 +1,15 @@
-import React, {useCallback, useEffect} from "react";
-import {HookData, SignInFormData} from "../input/inputVariables";
-import { useState } from "react";
-import "./Groups.css";
+import React from "react";
+import {HookData} from "../input/inputVariables";
+import { useState,useEffect } from "react";
+import "./Groups.min.css";
 import GroupCard from "./GroupCard";
 import {useAppDispatch, useAppSelector} from "../../Hook";
-import {createGroup, deleteUser as deleteUserAction, getData, getGroups, logIn} from "../../store/auth/opetations";
+import {createGroup, getGroups} from "../../store/auth/opetations";
 import Input from "../input/Input";
 import ModalFunction from "../modal-function/ModalFunction";
 import {useFormik} from "formik";
 import {createGroupData} from '../input/inputVariables'
 import * as yup from "yup";
-import {string} from "yup";
-
-
 
 const Groups = ({ ...props }: HookData) => {
   const [addGroup, setAddGroup] = useState(false);
@@ -114,8 +111,6 @@ const Groups = ({ ...props }: HookData) => {
           </div>
           </form>
         </ModalFunction>
-        <div className="cards">
-          <div className="first-card">
             <GroupCard
                 groupData={groupData}
                 signActive={props.signActive}
@@ -123,8 +118,6 @@ const Groups = ({ ...props }: HookData) => {
                 navActive={props.navActive}
                 setNavActive={props.setNavActive}
             />
-          </div>
-        </div>
       </div>
   );
 };

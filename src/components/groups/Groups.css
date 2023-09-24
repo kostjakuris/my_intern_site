@@ -16,12 +16,11 @@
   justify-content: flex-end;
 }
 
-.cards {
-  margin: 0 auto;
-}
 
-.first-card {
+
+.groups__wrapper {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
@@ -32,6 +31,7 @@
   border: 1px solid #d9d9d9;
   margin-top: 80px;
   padding: 20px;
+  flex-basis: calc(50% - 220px);
 }
 
 .groups__card-top {
