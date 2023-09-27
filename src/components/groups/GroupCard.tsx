@@ -51,7 +51,6 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                               onClick={() => setOpenActive((prev) => !prev)}>
                             <img src="icons/charm_menu-kebab.svg" alt="menu"/>
                         </span>
-
                             <span className={openActive ? "groups__card-edit active" : "groups__card-edit"}
                                   onClick={() => dispatch(editGroup(data.id))}>
                                 <img src="icons/Edit.svg" alt="edit"/>
