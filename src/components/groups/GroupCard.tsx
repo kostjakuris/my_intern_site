@@ -7,7 +7,7 @@ import {HookData} from "../input/inputVariables";
 import {useAppSelector} from "../../Hook";
 import {useAppDispatch} from "../../Hook";
 import {deleteGroup, editGroup} from "../../store/auth/opetations";
-import {log} from "util";
+
 
 const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActive}: HookData) => {
     const [groupDetailsActive, setGroupDetailsActive] = useState(false);
@@ -16,10 +16,11 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
     const dispatch = useAppDispatch();
     const [addRowData, setAddRowData] = useState<any[] | undefined>();
     const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-    const [length, setLength] = useState<number>();
     const [deleteGroupActive, setDeleteGroupActive] = useState(false);
+    let length: any[] = [];
 
-    function changeMenu (data: any) {
+
+    function changeMenu () {
         if (openActive) {
             setOpenActive(false);
         }
@@ -31,7 +32,8 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
             groupData.forEach((group) => {
                 const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
                 setAddRowData(filteredDevices);
-                setLength(filteredDevices.length);
+                length.push(...filteredDevices);
+                console.log(length.length);
             });
         }
     }, []);
@@ -40,7 +42,7 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
     return (
         <div className="groups__wrapper">
             {groupData ? groupData.map((data) => (
-                <div key={data.id} className="groups__card" onClick={() => changeMenu(data)}>
+                <div key={data.id} className="groups__card" onClick={() => changeMenu()}>
 
                     <div className="groups__card-top">
                         <div className="groups__card-name">{data.name}
@@ -64,7 +66,7 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                     </div>
 
                     <div className="groups__card-devices">
-                        {length} Devices
+                        {addRowData ? length.length : 0} Devices
                     </div>
 
                     <div className="groups__card-button">
