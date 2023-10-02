@@ -17,7 +17,6 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
     const [addRowData, setAddRowData] = useState<any[] | undefined>();
     const groupDevicesArray = useAppSelector((state) => state.auth.devices);
     const [deleteGroupActive, setDeleteGroupActive] = useState(false);
-    let length: any[] = [];
 
 
     function changeMenu () {
@@ -27,21 +26,18 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
     }
 
     useEffect(() => {
-
         if (Array.isArray(groupDevicesArray) && Array.isArray(groupData)) {
-            groupData.forEach((group) => {
+            const devicesCounts = groupData.map((group) => {
                 const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
-                setAddRowData(filteredDevices);
-                length.push(...filteredDevices);
-                console.log(length.length);
+                return filteredDevices.length;
             });
+            setAddRowData(devicesCounts);
         }
-    }, []);
-
+    }, [groupData, groupDevicesArray]);
 
     return (
         <div className="groups__wrapper">
-            {groupData ? groupData.map((data) => (
+            {groupData ? groupData.map((data, index) => (
                 <div key={data.id} className="groups__card" onClick={() => changeMenu()}>
 
                     <div className="groups__card-top">
@@ -66,7 +62,7 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                     </div>
 
                     <div className="groups__card-devices">
-                        {addRowData ? length.length : 0} Devices
+                        {addRowData ? addRowData[index] : 0} Devices
                     </div>
 
                     <div className="groups__card-button">

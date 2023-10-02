@@ -5,8 +5,7 @@ import {AgGridReact} from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import {HookData} from "../input/inputVariables";
-import {getDevices} from "../../store/auth/opetations";
-import {useAppDispatch, useAppSelector} from "../../Hook";
+import {useAppSelector} from "../../Hook";
 
 
 type AddGridGridData = {
@@ -48,7 +47,7 @@ const GroupGrid = ({...props}: HookData) => {
         {headerName : "Address", field : "address"},
     ]);
 
-    const [rowData, setRowData] = useState<AddGridGridData[]>();
+    const [rowData, setRowData] = useState<any[] | undefined>();
 
     const defaultColDef = useMemo(
         () => ({
@@ -65,15 +64,15 @@ const GroupGrid = ({...props}: HookData) => {
     }, []);
 
     useEffect(() => {
-        if (Array.isArray(groupDevicesArray) && Array.isArray(props.groupData)) {
-            const updatedRowData: any[] = [];
-            props.groupData.forEach((group) => {
-                const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
-                updatedRowData.push(...filteredDevices);
+        if (Array.isArray(groupDevicesArray) && (props.groupData)) {
+            const groupDevices = props.groupData.map((group) => {
+                const filteredDevices: any[] = groupDevicesArray.filter((device) => device.group_id === group.id);
+                return filteredDevices;
             });
-            setRowData(updatedRowData);
+            setRowData(groupDevices);
+
         }
-    }, []);
+    }, [props.groupData, groupDevicesArray]);
 
     return (
         <div className="users-additional-grid" onClick={() => changeState()}>
