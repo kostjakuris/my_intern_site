@@ -60,7 +60,7 @@ type ResponseDeviceData = {
     country: string | null;
     city: string | null;
     address: string | null;
-    deviceCount?: number | null
+    group_id?: number | null;
 };
 
 type ResponseGroupsData = {
@@ -153,7 +153,7 @@ export const initialState: AuthState = {
         country : null,
         city : null,
         address : null,
-        deviceCount : null,
+        group_id : null
     },
 
     groups : {

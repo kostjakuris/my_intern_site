@@ -31,9 +31,11 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                 const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
                 return filteredDevices.length;
             });
+
             setAddRowData(devicesCounts);
         }
     }, [groupData, groupDevicesArray]);
+    console.log(groupDevicesArray.group_id);
 
     return (
         <div className="groups__wrapper">
@@ -76,20 +78,26 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                         activeClassName={" modal__content active"}
                         className={"modal__content"}
                     >
-                        <div className="modal__top">
-                            <h3 className="form-wrapper-modal__title">User`s info</h3>
-                        </div>
-                        <div>
+                        {Array.isArray(groupDevicesArray) ? groupDevicesArray.group_id == data.id ?
+                                <div>
 
-                            <GroupGrid
-                                signActive={signActive}
-                                setSignActive={setSignActive}
-                                navActive={navActive}
-                                setNavActive={setNavActive}
-                                groupData={groupData}
-                            />
-                        </div>
+                                    <div className="modal__top">
+                                        <h3 className="form-wrapper-modal__title">User`s info</h3>
+                                    </div>
+                                    <div>
 
+                                        <GroupGrid
+                                            groupDevices={addRowData}
+                                            signActive={signActive}
+                                            setSignActive={setSignActive}
+                                            navActive={navActive}
+                                            setNavActive={setNavActive}
+                                            groupData={groupData}
+                                        />
+                                    </div>
+                                </div>
+                                : null
+                            : null}
                     </ModalFunction>
 
                 </div>

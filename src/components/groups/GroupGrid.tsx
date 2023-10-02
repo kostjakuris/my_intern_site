@@ -64,13 +64,14 @@ const GroupGrid = ({...props}: HookData) => {
     }, []);
 
     useEffect(() => {
-        if (Array.isArray(groupDevicesArray) && (props.groupData)) {
-            const groupDevices = props.groupData.map((group) => {
-                const filteredDevices: any[] = groupDevicesArray.filter((device) => device.group_id === group.id);
-                return filteredDevices;
+        if (Array.isArray(groupDevicesArray) && Array.isArray(props.groupData)) {
+            const updatedRowData: any[] = [];
+            props.groupData.forEach((group) => {
+                const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
+                updatedRowData.push(...filteredDevices);
             });
-            setRowData(groupDevices);
 
+            setRowData(updatedRowData);
         }
     }, [props.groupData, groupDevicesArray]);
 
