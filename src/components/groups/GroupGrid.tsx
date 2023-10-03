@@ -47,7 +47,6 @@ const GroupGrid = ({...props}: HookData) => {
         {headerName : "Address", field : "address"},
     ]);
 
-    const [rowData, setRowData] = useState<any[] | undefined>();
 
     const defaultColDef = useMemo(
         () => ({
@@ -62,18 +61,6 @@ const GroupGrid = ({...props}: HookData) => {
     const onPaginationChange = useCallback((pageSize: number) => {
         gridRef.current?.api.paginationSetPageSize(pageSize);
     }, []);
-
-    useEffect(() => {
-        if (Array.isArray(groupDevicesArray) && Array.isArray(props.groupData)) {
-            const updatedRowData: any[] = [];
-            props.groupData.forEach((group) => {
-                const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
-                updatedRowData.push(...filteredDevices);
-            });
-
-            setRowData(updatedRowData);
-        }
-    }, [props.groupData, groupDevicesArray]);
 
     return (
         <div className="users-additional-grid" onClick={() => changeState()}>
@@ -103,7 +90,7 @@ const GroupGrid = ({...props}: HookData) => {
             <div className="ag-theme-alpine grid--additional" style={{height : "350px", marginTop : "40px"}}>
                 <AgGridReact
                     ref={gridRef}
-                    rowData={rowData}
+                    rowData={props.rowData}
                     columnDefs={columnDefs}
                     animateRows={true}
                     rowSelection="multiple"

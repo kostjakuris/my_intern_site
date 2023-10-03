@@ -76,6 +76,7 @@ export type HookData = {
     setNavActive: (navActive: boolean) => void;
     addGridActive?: boolean;
     setAddGridActive?: (addGridActive: boolean) => void;
+    group_id?: number;
     groupDevices?: any[];
     groupData?: any[];
     rowData?: AddGridGridData[] | undefined;
