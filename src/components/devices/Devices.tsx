@@ -15,7 +15,6 @@ import {useAppDispatch} from "../../Hook";
 import {createDevice, getData, getDevices} from "../../store/auth/opetations";
 import {deleteDevice as deleteDeviceAction} from "../../store/auth/opetations";
 import {useAppSelector} from "../../Hook";
-import {useNavigate} from "react-router-dom";
 
 type GridData = {
     headerName?: string;
@@ -27,7 +26,6 @@ type GridData = {
 
 
 const Devices = ({...props}: HookData) => {
-    const navigate = useNavigate();
     const userRole = useAppSelector((state) => state.auth.user.role);
     const devicesArray = useAppSelector((state) => state.auth.devices);
     const dispatch = useAppDispatch();
@@ -52,8 +50,6 @@ const Devices = ({...props}: HookData) => {
     const [deleteDeviceActive, setDeleteDeviceActive] = useState(false);
     const [deviceDetailsActive, setDeviceDetailsActive] = useState(false);
     const [editDeviceActive, setEditDeviceActive] = useState(false);
-    const [addGridActive, setAddGridActive] = useState(false);
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
     function changeState () {
         if (props.signActive) {
@@ -166,7 +162,7 @@ const Devices = ({...props}: HookData) => {
           </span>
                 </div>
 
-                <div className="form-wrapper-modal ">
+                <div className="form-wrapper-modal">
                     <form onSubmit={formik.handleSubmit}>
                         <div className="signUp__form--modal">
                             <div className="left__form--modal">
@@ -220,7 +216,7 @@ const Devices = ({...props}: HookData) => {
                                         id={"address"}
                                         name={"address"}
                                         type={"text"}
-                                        placeholder={"Adress"}
+                                        placeholder={"Address"}
                                         className={"form adress"}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -338,10 +334,10 @@ const Devices = ({...props}: HookData) => {
 
                             <div className=" form__adress-modal ">
                                 <Input
-                                    id={"adress"}
-                                    name={"adress"}
+                                    id={"address"}
+                                    name={"address"}
                                     type={"text"}
-                                    placeholder={"Adress"}
+                                    placeholder={"Address"}
                                     className={"form-modal adress"}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -457,7 +453,7 @@ const Devices = ({...props}: HookData) => {
                                 <p className="personal-details__title ">Email</p>
                                 <p className="personal-details__title">Country</p>
                                 <p className="personal-details__title">City</p>
-                                <p className="personal-details__title">Adress</p>
+                                <p className="personal-details__title">Address</p>
                             </div>
 
                             <div className="personal-details__information">

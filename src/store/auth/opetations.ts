@@ -1,6 +1,6 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {createGroupData, SignInFormData} from "../../components/input/inputVariables";
+import {createGroupData, CreateUserGridData, SignInFormData} from "../../components/input/inputVariables";
 import {FormData} from "../../components/input/inputVariables";
 import {CreateUserData} from "../../components/input/inputVariables";
 import {ValuesData} from "../../components/input/inputVariables";
@@ -86,10 +86,6 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) =>
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;
 
-    if (persistedToken === null) {
-        return thunkAPI.rejectWithValue("Unable to fetch user");
-    }
-
     try {
         setAuthHeader(persistedToken);
         const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users", {});
@@ -101,11 +97,9 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) =>
 
 export const createUser = createAsyncThunk(
     "auth/createUser",
-    async ({name, surname, email, role, password, country, city, address, phone_number}: ValuesData, thunkAPI) => {
-        const [addGridActive, setAddGridActive] = useState(false);
+    async ({name, surname, email, role, password, country, city, address}: CreateUserGridData, thunkAPI) => {
         const state: any = thunkAPI.getState();
         const persistedToken = state.auth.accessToken;
-
         try {
             setAuthHeader(persistedToken);
             const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/users/create-user", {
@@ -117,16 +111,9 @@ export const createUser = createAsyncThunk(
                 country,
                 city,
                 address,
-                phone_number,
+                phone_number : "3 (554) 123-4517",
             });
-            console.log(name, surname, email, role, password, country, city, address, phone_number);
-
-            const enableAddGrid = () => {
-                if (role == "Super admin") {
-                    setAddGridActive(true);
-                }
-            };
-            enableAddGrid();
+            window.location.reload();
             return respons.data;
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data);
@@ -161,6 +148,32 @@ export const editUser = createAsyncThunk(
     }
 );
 
+export const editGridUser = createAsyncThunk(
+    "auth/editGridUser",
+    async ({id, name, surname, email, password, country, city, address}: ValuesData, thunkAPI) => {
+        const state: any = thunkAPI.getState();
+        const persistedToken = state.auth.accessToken;
+        console.log(id);
+
+        try {
+            setAuthHeader(persistedToken);
+            const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+                id,
+                name,
+                surname,
+                email,
+                password,
+                country,
+                city,
+                address,
+            });
+            window.location.reload();
+            return respons.data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.response.data);
+        }
+    }
+);
 export const getDevices = createAsyncThunk("auth/getDevices", async (_, thunkAPI) => {
     const state: any = thunkAPI.getState();
     const persistedToken = state.auth.accessToken;

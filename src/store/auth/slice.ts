@@ -14,10 +14,11 @@ import {
     getGroups,
     createGroup,
     editGroup,
-    deleteGroup
+    deleteGroup, editGridUser
 } from "../auth/opetations";
 import {DeviceFormData} from "../../components/input/inputVariables";
 import {PURGE} from "redux-persist";
+import {string} from "yup";
 
 
 type SignInUser = {
@@ -36,6 +37,18 @@ type User = {
     address: string | null;
     phone_number: string | null;
     avatar?: string | undefined;
+};
+
+type newUser = {
+    name: string | null;
+    surname: string | null;
+    email: string | null;
+    role: string | null;
+    password: string | null;
+    country: string | null;
+    city: string | null;
+    address: string | null;
+    phone_number: string | null;
 };
 
 type ResponseData = {
@@ -74,7 +87,7 @@ type ResponseGroupsData = {
 export type AuthState = {
     signInUser: SignInUser;
     user: User;
-    newUser: User;
+    newUser: newUser;
     users: ResponseData;
     devices: ResponseDeviceData;
     groups: ResponseGroupsData
@@ -114,7 +127,6 @@ export const initialState: AuthState = {
         city : null,
         address : null,
         phone_number : null,
-        avatar : undefined,
     },
 
     newDevice : {
@@ -258,14 +270,13 @@ const authSlice = createSlice({
                 state.isRefreshing = true;
             })
 
-            .addCase(createUser.fulfilled, (state, action: PayloadAction<{ newUser: User }>) => {
+            .addCase(createUser.fulfilled, (state, action: PayloadAction<{ newUser: newUser }>) => {
                 state.newUser = action.payload.newUser;
                 state.isLoading = false;
             })
 
             .addCase(createUser.rejected, (state, action: PayloadAction<any>) => {
                 state.isRefreshing = false;
-                state.message = action.payload.message;
                 state.isLoading = false;
             })
 
@@ -303,6 +314,21 @@ const authSlice = createSlice({
             })
 
             .addCase(editUser.rejected, (state, action: PayloadAction<any>) => {
+                state.isRefreshing = false;
+                state.message = action.payload.message;
+                state.isLoading = false;
+            })
+
+            .addCase(editGridUser.pending, (state) => {
+                state.isRefreshing = true;
+            })
+
+            .addCase(editGridUser.fulfilled, (state, action: PayloadAction<{ users: ResponseData }>) => {
+                state.users = action.payload.users;
+                state.isLoading = false;
+            })
+
+            .addCase(editGridUser.rejected, (state, action: PayloadAction<any>) => {
                 state.isRefreshing = false;
                 state.message = action.payload.message;
                 state.isLoading = false;

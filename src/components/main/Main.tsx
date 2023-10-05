@@ -27,7 +27,7 @@ const Main = ({...props}: HookData) => {
         <main className="main-page" onClick={() => changeState()}>
             <section className="main-page__info">
                 <div className="page-info__icon">
-                    <img className="page-info__img" src={userState.avatar} alt="avatar"/>
+                    <img className="page-info__img" src={userState ? userState.avatar : ""} alt="avatar"/>
                     <span className="change__img" onClick={() => setButton((prev) => !prev)}>
             <button
                 className={button ? "change__img-button active" : "change__img-button"}
@@ -38,7 +38,7 @@ const Main = ({...props}: HookData) => {
             <img className="change__img-icon" src="icons/Vector.svg" alt="pen"/>
           </span>
                     <p className="page-info__username">
-                        {userState.name} {userState.surname}
+                        {userState ? userState.name : ""} {userState ? userState.surname : ""}
                     </p>
                 </div>
                 <Modal
@@ -77,36 +77,37 @@ const Main = ({...props}: HookData) => {
                         <div className="personal-data__left personal-data--mobile">
                             <div className="personal-data__role personal-data__padding">
                                 <p className="personal-data__title">Role</p>
-                                <p className="personal-data__info">{userState.role}</p>
+                                <p className="personal-data__info">{userState ? userState.role : ""}</p>
                             </div>
                             <div className="personal-data__phonenumber personal-data__padding">
                                 <p className="personal-data__title">Phone number</p>
-                                <p className="personal-data__info">{userState.phone_number}</p>
+                                <p className="personal-data__info">{userState ? userState.phone_number : ""}</p>
                             </div>
                         </div>
 
                         <div className="personal-data__center personal-data--mobile">
                             <div className="personal-data__email personal-data__padding">
                                 <p className="personal-data__title">Email</p>
-                                <p className="personal-data__info personal-data__desktop-email">{userState.email}</p>
+                                <p className="personal-data__info personal-data__desktop-email">{userState ?
+                                    userState.email : ""}</p>
                                 <p className="personal-data__info personal-data__mobile-email personal-data__padding">
-                                    {userState.email}
+                                    {userState ? userState.email : ""}
                                 </p>
                             </div>
                             <div className="personal-data__adress personal-data__padding">
                                 <p className="personal-data__title">Adress</p>
-                                <p className="personal-data__info ">{userState.address}</p>
+                                <p className="personal-data__info ">{userState ? userState.address : ""}</p>
                             </div>
                         </div>
 
                         <div className="personal-data__right personal-data--mobile">
                             <div className="personal-data__country personal-data__padding">
                                 <p className="personal-data__title">Country</p>
-                                <p className="personal-data__info">{userState.country}</p>
+                                <p className="personal-data__info">{userState ? userState.country : ""}</p>
                             </div>
                             <div className="personal-data__town personal-data__padding">
                                 <p className="personal-data__title">Town</p>
-                                <p className="personal-data__info">{userState.city}</p>
+                                <p className="personal-data__info">{userState ? userState.city : ""}</p>
                             </div>
                         </div>
                     </div>

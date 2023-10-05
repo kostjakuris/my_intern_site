@@ -1,6 +1,6 @@
 import React from "react";
 import "./Groups.css";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import {HookData} from "../input/inputVariables";
@@ -12,11 +12,9 @@ import {deleteGroup, editGroup} from "../../store/auth/opetations";
 const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActive}: HookData) => {
     const [groupDetailsActive, setGroupDetailsActive] = useState(false);
     const [openActive, setOpenActive] = useState(false);
-    const groupsArray = useAppSelector((state) => state.auth.groups);
     const dispatch = useAppDispatch();
     const [addRowData, setAddRowData] = useState<any[] | undefined>();
     const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-    const [deleteGroupActive, setDeleteGroupActive] = useState(false);
     const [rowData, setRowData] = useState<any[] | undefined>();
 
 
@@ -38,14 +36,14 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
         }
     }, [groupData, groupDevicesArray]);
 
-    function filteredDevices (id: number) {
+    const filteredDevices = useCallback((id: number) => {
         const updatedRowData: any[] = [];
         if (Array.isArray(groupDevicesArray) && Array.isArray(groupData)) {
             const filteredDevices = groupDevicesArray.filter((device) => device.group_id === id);
             updatedRowData.push(...filteredDevices);
             setRowData(updatedRowData);
         }
-    }
+    }, []);
 
     return (
         <div className="groups__wrapper">
@@ -88,8 +86,6 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                         activeClassName={" modal__content active"}
                         className={"modal__content"}
                     >
-
-
                         <div className="modal__top">
                             <h3 className="form-wrapper-modal__title">User`s info</h3>
                         </div>

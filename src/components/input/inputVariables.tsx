@@ -36,13 +36,26 @@ export type CreateUserData = {
     email?: string;
     role?: string;
     password?: string;
-    country?: string;
-    city?: string;
-    address?: string;
-    phone_number?: string;
+    country?: string | null;
+    city?: string | null;
+    address?: string | null;
+    phone_number?: string | null;
+};
+
+export type CreateUserGridData = {
+    name?: string;
+    surname?: string;
+    email?: string;
+    role?: string;
+    password?: string;
+    country?: string | null;
+    city?: string | null;
+    address?: string | null;
+    phone_number?: string | null;
 };
 
 export type ValuesData = {
+    id?: number;
     name: string | null;
     surname: string | null;
     email: string | null;
@@ -89,8 +102,6 @@ export type AddGridData = {
     setSignActive: (setSignActive: boolean) => void;
     navActive: boolean;
     setNavActive: (navActive: boolean) => void;
-    addGridActive: boolean;
-    setAddGridActive: (addGridActive: boolean) => void;
     content?: React.ReactNode;
 };
 

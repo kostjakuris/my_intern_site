@@ -23,12 +23,12 @@ const Header = ({...props}: HookData) => {
             <div className="block"></div>
             <div className="header__wrapper">
                 <div className="header__img">
-                    <img className="header__img-icon" src={userState.avatar} alt="avatar"/>
+                    <img className="header__img-icon" src={userState ? userState.avatar : ""} alt="avatar"/>
                 </div>
                 <div className="header__info">
-                    <div className="header__info-title">{userState.role}</div>
+                    <div className="header__info-title">{userState ? userState.role : ""}</div>
                     <a href="mailto:" className="header__info-email">
-                        {userState.email}
+                        {userState ? userState.email : ""}
                     </a>
                 </div>
                 <span className="header__icon" onClick={() => props.setSignActive(true)}>

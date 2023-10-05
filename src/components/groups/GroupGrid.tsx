@@ -1,12 +1,10 @@
 import React from "react";
 import "../users/ModalCreate.min.css";
-import {useState, useMemo, useRef, useCallback, useEffect} from "react";
+import {useState, useMemo, useRef, useCallback} from "react";
 import {AgGridReact} from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import {HookData} from "../input/inputVariables";
-import {useAppSelector} from "../../Hook";
-
 
 type AddGridGridData = {
     headerName?: string;
@@ -17,8 +15,6 @@ type AddGridGridData = {
 };
 
 const GroupGrid = ({...props}: HookData) => {
-    const groupDevicesArray = useAppSelector((state) => state.auth.devices);
-
 
     function changeState () {
         if (props.signActive) {
