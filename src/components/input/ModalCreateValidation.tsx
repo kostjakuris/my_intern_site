@@ -10,6 +10,6 @@ export const ModalCreateSchema = yup.object().shape({
     address : yup.string().required("Adress required"),
     role : yup
         .string()
-        .oneOf(["customer", "device_owner", "regional_admin", "super_admin"], "Please select some role")
+        .oneOf(["customer", "owner", "regional_admin", "admin"], "Please select some role")
         .required("Role required"),
 });

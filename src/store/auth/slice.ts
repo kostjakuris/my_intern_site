@@ -15,10 +15,9 @@ import {
     createGroup,
     editGroup,
     deleteGroup, editGridUser
-} from "../auth/opetations";
+} from "./opetations";
 import {DeviceFormData} from "../../components/input/inputVariables";
 import {PURGE} from "redux-persist";
-import {string} from "yup";
 
 
 type SignInUser = {
@@ -27,6 +26,7 @@ type SignInUser = {
 };
 
 type User = {
+    id: number | null;
     name: string | null;
     surname: string | null;
     email: string | null;
@@ -105,6 +105,7 @@ export const initialState: AuthState = {
         password : null,
     },
     user : {
+        id : null,
         name : null,
         surname : null,
         email : null,
@@ -204,7 +205,6 @@ const authSlice = createSlice({
 
             .addCase(register.fulfilled, (state, action: PayloadAction<{ user: User }>) => {
                 state.user = action.payload.user;
-                state.isLoggedIn = true;
                 state.isLoading = false;
             })
 
@@ -275,7 +275,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
             })
 
-            .addCase(createUser.rejected, (state, action: PayloadAction<any>) => {
+            .addCase(createUser.rejected, (state) => {
                 state.isRefreshing = false;
                 state.isLoading = false;
             })
@@ -302,6 +302,21 @@ const authSlice = createSlice({
             .addCase(deleteDevice.rejected, (state, action: PayloadAction<any>) => {
                 state.isLoading = false;
                 state.message = action.payload.message;
+            })
+
+            .addCase(editDevice.pending, (state) => {
+                state.isRefreshing = true;
+            })
+
+            .addCase(editDevice.fulfilled, (state, action: PayloadAction<{ devices: ResponseDeviceData }>) => {
+                state.devices = action.payload.devices;
+                state.isLoading = false;
+            })
+
+            .addCase(editDevice.rejected, (state, action: PayloadAction<any>) => {
+                state.isRefreshing = false;
+                state.message = action.payload.message;
+                state.isLoading = false;
             })
 
             .addCase(editUser.pending, (state) => {

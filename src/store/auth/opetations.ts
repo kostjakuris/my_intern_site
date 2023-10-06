@@ -97,7 +97,17 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (_, thunkAPI) =>
 
 export const createUser = createAsyncThunk(
     "auth/createUser",
-    async ({name, surname, email, role, password, country, city, address}: CreateUserGridData, thunkAPI) => {
+    async ({
+               name,
+               surname,
+               email,
+               role,
+               password,
+               country,
+               city,
+               address,
+               administrator_id
+           }: CreateUserGridData, thunkAPI) => {
         const state: any = thunkAPI.getState();
         const persistedToken = state.auth.accessToken;
         try {
@@ -111,9 +121,9 @@ export const createUser = createAsyncThunk(
                 country,
                 city,
                 address,
+                administrator_id,
                 phone_number : "3 (554) 123-4517",
             });
-            window.location.reload();
             return respons.data;
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data);
@@ -265,7 +275,7 @@ export const editDevice = createAsyncThunk(
         const persistedToken = state.auth.accessToken;
         try {
             setAuthHeader(persistedToken);
-            const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/edit", {
+            const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/devices/edit", {
                 id,
                 name,
                 device_type,

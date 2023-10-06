@@ -43,15 +43,17 @@ export type CreateUserData = {
 };
 
 export type CreateUserGridData = {
-    name?: string;
-    surname?: string;
-    email?: string;
-    role?: string;
-    password?: string;
-    country?: string | null;
-    city?: string | null;
-    address?: string | null;
+    id?: number;
+    name: string | null;
+    surname: string | null;
+    email: string | null;
+    role?: string | null;
+    country: string | null;
+    city: string | null;
+    password: string | null;
+    address: string | null;
     phone_number?: string | null;
+    administrator_id?: number | null;
 };
 
 export type ValuesData = {
@@ -65,8 +67,6 @@ export type ValuesData = {
     password: string | null;
     address: string | null;
     phone_number?: string | null;
-    created_at?: string | null;
-    updated_at?: string | null;
 };
 
 export type SignInFormData = {
@@ -97,13 +97,13 @@ export type HookData = {
     content?: React.ReactNode;
 };
 
-export type AddGridData = {
-    signActive: boolean;
-    setSignActive: (setSignActive: boolean) => void;
-    navActive: boolean;
-    setNavActive: (navActive: boolean) => void;
-    content?: React.ReactNode;
-};
+// export type AddGridData = {
+//     signActive: boolean;
+//     setSignActive: (setSignActive: boolean) => void;
+//     navActive: boolean;
+//     setNavActive: (navActive: boolean) => void;
+//     content?: React.ReactNode;
+// };
 
 export type createGroupData = {
     name: string

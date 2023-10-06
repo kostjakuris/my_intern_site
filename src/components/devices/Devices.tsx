@@ -3,16 +3,15 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Devices.css";
 import "./ModalCreate.min.css";
-import {useState, useMemo, useRef, useCallback, useEffect} from "react";
+import React, {useState, useMemo, useRef, useCallback, useEffect} from "react";
 import {HookData} from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
-import ModalDevice from "./ModalDevice";
 import {DeviceFormData} from "../input/inputVariables";
 import {useFormik} from "formik";
 import Input from "../input/Input";
 import {CreateDeviceSchema} from "../input/CreateDeviceValidation";
 import {useAppDispatch} from "../../Hook";
-import {createDevice, getData, getDevices} from "../../store/auth/opetations";
+import {createDevice, editDevice, getDevices} from "../../store/auth/opetations";
 import {deleteDevice as deleteDeviceAction} from "../../store/auth/opetations";
 import {useAppSelector} from "../../Hook";
 
@@ -30,7 +29,7 @@ const Devices = ({...props}: HookData) => {
     const devicesArray = useAppSelector((state) => state.auth.devices);
     const dispatch = useAppDispatch();
 
-    const formik = useFormik<DeviceFormData>({
+    const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik<DeviceFormData>({
         initialValues : {
             name : "",
             device_type : "",
@@ -42,7 +41,6 @@ const Devices = ({...props}: HookData) => {
         },
         validationSchema : CreateDeviceSchema,
         onSubmit : async (values: DeviceFormData) => {
-            await dispatch(createDevice(values));
         },
     });
 
@@ -61,7 +59,7 @@ const Devices = ({...props}: HookData) => {
     }
 
     const gridRef = useRef<AgGridReact>(null);
-    const [columnDefs, setColumnDefs] = useState<GridData[]>([
+    const [columnDefs] = useState<GridData[]>([
         {
             headerName : "Serial number",
             field : "serial_number",
@@ -133,12 +131,43 @@ const Devices = ({...props}: HookData) => {
         }
     }, []);
 
+    async function onSubmitCreateDevice (values: DeviceFormData) {
+        await dispatch(createDevice(values));
+    }
+
+    async function onSubmitEditDevice (values: DeviceFormData) {
+        const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
+        if (getSelectedNodes) {
+            getSelectedNodes.forEach((selectedData) => {
+
+                dispatch(editDevice({...values, id : selectedData.data.id}));
+            });
+        }
+    }
+
+    function openDeviceModal (title: string) {
+        if (title == "Device Creation") {
+            setCreateDeviceActive(true);
+        }
+        if (title == "Edit Device") {
+            setEditDeviceActive(true);
+        }
+    }
+
+    async function submitDeviceModal (title: string) {
+        if (title == "Device Creation") {
+            await dispatch(createDevice(values));
+        }
+        if (title == "Edit Device") {
+            await onSubmitEditDevice(values);
+        }
+    }
+
     useEffect(() => {
         if (userRole !== "customer") {
             dispatch(getDevices()).then(() => {
                 if (Array.isArray(devicesArray)) {
                     setRowData(devicesArray);
-                    console.log(devicesArray);
                 }
             });
         }
@@ -158,12 +187,13 @@ const Devices = ({...props}: HookData) => {
                 <div className="modal__top">
                     <h3 className="form-wrapper-modal__title">Device Creation</h3>
                     <span className="cross__wrapper" onClick={() => setCreateDeviceActive(false)}>
-            <img src="icons/system-uicons_cross.svg" alt="cross"/>
-          </span>
+                        <img src="icons/system-uicons_cross.svg" alt="cross"/>
+                    </span>
+
                 </div>
 
                 <div className="form-wrapper-modal">
-                    <form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
                             <div className="left__form--modal">
                                 <div className=" form__firstname ">
@@ -173,11 +203,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"Device Name"}
                                         className={"form firstName"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.name}
-                                        touched={formik.touched.name}
-                                        errors={formik.errors.name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                        touched={touched.name}
+                                        errors={errors.name}
                                     />
                                 </div>
 
@@ -188,11 +218,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"email"}
                                         placeholder={"Email"}
                                         className={"form email"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.email}
-                                        touched={formik.touched.email}
-                                        errors={formik.errors.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.email}
+                                        touched={touched.email}
+                                        errors={errors.email}
                                     />
                                 </div>
 
@@ -203,11 +233,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"Country"}
                                         className={"form country"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.country}
-                                        touched={formik.touched.country}
-                                        errors={formik.errors.country}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.country}
+                                        touched={touched.country}
+                                        errors={errors.country}
                                     />
                                 </div>
 
@@ -218,11 +248,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"Address"}
                                         className={"form adress"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.address}
-                                        touched={formik.touched.address}
-                                        errors={formik.errors.address}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.address}
+                                        touched={touched.address}
+                                        errors={errors.address}
                                     />
                                 </div>
                             </div>
@@ -235,11 +265,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"Device Type"}
                                         className={"form lastName"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.device_type}
-                                        touched={formik.touched.device_type}
-                                        errors={formik.errors.device_type}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.device_type}
+                                        touched={touched.device_type}
+                                        errors={errors.device_type}
                                     />
                                 </div>
 
@@ -250,11 +280,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"City"}
                                         className={"form town"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.city}
-                                        touched={formik.touched.city}
-                                        errors={formik.errors.city}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.city}
+                                        touched={touched.city}
+                                        errors={errors.city}
                                     />
                                 </div>
                                 <div className=" form__serialNumber ">
@@ -264,11 +294,11 @@ const Devices = ({...props}: HookData) => {
                                         type={"text"}
                                         placeholder={"Serial Number"}
                                         className={"form serialNumber"}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.serial_number}
-                                        touched={formik.touched.serial_number}
-                                        errors={formik.errors.serial_number}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.serial_number}
+                                        touched={touched.serial_number}
+                                        errors={errors.serial_number}
                                     />
                                 </div>
                             </div>
@@ -277,7 +307,8 @@ const Devices = ({...props}: HookData) => {
                         <div className="buttons">
                             <button className="cancel__button">Cancel</button>
 
-                            <button className="submit__button-modal" type="submit">
+                            <button className="submit__button-modal" type="submit"
+                                    onClick={() => onSubmitCreateDevice(values)}>
                                 Save
                             </button>
                         </div>
@@ -285,7 +316,7 @@ const Devices = ({...props}: HookData) => {
                 </div>
 
                 <div className="form-wrapper-modal--mobile ">
-                    <form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
                             <div className=" form__firstname ">
                                 <Input
@@ -294,11 +325,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"Device Name"}
                                     className={"form-modal firstName"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.name}
-                                    touched={formik.touched.name}
-                                    errors={formik.errors.name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.name}
+                                    touched={touched.name}
+                                    errors={errors.name}
                                 />
                             </div>
 
@@ -309,11 +340,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"Device Type"}
                                     className={"form-modal lastName"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.device_type}
-                                    touched={formik.touched.device_type}
-                                    errors={formik.errors.device_type}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.device_type}
+                                    touched={touched.device_type}
+                                    errors={errors.device_type}
                                 />
                             </div>
 
@@ -324,11 +355,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"email"}
                                     placeholder={"Email"}
                                     className={"form-modal email"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.email}
-                                    touched={formik.touched.email}
-                                    errors={formik.errors.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.email}
+                                    touched={touched.email}
+                                    errors={errors.email}
                                 />
                             </div>
 
@@ -339,11 +370,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"Address"}
                                     className={"form-modal adress"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.address}
-                                    touched={formik.touched.address}
-                                    errors={formik.errors.address}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.address}
+                                    touched={touched.address}
+                                    errors={errors.address}
                                 />
                             </div>
 
@@ -354,11 +385,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"Country"}
                                     className={"form-modal country"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.country}
-                                    touched={formik.touched.country}
-                                    errors={formik.errors.country}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.country}
+                                    touched={touched.country}
+                                    errors={errors.country}
                                 />
                             </div>
 
@@ -369,11 +400,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"City"}
                                     className={"form-modal town"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.city}
-                                    touched={formik.touched.city}
-                                    errors={formik.errors.city}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.city}
+                                    touched={touched.city}
+                                    errors={errors.city}
                                 />
                             </div>
                             <div className=" form__town ">
@@ -383,11 +414,11 @@ const Devices = ({...props}: HookData) => {
                                     type={"text"}
                                     placeholder={"Serial Number"}
                                     className={"form-modal town"}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.serial_number}
-                                    touched={formik.touched.serial_number}
-                                    errors={formik.errors.serial_number}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.serial_number}
+                                    touched={touched.serial_number}
+                                    errors={errors.serial_number}
                                 />
                             </div>
                         </div>
@@ -397,7 +428,8 @@ const Devices = ({...props}: HookData) => {
                                 Cancel
                             </button>
 
-                            <button className="submit__button-modal" type="submit">
+                            <button className="submit__button-modal" type="submit"
+                                    onClick={() => onSubmitCreateDevice(values)}>
                                 Save
                             </button>
                         </div>
@@ -430,7 +462,255 @@ const Devices = ({...props}: HookData) => {
                 activeClassName={"modal__content active"}
                 className={"modal__content"}
             >
-                <ModalDevice active={editDeviceActive} setActive={setEditDeviceActive} selectedDevice={selectedDevice}/>
+                <div className="modal__top">
+                    <h3 className="form-wrapper-modal__title">Edit Device</h3>
+                    <span className="cross__wrapper" onClick={() => setEditDeviceActive(false)}>
+                        <img src="icons/system-uicons_cross.svg" alt="cross"/>
+                    </span>
+
+                </div>
+
+                <div className="form-wrapper-modal ">
+                    <form onSubmit={handleSubmit}>
+                        <div className="signUp__form--modal">
+                            <div className="left__form--modal">
+                                <div className=" form__firstname ">
+                                    <Input
+                                        id={"name"}
+                                        name={"name"}
+                                        type={"text"}
+                                        placeholder={"Device Name"}
+                                        className={"form firstName"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                        touched={touched.name}
+                                        errors={errors.name}
+                                    />
+                                </div>
+
+                                <div className=" form__email ">
+                                    <Input
+                                        id={"email"}
+                                        name={"email"}
+                                        type={"email"}
+                                        placeholder={"Email"}
+                                        className={"form email"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.email}
+                                        touched={touched.email}
+                                        errors={errors.email}
+                                    />
+                                </div>
+
+                                <div className=" form__country ">
+                                    <Input
+                                        id={"country"}
+                                        name={"country"}
+                                        type={"text"}
+                                        placeholder={"Country"}
+                                        className={"form country"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.country}
+                                        touched={touched.country}
+                                        errors={errors.country}
+                                    />
+                                </div>
+
+                                <div className=" form__adress ">
+                                    <Input
+                                        id={"address"}
+                                        name={"address"}
+                                        type={"text"}
+                                        placeholder={"Address"}
+                                        className={"form adress"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.address}
+                                        touched={touched.address}
+                                        errors={errors.address}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="right__form--modal">
+                                <div className=" form__lastname">
+                                    <Input
+                                        id={"device_type"}
+                                        name={"device_type"}
+                                        type={"text"}
+                                        placeholder={"Device Type"}
+                                        className={"form lastName"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.device_type}
+                                        touched={touched.device_type}
+                                        errors={errors.device_type}
+                                    />
+                                </div>
+
+                                <div className=" form__town ">
+                                    <Input
+                                        id={"city"}
+                                        name={"city"}
+                                        type={"text"}
+                                        placeholder={"City"}
+                                        className={"form town"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.city}
+                                        touched={touched.city}
+                                        errors={errors.city}
+                                    />
+                                </div>
+                                <div className=" form__serialNumber ">
+                                    <Input
+                                        id={"serial_number"}
+                                        name={"serial_number"}
+                                        type={"text"}
+                                        placeholder={"Serial Number"}
+                                        className={"form serialNumber"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.serial_number}
+                                        touched={touched.serial_number}
+                                        errors={errors.serial_number}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="buttons">
+                            <button className="cancel__button">Cancel</button>
+
+                            <button className="submit__button-modal" type="submit"
+                                    onClick={() => onSubmitEditDevice(values)}>
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="form-wrapper-modal--mobile ">
+                    <form onSubmit={handleSubmit}>
+                        <div className="signUp__form--modal">
+                            <div className=" form__firstname ">
+                                <Input
+                                    id={"name"}
+                                    name={"name"}
+                                    type={"text"}
+                                    placeholder={"Device Name"}
+                                    className={"form-modal firstName"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.name}
+                                    touched={touched.name}
+                                    errors={errors.name}
+                                />
+                            </div>
+
+                            <div className=" form__lastname">
+                                <Input
+                                    id={"device_type"}
+                                    name={"device_type"}
+                                    type={"text"}
+                                    placeholder={"Device Type"}
+                                    className={"form-modal lastName"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.device_type}
+                                    touched={touched.device_type}
+                                    errors={errors.device_type}
+                                />
+                            </div>
+
+                            <div className=" form__email-modal ">
+                                <Input
+                                    id={"email"}
+                                    name={"email"}
+                                    type={"email"}
+                                    placeholder={"Email"}
+                                    className={"form-modal email"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.email}
+                                    touched={touched.email}
+                                    errors={errors.email}
+                                />
+                            </div>
+
+                            <div className=" form__adress-modal ">
+                                <Input
+                                    id={"address"}
+                                    name={"address"}
+                                    type={"text"}
+                                    placeholder={"Address"}
+                                    className={"form-modal adress"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.address}
+                                    touched={touched.address}
+                                    errors={errors.address}
+                                />
+                            </div>
+
+                            <div className=" form__country ">
+                                <Input
+                                    id={"country"}
+                                    name={"country"}
+                                    type={"text"}
+                                    placeholder={"Country"}
+                                    className={"form-modal country"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.country}
+                                    touched={touched.country}
+                                    errors={errors.country}
+                                />
+                            </div>
+
+                            <div className=" form__town ">
+                                <Input
+                                    id={"city"}
+                                    name={"city"}
+                                    type={"text"}
+                                    placeholder={"City"}
+                                    className={"form-modal town"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.city}
+                                    touched={touched.city}
+                                    errors={errors.city}
+                                />
+                            </div>
+                            <div className=" form__town ">
+                                <Input
+                                    id={"serial_number"}
+                                    name={"serial_number"}
+                                    type={"text"}
+                                    placeholder={"Serial Number"}
+                                    className={"form-modal town"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.serial_number}
+                                    touched={touched.serial_number}
+                                    errors={errors.serial_number}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="buttons">
+                            <button className="cancel__button">Cancel</button>
+
+                            <button className="submit__button-modal" type="submit"
+                                    onClick={() => onSubmitEditDevice(values)}>
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </ModalFunction>
 
             <ModalFunction
@@ -494,7 +774,7 @@ const Devices = ({...props}: HookData) => {
                     </select>
                 </div>
                 <div className="grid-buttons">
-                    <button className="users-grid__button" onClick={() => setCreateDeviceActive(true)}>
+                    <button className="users-grid__button" onClick={() => openDeviceModal("Device Creation")}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/material-symbols_add.svg" alt="add user"/>
             </span>
@@ -504,7 +784,7 @@ const Devices = ({...props}: HookData) => {
               <img className="users-grid__img" src="icons/material-symbols_delete-outline.svg" alt="delete user"/>
             </span>
                     </button>
-                    <button className="users-grid__button" onClick={() => setEditDeviceActive(true)}>
+                    <button className="users-grid__button" onClick={() => openDeviceModal("Edit Device")}>
             <span className="users-grid__span">
               <img className="users-grid__img" src="icons/material-symbols_edit-outline.svg" alt="edit user"/>
             </span>

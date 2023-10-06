@@ -28,7 +28,7 @@ const GroupGrid = ({...props}: HookData) => {
 
     const gridRef = useRef<AgGridReact>(null);
 
-    const [columnDefs, setColumnDefs] = useState<AddGridGridData[]>([
+    const [columnDefs] = useState<AddGridGridData[]>([
         {
             headerName : "Serial number",
             field : "serial_number",

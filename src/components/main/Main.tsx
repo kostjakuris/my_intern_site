@@ -95,7 +95,7 @@ const Main = ({...props}: HookData) => {
                                 </p>
                             </div>
                             <div className="personal-data__adress personal-data__padding">
-                                <p className="personal-data__title">Adress</p>
+                                <p className="personal-data__title">Address</p>
                                 <p className="personal-data__info ">{userState ? userState.address : ""}</p>
                             </div>
                         </div>

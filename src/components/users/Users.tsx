@@ -57,12 +57,12 @@ const Users = ({...props}: HookData) => {
         },
         validationSchema : ModalCreateSchema,
         onSubmit : async (values: CreateUserGridData) => {
-            await dispatch(createUser(values));
         },
     });
     const dispatch = useAppDispatch();
     const usersArray = useAppSelector((state) => state.auth.users);
     const userRole = useAppSelector((state) => state.auth.user.role);
+    const user = useAppSelector((state) => state.auth.user);
     const userValues: ValuesData = {
         name : null,
         surname : null,
@@ -81,14 +81,23 @@ const Users = ({...props}: HookData) => {
     const [editUserActive, setEditUserActive] = useState(false);
 
 
-    async function onSubmitEditUser (values: ValuesData) {
+    async function onSubmitEditUser (values: CreateUserGridData) {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-
                 dispatch(editGridUser({...values, id : selectedData.data.id}));
             });
         }
+    }
+
+    async function onSubmitCreateUser (values: CreateUserGridData) {
+        if (values.role == "owner") {
+            dispatch(createUser({...values, administrator_id : user.id}));
+
+        } else {
+            dispatch(createUser(values));
+        }
+        enableAddGrid();
     }
 
     function changeState () {
@@ -102,7 +111,7 @@ const Users = ({...props}: HookData) => {
 
     const gridRef = useRef<AgGridReact>(null);
 
-    const [columnDefs, setColumnDefs] = useState<GridData[]>([
+    const [columnDefs] = useState<GridData[]>([
         {headerName : "Name", field : "name", checkboxSelection : true, headerCheckboxSelection : true},
         {headerName : "Surname", field : "surname"},
         {headerName : "Email", field : "email"},
@@ -177,8 +186,10 @@ const Users = ({...props}: HookData) => {
             dispatch(getUsers())
                 .then(() => {
                     if (Array.isArray(usersArray)) {
+                        console.log(usersArray);
                         setRowData(usersArray);
-                        const filteredUser = usersArray.filter((data) => data.role == "regional_admin");
+                        const filteredUser = usersArray.filter(
+                            (data) => data.role == "regional_admin");
                         const updatedFilteredUser = filteredUser.map((selectedData) => ({
                             name : selectedData.name,
                             surname : selectedData.surname,
@@ -206,7 +217,7 @@ const Users = ({...props}: HookData) => {
     }
 
     const enableAddGrid = () => {
-        if (values.role == "admin") {
+        if (values.role == "owner") {
             setAddGridActive(true);
         }
     };
@@ -399,6 +410,7 @@ const Users = ({...props}: HookData) => {
                                     </button>
 
                                     <button className="submit__button-modal" type="submit"
+                                            onClick={() => onSubmitCreateUser(values)}
                                     >
                                         Save
                                     </button>
@@ -563,6 +575,7 @@ const Users = ({...props}: HookData) => {
                                     </button>
 
                                     <button className="submit__button-modal" type="submit"
+                                            onClick={() => onSubmitCreateUser(values)}
                                     >
                                         Save
                                     </button>
