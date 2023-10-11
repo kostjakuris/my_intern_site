@@ -259,6 +259,7 @@ const Users = ({...props}: HookData) => {
                                 <p className="warn_message-info">If you are a regional admin you can create user
                                     only
                                     with the same country and city</p>
+                                <p className="warn_message-info">Only regional admin can create an owner</p>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="signUp__form--modal">
