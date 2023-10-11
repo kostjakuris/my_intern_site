@@ -28,7 +28,7 @@ const Devices = ({...props}: HookData) => {
     const userRole = useAppSelector((state) => state.auth.user.role);
     const devicesArray = useAppSelector((state) => state.auth.devices);
     const dispatch = useAppDispatch();
-
+    
     const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik<DeviceFormData>({
         initialValues : {
             name : "",
@@ -43,12 +43,12 @@ const Devices = ({...props}: HookData) => {
         onSubmit : async (values: DeviceFormData) => {
         },
     });
-
+    
     const [createDeviceActive, setCreateDeviceActive] = useState(false);
     const [deleteDeviceActive, setDeleteDeviceActive] = useState(false);
     const [deviceDetailsActive, setDeviceDetailsActive] = useState(false);
     const [editDeviceActive, setEditDeviceActive] = useState(false);
-
+    
     function changeState () {
         if (props.signActive) {
             props.setSignActive(false);
@@ -57,7 +57,7 @@ const Devices = ({...props}: HookData) => {
             props.setNavActive(false);
         }
     }
-
+    
     const gridRef = useRef<AgGridReact>(null);
     const [columnDefs] = useState<GridData[]>([
         {
@@ -73,7 +73,7 @@ const Devices = ({...props}: HookData) => {
         {headerName : "City", field : "city"},
         {headerName : "Address", field : "address"},
     ]);
-
+    
     const [rowData, setRowData] = useState<GridData[]>();
     const [selectedDevice, setSelectedDevice] = useState<any[]>([
         {
@@ -87,7 +87,7 @@ const Devices = ({...props}: HookData) => {
             address : null,
         },
     ]);
-
+    
     const defaultColDef = useMemo(
         () => ({
             sortable : true,
@@ -98,15 +98,15 @@ const Devices = ({...props}: HookData) => {
         }),
         []
     );
-
-
+    
+    
     const onPaginationChange = useCallback((pageSize: number) => {
         gridRef.current?.api.paginationSetPageSize(pageSize);
     }, []);
-
+    
     const getSelectedRows = useCallback(() => {
         const selectedRows = gridRef.current?.api.getSelectedRows();
-
+        
         if (selectedRows) {
             const updatedSelectedData = selectedRows.map((selectedData) => ({
                 id : selectedData.id,
@@ -121,7 +121,7 @@ const Devices = ({...props}: HookData) => {
             setSelectedDevice(updatedSelectedData);
         }
     }, []);
-
+    
     const deleteDevice = useCallback(() => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
@@ -130,21 +130,21 @@ const Devices = ({...props}: HookData) => {
             });
         }
     }, []);
-
+    
     async function onSubmitCreateDevice (values: DeviceFormData) {
         await dispatch(createDevice(values));
     }
-
+    
     async function onSubmitEditDevice (values: DeviceFormData) {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-
+                
                 dispatch(editDevice({...values, id : selectedData.data.id}));
             });
         }
     }
-
+    
     function openDeviceModal (title: string) {
         if (title == "Device Creation") {
             setCreateDeviceActive(true);
@@ -153,7 +153,7 @@ const Devices = ({...props}: HookData) => {
             setEditDeviceActive(true);
         }
     }
-
+    
     async function submitDeviceModal (title: string) {
         if (title == "Device Creation") {
             await dispatch(createDevice(values));
@@ -162,7 +162,7 @@ const Devices = ({...props}: HookData) => {
             await onSubmitEditDevice(values);
         }
     }
-
+    
     useEffect(() => {
         if (userRole !== "customer") {
             dispatch(getDevices()).then(() => {
@@ -172,7 +172,7 @@ const Devices = ({...props}: HookData) => {
             });
         }
     }, []);
-
+    
     return userRole == "customer" ? (
         <div className="warn_message" onClick={() => changeState()}>You don`t have any permissions to see this
             page</div>
@@ -189,9 +189,9 @@ const Devices = ({...props}: HookData) => {
                     <span className="cross__wrapper" onClick={() => setCreateDeviceActive(false)}>
                         <img src="icons/system-uicons_cross.svg" alt="cross"/>
                     </span>
-
+                
                 </div>
-
+                
                 <div className="form-wrapper-modal">
                     <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
@@ -210,7 +210,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.name}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__email ">
                                     <Input
                                         id={"email"}
@@ -225,7 +225,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.email}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__country ">
                                     <Input
                                         id={"country"}
@@ -240,7 +240,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.country}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__adress ">
                                     <Input
                                         id={"address"}
@@ -256,7 +256,7 @@ const Devices = ({...props}: HookData) => {
                                     />
                                 </div>
                             </div>
-
+                            
                             <div className="right__form--modal">
                                 <div className=" form__lastname">
                                     <Input
@@ -272,7 +272,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.device_type}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__town ">
                                     <Input
                                         id={"city"}
@@ -303,10 +303,10 @@ const Devices = ({...props}: HookData) => {
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div className="buttons">
                             <button className="cancel__button">Cancel</button>
-
+                            
                             <button className="submit__button-modal" type="submit"
                                     onClick={() => onSubmitCreateDevice(values)}>
                                 Save
@@ -314,7 +314,7 @@ const Devices = ({...props}: HookData) => {
                         </div>
                     </form>
                 </div>
-
+                
                 <div className="form-wrapper-modal--mobile ">
                     <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
@@ -332,7 +332,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.name}
                                 />
                             </div>
-
+                            
                             <div className=" form__lastname">
                                 <Input
                                     id={"device_type"}
@@ -347,7 +347,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.device_type}
                                 />
                             </div>
-
+                            
                             <div className=" form__email-modal ">
                                 <Input
                                     id={"email"}
@@ -362,7 +362,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.email}
                                 />
                             </div>
-
+                            
                             <div className=" form__adress-modal ">
                                 <Input
                                     id={"address"}
@@ -377,7 +377,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.address}
                                 />
                             </div>
-
+                            
                             <div className=" form__country ">
                                 <Input
                                     id={"country"}
@@ -392,7 +392,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.country}
                                 />
                             </div>
-
+                            
                             <div className=" form__town ">
                                 <Input
                                     id={"city"}
@@ -422,12 +422,12 @@ const Devices = ({...props}: HookData) => {
                                 />
                             </div>
                         </div>
-
+                        
                         <div className="buttons">
                             <button className="cancel__button" onClick={() => setCreateDeviceActive(false)}>
                                 Cancel
                             </button>
-
+                            
                             <button className="submit__button-modal" type="submit"
                                     onClick={() => onSubmitCreateDevice(values)}>
                                 Save
@@ -436,7 +436,7 @@ const Devices = ({...props}: HookData) => {
                     </form>
                 </div>
             </ModalFunction>
-
+            
             <ModalFunction
                 active={deleteDeviceActive}
                 setActive={setDeleteDeviceActive}
@@ -449,13 +449,13 @@ const Devices = ({...props}: HookData) => {
                             onClick={() => setDeleteDeviceActive(false)}>
                         Cancel
                     </button>
-
+                    
                     <button className="submit__button-modal submit__button-modal-delete" onClick={deleteDevice}>
                         OK
                     </button>
                 </div>
             </ModalFunction>
-
+            
             <ModalFunction
                 active={editDeviceActive}
                 setActive={setEditDeviceActive}
@@ -467,9 +467,9 @@ const Devices = ({...props}: HookData) => {
                     <span className="cross__wrapper" onClick={() => setEditDeviceActive(false)}>
                         <img src="icons/system-uicons_cross.svg" alt="cross"/>
                     </span>
-
+                
                 </div>
-
+                
                 <div className="form-wrapper-modal ">
                     <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
@@ -488,7 +488,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.name}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__email ">
                                     <Input
                                         id={"email"}
@@ -503,7 +503,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.email}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__country ">
                                     <Input
                                         id={"country"}
@@ -518,7 +518,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.country}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__adress ">
                                     <Input
                                         id={"address"}
@@ -534,7 +534,7 @@ const Devices = ({...props}: HookData) => {
                                     />
                                 </div>
                             </div>
-
+                            
                             <div className="right__form--modal">
                                 <div className=" form__lastname">
                                     <Input
@@ -550,7 +550,7 @@ const Devices = ({...props}: HookData) => {
                                         errors={errors.device_type}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__town ">
                                     <Input
                                         id={"city"}
@@ -581,10 +581,10 @@ const Devices = ({...props}: HookData) => {
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div className="buttons">
                             <button className="cancel__button">Cancel</button>
-
+                            
                             <button className="submit__button-modal" type="submit"
                                     onClick={() => onSubmitEditDevice(values)}>
                                 Save
@@ -592,7 +592,7 @@ const Devices = ({...props}: HookData) => {
                         </div>
                     </form>
                 </div>
-
+                
                 <div className="form-wrapper-modal--mobile ">
                     <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
@@ -610,7 +610,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.name}
                                 />
                             </div>
-
+                            
                             <div className=" form__lastname">
                                 <Input
                                     id={"device_type"}
@@ -625,7 +625,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.device_type}
                                 />
                             </div>
-
+                            
                             <div className=" form__email-modal ">
                                 <Input
                                     id={"email"}
@@ -640,7 +640,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.email}
                                 />
                             </div>
-
+                            
                             <div className=" form__adress-modal ">
                                 <Input
                                     id={"address"}
@@ -655,7 +655,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.address}
                                 />
                             </div>
-
+                            
                             <div className=" form__country ">
                                 <Input
                                     id={"country"}
@@ -670,7 +670,7 @@ const Devices = ({...props}: HookData) => {
                                     errors={errors.country}
                                 />
                             </div>
-
+                            
                             <div className=" form__town ">
                                 <Input
                                     id={"city"}
@@ -700,10 +700,10 @@ const Devices = ({...props}: HookData) => {
                                 />
                             </div>
                         </div>
-
+                        
                         <div className="buttons">
                             <button className="cancel__button">Cancel</button>
-
+                            
                             <button className="submit__button-modal" type="submit"
                                     onClick={() => onSubmitEditDevice(values)}>
                                 Save
@@ -712,7 +712,7 @@ const Devices = ({...props}: HookData) => {
                     </form>
                 </div>
             </ModalFunction>
-
+            
             <ModalFunction
                 active={deviceDetailsActive}
                 setActive={setDeviceDetailsActive}
@@ -735,7 +735,7 @@ const Devices = ({...props}: HookData) => {
                                 <p className="personal-details__title">City</p>
                                 <p className="personal-details__title">Address</p>
                             </div>
-
+                            
                             <div className="personal-details__information">
                                 <p className="personal-details__info">{data.serial_number}</p>
                                 <p className="personal-details__info">{data.device_type}</p>
@@ -750,7 +750,7 @@ const Devices = ({...props}: HookData) => {
                     </div>
                 ))}
             </ModalFunction>
-
+            
             <div className="grid-function">
                 <div className="grid__dropdown">
                     <span className="dropdown__label">Data Size</span>

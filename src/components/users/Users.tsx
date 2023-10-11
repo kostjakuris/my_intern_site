@@ -41,7 +41,8 @@ const Users = ({...props}: HookData) => {
             address : "",
         }
     ]);
-
+    
+    
     const [hidePassword, setHidePassword] = useState(false);
     const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues : {
@@ -74,13 +75,13 @@ const Users = ({...props}: HookData) => {
         role : null,
         phone_number : "098765434",
     };
-
+    
     const [createActive, setCreateActive] = useState(false);
     const [deleteActive, setDeleteActive] = useState(false);
     const [detailsActive, setDetailsActive] = useState(false);
     const [editUserActive, setEditUserActive] = useState(false);
-
-
+    
+    
     async function onSubmitEditUser (values: CreateUserGridData) {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
@@ -89,17 +90,17 @@ const Users = ({...props}: HookData) => {
             });
         }
     }
-
+    
     async function onSubmitCreateUser (values: CreateUserGridData) {
         if (values.role == "owner") {
             dispatch(createUser({...values, administrator_id : user.id}));
-
+            
         } else {
             dispatch(createUser(values));
         }
         enableAddGrid();
     }
-
+    
     function changeState () {
         if (props.signActive) {
             props.setSignActive(false);
@@ -108,9 +109,9 @@ const Users = ({...props}: HookData) => {
             props.setNavActive(false);
         }
     }
-
+    
     const gridRef = useRef<AgGridReact>(null);
-
+    
     const [columnDefs] = useState<GridData[]>([
         {headerName : "Name", field : "name", checkboxSelection : true, headerCheckboxSelection : true},
         {headerName : "Surname", field : "surname"},
@@ -122,7 +123,7 @@ const Users = ({...props}: HookData) => {
         {headerName : "Created at", field : "created_at"},
         {headerName : "Updated at", field : "updated_at"},
     ]);
-
+    
     const [rowData, setRowData] = useState<GridData[]>();
     const [selectedData, setSelectedData] = useState<any>([
         {
@@ -147,7 +148,7 @@ const Users = ({...props}: HookData) => {
         }),
         []
     );
-
+    
     const deleteUser = useCallback(() => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
@@ -156,15 +157,15 @@ const Users = ({...props}: HookData) => {
             });
         }
     }, []);
-
-
+    
+    
     const onPaginationChange = useCallback((pageSize: number) => {
         gridRef.current?.api.paginationSetPageSize(pageSize);
     }, []);
-
+    
     const getSelectedRows = useCallback(() => {
         const selectedRows = gridRef.current?.api.getSelectedRows();
-
+        
         if (selectedRows) {
             const updatedSelectedData = selectedRows.map((selectedData) => ({
                 name : selectedData.name,
@@ -180,7 +181,7 @@ const Users = ({...props}: HookData) => {
             setSelectedData(updatedSelectedData);
         }
     }, []);
-
+    
     useEffect(() => {
         if (userRole == "admin" || userRole == "regional_admin") {
             dispatch(getUsers())
@@ -188,8 +189,11 @@ const Users = ({...props}: HookData) => {
                     if (Array.isArray(usersArray)) {
                         console.log(usersArray);
                         setRowData(usersArray);
+                        
                         const filteredUser = usersArray.filter(
                             (data) => data.role == "regional_admin");
+                        
+                        
                         const updatedFilteredUser = filteredUser.map((selectedData) => ({
                             name : selectedData.name,
                             surname : selectedData.surname,
@@ -206,7 +210,7 @@ const Users = ({...props}: HookData) => {
                 });
         }
     }, []);
-
+    
     function openModal (title: string) {
         if (title == "User Creation") {
             setCreateActive(true);
@@ -215,19 +219,22 @@ const Users = ({...props}: HookData) => {
             setEditUserActive(true);
         }
     }
-
+    
     const enableAddGrid = () => {
         if (values.role == "owner") {
             setAddGridActive(true);
         }
     };
-
-
-    return userRole !== "regional_admin" ? (
-            <div className={userRole !== "regional_admin" || "admin" ? "warn_message" : "warn_message disabled"}
-                 onClick={() => changeState()}>You don`t have any permissions to see this page</div>
-        )
-        :
+    
+    
+    return userRole !== "regional_admin" && userRole !== "admin" ? (
+            <div
+                className={userRole === "regional_admin" || userRole === "admin" ? "warn_message" : "warn_message disabled"}
+                onClick={() => changeState()}
+            >
+                You don't have permission to see this page
+            </div>
+        ) :
         (
             <div className={userRole == "regional_admin" || "admin" ? "users-grid" : "users-grid disabled"}
                  onClick={() => changeState()}>
@@ -239,17 +246,18 @@ const Users = ({...props}: HookData) => {
                 >
                     <div>
                         <div className="modal__top">
-
+                            
                             <h3 className="form-wrapper-modal__title">User Creation</h3>
                             <span className="cross__wrapper" onClick={() => setCreateActive(false)}>
                                 <img src="icons/system-uicons_cross.svg" alt="cross"/>
                             </span>
-
+                        
                         </div>
-
+                        
                         <div className="form-wrapper-modal">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">If you are a regional admin you can create user only
+                                <p className="warn_message-info">If you are a regional admin you can create user
+                                    only
                                     with the same country and city</p>
                             </div>
                             <form onSubmit={handleSubmit}>
@@ -269,7 +277,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.name}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__email ">
                                             <Input
                                                 id={"email"}
@@ -284,7 +292,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.email}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__country ">
                                             <Input
                                                 id={"country"}
@@ -299,7 +307,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.country}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__adress ">
                                             <Input
                                                 id={"address"}
@@ -315,7 +323,7 @@ const Users = ({...props}: HookData) => {
                                             />
                                         </div>
                                     </div>
-
+                                    
                                     <div className="right__form--modal">
                                         <div className=" form__lastname">
                                             <Input
@@ -331,7 +339,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.surname}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__password ">
                                             <Input
                                                 id={"password"}
@@ -353,9 +361,9 @@ const Users = ({...props}: HookData) => {
                                                 <img src="img/mdi_eye.jpg" alt="eye"/>
 
                                             </span>
-
+                                        
                                         </div>
-
+                                        
                                         <div className=" form__town ">
                                             <Input
                                                 id={"city"}
@@ -403,12 +411,12 @@ const Users = ({...props}: HookData) => {
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div className="buttons">
                                     <button className="cancel__button" onClick={() => setCreateActive(false)}>
                                         Cancel
                                     </button>
-
+                                    
                                     <button className="submit__button-modal" type="submit"
                                             onClick={() => onSubmitCreateUser(values)}
                                     >
@@ -417,10 +425,11 @@ const Users = ({...props}: HookData) => {
                                 </div>
                             </form>
                         </div>
-
+                        
                         <div className="form-wrapper-modal--mobile ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">If you are a regional admin you can create user only
+                                <p className="warn_message-info">If you are a regional admin you can create user
+                                    only
                                     with the same country and city</p>
                             </div>
                             <form onSubmit={handleSubmit}>
@@ -439,7 +448,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.name}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__lastname">
                                         <Input
                                             id={"surname"}
@@ -454,7 +463,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.surname}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__email-modal ">
                                         <Input
                                             id={"email"}
@@ -469,7 +478,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.email}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__adress-modal ">
                                         <Input
                                             id={"address"}
@@ -484,7 +493,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.address}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__password-modal ">
                                         <Input
                                             id={"password"}
@@ -505,9 +514,9 @@ const Users = ({...props}: HookData) => {
                                         >
                                             <img src="img/mdi_eye.jpg" alt="eye"/>
                                         </span>
-
+                                    
                                     </div>
-
+                                    
                                     <div className=" form__country ">
                                         <Input
                                             id={"country"}
@@ -536,7 +545,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.city}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__select ">
                                         <Select
                                             id={"role"}
@@ -573,7 +582,7 @@ const Users = ({...props}: HookData) => {
                                     <button className="cancel__button" onClick={() => setCreateActive(false)}>
                                         Cancel
                                     </button>
-
+                                    
                                     <button className="submit__button-modal" type="submit"
                                             onClick={() => onSubmitCreateUser(values)}
                                     >
@@ -583,9 +592,9 @@ const Users = ({...props}: HookData) => {
                             </form>
                         </div>
                     </div>
-
+                
                 </ModalFunction>
-
+                
                 <ModalFunction
                     active={deleteActive}
                     setActive={setDeleteActive}
@@ -594,16 +603,17 @@ const Users = ({...props}: HookData) => {
                 >
                     <p className="modal-delete__text">Are you sure you want to delete?</p>
                     <div className="buttons-delete">
-                        <button className="cancel__button cancel__button-delete" onClick={() => setDeleteActive(false)}>
+                        <button className="cancel__button cancel__button-delete"
+                                onClick={() => setDeleteActive(false)}>
                             Cancel
                         </button>
-
+                        
                         <button className="submit__button-modal submit__button-modal-delete" onClick={deleteUser}>
                             OK
                         </button>
                     </div>
                 </ModalFunction>
-
+                
                 <ModalFunction
                     active={editUserActive}
                     setActive={setEditUserActive}
@@ -616,11 +626,12 @@ const Users = ({...props}: HookData) => {
                             <span className="cross__wrapper" onClick={() => setEditUserActive(false)}>
                                 <img src="icons/system-uicons_cross.svg" alt="cross"/>
                             </span>
-
+                        
                         </div>
                         <div className="form-wrapper-modal ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address and
+                                <p className="warn_message-info">Owner and customer can only change password,address
+                                    and
                                     phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role </p>
@@ -643,7 +654,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.name}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__email ">
                                             <Input
                                                 id={"email"}
@@ -658,7 +669,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.email}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__country ">
                                             <Input
                                                 id={"country"}
@@ -673,7 +684,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.country}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__adress ">
                                             <Input
                                                 id={"address"}
@@ -689,7 +700,7 @@ const Users = ({...props}: HookData) => {
                                             />
                                         </div>
                                     </div>
-
+                                    
                                     <div className="right__form--modal">
                                         <div className=" form__lastname">
                                             <Input
@@ -705,7 +716,7 @@ const Users = ({...props}: HookData) => {
                                                 errors={errors.surname}
                                             />
                                         </div>
-
+                                        
                                         <div className=" form__password ">
                                             <Input
                                                 id={"password"}
@@ -726,9 +737,9 @@ const Users = ({...props}: HookData) => {
                                             >
                                                 <img src="img/mdi_eye.jpg" alt="eye"/>
                                             </span>
-
+                                        
                                         </div>
-
+                                        
                                         <div className=" form__town ">
                                             <Input
                                                 id={"city"}
@@ -776,12 +787,12 @@ const Users = ({...props}: HookData) => {
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div className="buttons">
                                     <button className="cancel__button" onClick={() => setEditUserActive(false)}>
                                         Cancel
                                     </button>
-
+                                    
                                     <button className="submit__button-modal" type="submit"
                                             onClick={() => onSubmitEditUser(values)}>
                                         Save
@@ -789,10 +800,11 @@ const Users = ({...props}: HookData) => {
                                 </div>
                             </form>
                         </div>
-
+                        
                         <div className="form-wrapper-modal--mobile ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address and
+                                <p className="warn_message-info">Owner and customer can only change password,address
+                                    and
                                     phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role</p>
@@ -814,7 +826,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.name}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__lastname">
                                         <Input
                                             id={"surname"}
@@ -829,7 +841,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.surname}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__email-modal ">
                                         <Input
                                             id={"email"}
@@ -844,7 +856,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.email}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__adress-modal ">
                                         <Input
                                             id={"address"}
@@ -859,7 +871,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.address}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__password-modal ">
                                         <Input
                                             id={"password"}
@@ -881,7 +893,7 @@ const Users = ({...props}: HookData) => {
                                             <img src="img/mdi_eye.jpg" alt="eye"/>
                                         </span>
                                     </div>
-
+                                    
                                     <div className=" form__country ">
                                         <Input
                                             id={"country"}
@@ -910,7 +922,7 @@ const Users = ({...props}: HookData) => {
                                             errors={errors.city}
                                         />
                                     </div>
-
+                                    
                                     <div className=" form__select ">
                                         <Select
                                             id={"role"}
@@ -947,7 +959,7 @@ const Users = ({...props}: HookData) => {
                                     <button className="cancel__button" onClick={() => setEditUserActive(false)}>
                                         Cancel
                                     </button>
-
+                                    
                                     <button className="submit__button-modal" type="submit"
                                             onClick={() => onSubmitEditUser(values)}>
                                         Save
@@ -957,7 +969,7 @@ const Users = ({...props}: HookData) => {
                         </div>
                     </div>
                 </ModalFunction>
-
+                
                 <ModalFunction
                     active={addGridActive}
                     setActive={setAddGridActive}
@@ -974,7 +986,7 @@ const Users = ({...props}: HookData) => {
                         setNavActive={props.setNavActive}
                     />
                 </ModalFunction>
-
+                
                 <ModalFunction
                     active={detailsActive}
                     setActive={setDetailsActive}
@@ -1016,8 +1028,8 @@ const Users = ({...props}: HookData) => {
                                     </div>
                                 </div>
                             ) : (
-
-
+                                
+                                
                                 <div className="page-details__first-container">
                                     <div className="page-details__container">
                                         <div className="page-details__first-wrapper">
@@ -1036,7 +1048,7 @@ const Users = ({...props}: HookData) => {
                                                     <p className="personal-details__title">Town</p>
                                                     <p className="personal-details__title">Address</p>
                                                 </div>
-
+                                                
                                                 <div className="personal-details__information">
                                                     <p className="personal-details__info">{data.name}</p>
                                                     <p className="personal-details__info">{data.surname}</p>
@@ -1050,7 +1062,7 @@ const Users = ({...props}: HookData) => {
                                             </div>
                                         </div>
                                         {adminData.map((addData: any) => (
-
+                                            
                                             <div className="page-details__first-wrapper">
                                                 <p className="page-details-text page-details-title page-details_media-text">
                                                     About regional administrator
@@ -1069,7 +1081,7 @@ const Users = ({...props}: HookData) => {
                                                         <p className="personal-details__title">Town</p>
                                                         <p className="personal-details__title">Address</p>
                                                     </div>
-
+                                                    
                                                     <div className="personal-details__information">
                                                         <p className="personal-details__info">{addData.name}</p>
                                                         <p className="personal-details__info">{addData.surname}</p>
@@ -1089,7 +1101,7 @@ const Users = ({...props}: HookData) => {
                         </div>
                     ))}
                 </ModalFunction>
-
+                
                 <div className="grid-function">
                     <div className="grid__dropdown">
                         <span className="dropdown__label">Data Size</span>
@@ -1148,7 +1160,7 @@ const Users = ({...props}: HookData) => {
                         onRowSelected={getSelectedRows}
                     />
                 </div>
-
+            
             </div>
         );
 };
