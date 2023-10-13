@@ -1,16 +1,16 @@
 import "./Main.min.css";
 import {useState} from "react";
-import Modal from "../modal/Modal";
+import {Modal} from "../modal/Modal";
 import {HookData} from "../input/inputVariables";
-import {useAppSelector} from "../../Hook";
+import {mobxStore} from "../../store/auth/mobx";
+import {observer} from "mobx-react-lite";
 
-const Main = ({...props}: HookData) => {
+const MainComponent = ({...props}: HookData) => {
     const [modalActive, setModalActive] = useState(false);
     const [secondButton, setSecondButton] = useState(true);
     const [thirdButton, setThirdButton] = useState(false);
     const [button, setButton] = useState(false);
-    const userState = useAppSelector((state) => state.auth.user);
-
+    
     function changeState () {
         if (props.signActive) {
             props.setSignActive(false);
@@ -22,12 +22,12 @@ const Main = ({...props}: HookData) => {
             props.setNavActive(false);
         }
     }
-
+    
     return (
         <main className="main-page" onClick={() => changeState()}>
             <section className="main-page__info">
                 <div className="page-info__icon">
-                    <img className="page-info__img" src={userState ? userState.avatar : ""} alt="avatar"/>
+                    <img className="page-info__img" src={mobxStore.user ? mobxStore.user.avatar : ""} alt="avatar"/>
                     <span className="change__img" onClick={() => setButton((prev) => !prev)}>
             <button
                 className={button ? "change__img-button active" : "change__img-button"}
@@ -38,7 +38,7 @@ const Main = ({...props}: HookData) => {
             <img className="change__img-icon" src="icons/Vector.svg" alt="pen"/>
           </span>
                     <p className="page-info__username">
-                        {userState ? userState.name : ""} {userState ? userState.surname : ""}
+                        {mobxStore ? mobxStore.user.name : ""} {mobxStore ? mobxStore.user.surname : ""}
                     </p>
                 </div>
                 <Modal
@@ -60,7 +60,7 @@ const Main = ({...props}: HookData) => {
                         >
                             About
                         </button>
-
+                        
                         <button
                             className={thirdButton ? "page__nav-link active" : "page__nav-link"}
                             onClick={() => setThirdButton(true)}
@@ -72,42 +72,42 @@ const Main = ({...props}: HookData) => {
                 </div>
                 <div className="main-page__personal-data">
                     <h4 className="personal-data__header">Personal information</h4>
-
+                    
                     <div className="personal-data__wrapper">
                         <div className="personal-data__left personal-data--mobile">
                             <div className="personal-data__role personal-data__padding">
                                 <p className="personal-data__title">Role</p>
-                                <p className="personal-data__info">{userState ? userState.role : ""}</p>
+                                <p className="personal-data__info">{mobxStore ? mobxStore.user.role : ""}</p>
                             </div>
                             <div className="personal-data__phonenumber personal-data__padding">
                                 <p className="personal-data__title">Phone number</p>
-                                <p className="personal-data__info">{userState ? userState.phone_number : ""}</p>
+                                <p className="personal-data__info">{mobxStore ? mobxStore.user.phone_number : ""}</p>
                             </div>
                         </div>
-
+                        
                         <div className="personal-data__center personal-data--mobile">
                             <div className="personal-data__email personal-data__padding">
                                 <p className="personal-data__title">Email</p>
-                                <p className="personal-data__info personal-data__desktop-email">{userState ?
-                                    userState.email : ""}</p>
+                                <p className="personal-data__info personal-data__desktop-email">{mobxStore ?
+                                    mobxStore.user.email : ""}</p>
                                 <p className="personal-data__info personal-data__mobile-email personal-data__padding">
-                                    {userState ? userState.email : ""}
+                                    {mobxStore ? mobxStore.user.email : ""}
                                 </p>
                             </div>
                             <div className="personal-data__adress personal-data__padding">
                                 <p className="personal-data__title">Address</p>
-                                <p className="personal-data__info ">{userState ? userState.address : ""}</p>
+                                <p className="personal-data__info ">{mobxStore ? mobxStore.user.address : ""}</p>
                             </div>
                         </div>
-
+                        
                         <div className="personal-data__right personal-data--mobile">
                             <div className="personal-data__country personal-data__padding">
                                 <p className="personal-data__title">Country</p>
-                                <p className="personal-data__info">{userState ? userState.country : ""}</p>
+                                <p className="personal-data__info">{mobxStore ? mobxStore.user.country : ""}</p>
                             </div>
                             <div className="personal-data__town personal-data__padding">
                                 <p className="personal-data__title">Town</p>
-                                <p className="personal-data__info">{userState ? userState.city : ""}</p>
+                                <p className="personal-data__info">{mobxStore ? mobxStore.user.city : ""}</p>
                             </div>
                         </div>
                     </div>
@@ -117,4 +117,5 @@ const Main = ({...props}: HookData) => {
     );
 };
 
-export default Main;
+
+export const Main = observer(MainComponent);

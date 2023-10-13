@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet} from "react-router-dom";
 import Nav from "./Nav";
 import { NavContent } from "../../App";
-import Header from "../header/Header";
+import {Header} from "../header/Header";
 
 
 const Layout = ({ ...props }: NavContent) => {

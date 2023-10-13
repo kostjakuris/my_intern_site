@@ -2,44 +2,42 @@ import React from "react";
 import {HookData} from "../input/inputVariables";
 import {useState, useEffect} from "react";
 import "./Groups.min.css";
-import GroupCard from "./GroupCard";
-import {useAppDispatch, useAppSelector} from "../../Hook";
-import {createGroup, getGroups} from "../../store/auth/opetations";
+import {GroupCard} from "./GroupCard";
 import Input from "../input/Input";
 import ModalFunction from "../modal-function/ModalFunction";
 import {useFormik} from "formik";
 import {createGroupData} from "../input/inputVariables";
 import * as yup from "yup";
+import {mobxStore} from "../../store/auth/mobx";
+import {observer} from "mobx-react-lite";
 
-const Groups = ({...props}: HookData) => {
+const GroupsComponent = ({...props}: HookData) => {
     const [addGroup, setAddGroup] = useState(false);
     const [groupDetailsActive, setGroupDetailsActive] = useState(false);
-    const dispatch = useAppDispatch();
     const [openActive, setOpenActive] = useState(false);
-    const groupsArray = useAppSelector((state) => state.auth.groups);
     const [groupData, setGroupData] = useState<any[] | undefined>([]);
-    const userRole = useAppSelector((state) => state.auth.user.role);
-
+    
     const createGroupSchema = yup.object().shape({
         name : yup.string().required("Name required")
     });
-
-    const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
+    
+    const {values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset} = useFormik({
         initialValues : {
             name : "",
         },
         validationSchema : createGroupSchema,
         onSubmit : async (values: createGroupData) => {
-            await dispatch((createGroup(values)));
+            await mobxStore.createGroup(values);
+            handleReset(values);
         },
     });
-
+    
     function changeMenu () {
         if (openActive) {
             setOpenActive(false);
         }
     }
-
+    
     function changeState () {
         if (props.signActive) {
             props.setSignActive(false);
@@ -48,19 +46,19 @@ const Groups = ({...props}: HookData) => {
             props.setNavActive(false);
         }
     }
-
+    
     useEffect(() => {
-        if (userRole == "regional_admin") {
-            dispatch(getGroups()).then(() => {
-                if (Array.isArray(groupsArray)) {
-                    setGroupData(groupsArray);
+        if (mobxStore.user.role == "regional_admin") {
+            mobxStore.getGroups().then(() => {
+                if (Array.isArray(mobxStore.groups)) {
+                    setGroupData(mobxStore.groups);
                 }
             });
         }
     }, []);
-
-
-    return userRole !== "regional_admin" ? (
+    
+    
+    return mobxStore.user.role !== "regional_admin" ? (
         <div className="warn_message" onClick={() => changeState()}>You don`t have any permissions to see this
             page</div>
     ) : (
@@ -74,7 +72,7 @@ const Groups = ({...props}: HookData) => {
                     </button>
                 </div>
             </div>
-
+            
             <ModalFunction
                 active={addGroup}
                 setActive={setAddGroup}
@@ -96,11 +94,11 @@ const Groups = ({...props}: HookData) => {
                         errors={errors.name}
                     />
                     <div className="buttons-group">
-
+                        
                         <button className="cancel__button cancel__button-delete" onClick={() => setAddGroup(false)}>
                             Cancel
                         </button>
-
+                        
                         <button className="submit__button-modal submit__button-modal-delete" type="submit">
                             Create
                         </button>
@@ -118,4 +116,4 @@ const Groups = ({...props}: HookData) => {
     );
 };
 
-export default Groups;
+export const Groups = observer(GroupsComponent);

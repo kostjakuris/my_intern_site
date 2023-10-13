@@ -10,10 +10,8 @@ import {DeviceFormData} from "../input/inputVariables";
 import {useFormik} from "formik";
 import Input from "../input/Input";
 import {CreateDeviceSchema} from "../input/CreateDeviceValidation";
-import {useAppDispatch} from "../../Hook";
-import {createDevice, editDevice, getDevices} from "../../store/auth/opetations";
-import {deleteDevice as deleteDeviceAction} from "../../store/auth/opetations";
-import {useAppSelector} from "../../Hook";
+import {mobxStore} from "../../store/auth/mobx";
+import {observer} from "mobx-react-lite";
 
 type GridData = {
     headerName?: string;
@@ -24,12 +22,9 @@ type GridData = {
 };
 
 
-const Devices = ({...props}: HookData) => {
-    const userRole = useAppSelector((state) => state.auth.user.role);
-    const devicesArray = useAppSelector((state) => state.auth.devices);
-    const dispatch = useAppDispatch();
+const DevicesComponent = ({...props}: HookData) => {
     
-    const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik<DeviceFormData>({
+    const {values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset} = useFormik<DeviceFormData>({
         initialValues : {
             name : "",
             device_type : "",
@@ -40,7 +35,8 @@ const Devices = ({...props}: HookData) => {
             serial_number : "",
         },
         validationSchema : CreateDeviceSchema,
-        onSubmit : async (values: DeviceFormData) => {
+        onSubmit : async () => {
+        
         },
     });
     
@@ -74,7 +70,7 @@ const Devices = ({...props}: HookData) => {
         {headerName : "Address", field : "address"},
     ]);
     
-    const [rowData, setRowData] = useState<GridData[]>();
+    const [rowData, setRowData] = useState<any[]>();
     const [selectedDevice, setSelectedDevice] = useState<any[]>([
         {
             id : null,
@@ -126,24 +122,29 @@ const Devices = ({...props}: HookData) => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-                dispatch(deleteDeviceAction(selectedData.data.id));
+                mobxStore.deleteDevice(selectedData.data.id)
+                    .then(() => mobxStore.getDevices().then(() => setRowData(mobxStore.devices)));
             });
         }
     }, []);
     
-    async function onSubmitCreateDevice (values: DeviceFormData) {
-        await dispatch(createDevice(values));
-    }
+    const onSubmitCreateDevice = useCallback(async (values: DeviceFormData) => {
+        await mobxStore.createDevice(values)
+            .then(() => mobxStore.getDevices().then(() => setRowData(mobxStore.devices)));
+        handleReset(values);
+        
+    }, []);
     
-    async function onSubmitEditDevice (values: DeviceFormData) {
+    const onSubmitEditDevice = useCallback(async (values: DeviceFormData) => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-                
-                dispatch(editDevice({...values, id : selectedData.data.id}));
+                mobxStore.editDevice({...values, id : selectedData.data.id})
+                    .then(() => mobxStore.getDevices().then(() => setRowData(mobxStore.devices)));
+                handleReset(values);
             });
         }
-    }
+    }, []);
     
     function openDeviceModal (title: string) {
         if (title == "Device Creation") {
@@ -154,26 +155,17 @@ const Devices = ({...props}: HookData) => {
         }
     }
     
-    async function submitDeviceModal (title: string) {
-        if (title == "Device Creation") {
-            await dispatch(createDevice(values));
-        }
-        if (title == "Edit Device") {
-            await onSubmitEditDevice(values);
-        }
-    }
-    
     useEffect(() => {
-        if (userRole !== "customer") {
-            dispatch(getDevices()).then(() => {
-                if (Array.isArray(devicesArray)) {
-                    setRowData(devicesArray);
+        if (mobxStore.user.role !== "customer") {
+            mobxStore.getDevices().then(() => {
+                if (Array.isArray(mobxStore.devices)) {
+                    setRowData(mobxStore.devices);
                 }
             });
         }
-    }, []);
+    }, [mobxStore.deleteDevice, mobxStore.createDevice, mobxStore.editDevice]);
     
-    return userRole == "customer" ? (
+    return mobxStore.user.role == "customer" ? (
         <div className="warn_message" onClick={() => changeState()}>You don`t have any permissions to see this
             page</div>
     ) : (
@@ -812,4 +804,4 @@ const Devices = ({...props}: HookData) => {
         </div>
     );
 };
-export default Devices;
+export const Devices = observer(DevicesComponent);

@@ -4,17 +4,14 @@ import {useState, useEffect, useCallback} from "react";
 import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import {HookData} from "../input/inputVariables";
-import {useAppSelector} from "../../Hook";
-import {useAppDispatch} from "../../Hook";
-import {deleteGroup, editGroup} from "../../store/auth/opetations";
+import {mobxStore} from "../../store/auth/mobx";
+import {observer} from "mobx-react-lite";
 
 
-const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActive}: HookData) => {
+const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, setSignActive}: HookData) => {
     const [groupDetailsActive, setGroupDetailsActive] = useState(false);
     const [openActive, setOpenActive] = useState(false);
-    const dispatch = useAppDispatch();
     const [addRowData, setAddRowData] = useState<any[] | undefined>();
-    const groupDevicesArray = useAppSelector((state) => state.auth.devices);
     const [rowData, setRowData] = useState<any[] | undefined>();
 
 
@@ -25,21 +22,21 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
     }
 
     useEffect(() => {
-        if (Array.isArray(groupDevicesArray) && Array.isArray(groupData)) {
+        if (Array.isArray(mobxStore.devices) && Array.isArray(groupData)) {
             const devicesCounts = groupData.map((group) => {
-                const filteredDevices = groupDevicesArray.filter((device) => device.group_id === group.id);
+                const filteredDevices = mobxStore.devices.filter((device) => device.group_id === group.id);
                 return filteredDevices.length;
             });
 
 
             setAddRowData(devicesCounts);
         }
-    }, [groupData, groupDevicesArray]);
+    }, [groupData, mobxStore.devices]);
 
     const filteredDevices = useCallback((id: number) => {
         const updatedRowData: any[] = [];
-        if (Array.isArray(groupDevicesArray) && Array.isArray(groupData)) {
-            const filteredDevices = groupDevicesArray.filter((device) => device.group_id === id);
+        if (Array.isArray(mobxStore.devices) && Array.isArray(groupData)) {
+            const filteredDevices = mobxStore.devices.filter((device) => device.group_id === id);
             updatedRowData.push(...filteredDevices);
             setRowData(updatedRowData);
         }
@@ -61,11 +58,11 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
                         </span>
 
                             <span className={openActive ? "groups__card-edit active" : "groups__card-edit"}
-                                  onClick={() => dispatch(editGroup(data.id))}>
+                                  onClick={() => mobxStore.editGroup(data.id)}>
                                 <img src="icons/Edit.svg" alt="edit"/>
                             </span>
                             <span className={openActive ? "groups__card-delete active" : "groups__card-delete"}
-                                  onClick={() => dispatch(deleteGroup(data.id))}>
+                                  onClick={() => mobxStore.deleteGroup(data.id)}>
                             <img src="icons/material-symbols_delete-outline.svg" alt="delete"/>
                         </span>
                         </div>
@@ -110,4 +107,4 @@ const GroupCard = ({groupData, navActive, setNavActive, signActive, setSignActiv
         </div>
     );
 };
-export default GroupCard;
+export const GroupCard=observer(GroupCardComponent);

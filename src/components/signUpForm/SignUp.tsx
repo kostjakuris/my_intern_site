@@ -1,18 +1,16 @@
 import {useFormik} from "formik";
-import {Routes, Route, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import "./signUpForm.min.css";
 import {useState} from "react";
 import Input from "../input/Input";
-import SignIn from "../signInForm/SignIn";
 import {FormData, HookData} from "../input/inputVariables";
-import {useAppDispatch} from "../../Hook";
 import {signUpSchema} from "../input/SignUpValidation";
-import axios from "axios";
-import {register} from "../../store/auth/opetations";
 import {useNavigate} from "react-router-dom";
-import Layout from "../nav/Layout";
+import {observer} from "mobx-react-lite";
+import {mobxStore} from "../../store/auth/mobx";
 
-const SignUp = ({...props}: HookData) => {
+
+const SignUpComponent = ({...props}: HookData) => {
     const navigate = useNavigate();
     const [hidePassword, setHidePassword] = useState(false);
     const [hideRePassword, setHideRePassword] = useState(false);
@@ -30,13 +28,12 @@ const SignUp = ({...props}: HookData) => {
         },
         validationSchema : signUpSchema,
         onSubmit : async (values: FormData) => {
-            await dispatch(register(values));
+            await mobxStore.register(values);
             navigate("/SignIn");
         },
     });
-
-    const dispatch = useAppDispatch();
-
+    
+    
     return (
         <main className="main">
             <div className="main-content">
@@ -60,7 +57,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.name}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__email-signUp ">
                                     <Input
                                         id={"email"}
@@ -75,7 +72,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.email}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__country ">
                                     <Input
                                         id={"country"}
@@ -90,7 +87,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.country}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__password-signUp ">
                                     <Input
                                         id={"password"}
@@ -127,7 +124,7 @@ const SignUp = ({...props}: HookData) => {
                                     />
                                 </div>
                             </div>
-
+                            
                             <div className="right__form">
                                 <div className=" form__lastname">
                                     <Input
@@ -143,7 +140,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.surname}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__phoneNumber ">
                                     <Input
                                         id={"phone_number"}
@@ -158,7 +155,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.phone_number}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__town ">
                                     <Input
                                         id={"city"}
@@ -173,7 +170,7 @@ const SignUp = ({...props}: HookData) => {
                                         errors={errors.city}
                                     />
                                 </div>
-
+                                
                                 <div className=" form__rePassword-signUp ">
                                     <Input
                                         id={"rePassword"}
@@ -198,7 +195,7 @@ const SignUp = ({...props}: HookData) => {
                                 </div>
                             </div>
                         </div>
-
+                        
                         <button className="submit__button-signUp" type="submit">
                             Sign Up
                         </button>
@@ -212,7 +209,7 @@ const SignUp = ({...props}: HookData) => {
                         </p>
                     </div>
                 </div>
-
+                
                 <div className="form-wrapper-signUp--mobile ">
                     <form onSubmit={handleSubmit}>
                         <h2 className="form-wrapper-signUp__title">Sign Up</h2>
@@ -232,7 +229,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.name}
                                 />
                             </div>
-
+                            
                             <div className=" form__lastname">
                                 <Input
                                     id={"surname"}
@@ -247,7 +244,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.surname}
                                 />
                             </div>
-
+                            
                             <div className=" form__email-signUp ">
                                 <Input
                                     id={"email"}
@@ -262,7 +259,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.email}
                                 />
                             </div>
-
+                            
                             <div className=" form__phoneNumber ">
                                 <Input
                                     id={"phone_number"}
@@ -277,7 +274,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.phone_number}
                                 />
                             </div>
-
+                            
                             <div className=" form__adress ">
                                 <Input
                                     id={"address"}
@@ -292,7 +289,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.address}
                                 />
                             </div>
-
+                            
                             <div className=" form__country ">
                                 <Input
                                     id={"country"}
@@ -321,7 +318,7 @@ const SignUp = ({...props}: HookData) => {
                                     errors={errors.city}
                                 />
                             </div>
-
+                            
                             <div className=" form__password-signUp ">
                                 <Input
                                     id={"password"}
@@ -342,7 +339,7 @@ const SignUp = ({...props}: HookData) => {
                   <img src="img/mdi_eye.jpg" alt="eye"/>
                 </span>
                             </div>
-
+                            
                             <div className=" form__rePassword-signUp ">
                                 <Input
                                     id={"rePassword"}
@@ -364,7 +361,7 @@ const SignUp = ({...props}: HookData) => {
                 </span>
                             </div>
                         </div>
-
+                        
                         <button className="submit__button-signUp" type="submit">
                             Sign Up
                         </button>
@@ -388,4 +385,4 @@ const SignUp = ({...props}: HookData) => {
     );
 };
 
-export default SignUp;
+export const SignUp = observer(SignUpComponent);

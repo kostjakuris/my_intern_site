@@ -7,15 +7,13 @@ import React, {useState, useMemo, useEffect, useRef, useCallback} from "react";
 import {CreateUserGridData, HookData} from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
-import {useAppSelector} from "../../Hook";
-import {useAppDispatch} from "../../Hook";
-import {createUser, editGridUser, getUsers} from "../../store/auth/opetations";
 import {ValuesData} from "../input/inputVariables";
-import {deleteUser as deleteUserAction} from "../../store/auth/opetations";
 import {useFormik} from "formik";
 import {ModalCreateSchema} from "../input/ModalCreateValidation";
 import Input from "../input/Input";
 import Select from "../input/Select";
+import {mobxStore} from "../../store/auth/mobx";
+import {observer} from "mobx-react-lite";
 
 type GridData = {
     headerName?: string;
@@ -26,7 +24,7 @@ type GridData = {
 };
 
 
-const Users = ({...props}: HookData) => {
+const UsersComponent = ({...props}: HookData) => {
     const [addGridActive, setAddGridActive] = useState(false);
     const [adminData, setAdminData] = useState<any>([
         {
@@ -42,9 +40,8 @@ const Users = ({...props}: HookData) => {
         }
     ]);
     
-    
     const [hidePassword, setHidePassword] = useState(false);
-    const {values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
+    const {values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset} = useFormik({
         initialValues : {
             name : "",
             surname : "",
@@ -57,13 +54,9 @@ const Users = ({...props}: HookData) => {
             phone_number : "3 (554) 123-4517",
         },
         validationSchema : ModalCreateSchema,
-        onSubmit : async (values: CreateUserGridData) => {
+        onSubmit : async () => {
         },
     });
-    const dispatch = useAppDispatch();
-    const usersArray = useAppSelector((state) => state.auth.users);
-    const userRole = useAppSelector((state) => state.auth.user.role);
-    const user = useAppSelector((state) => state.auth.user);
     const userValues: ValuesData = {
         name : null,
         surname : null,
@@ -86,17 +79,23 @@ const Users = ({...props}: HookData) => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-                dispatch(editGridUser({...values, id : selectedData.data.id}));
+                mobxStore.editGridUser({...values, id : selectedData.data.id})
+                    .then(() => mobxStore.getUsers().then(() => setRowData(mobxStore.users)));
+                handleReset(values);
             });
         }
     }
     
     async function onSubmitCreateUser (values: CreateUserGridData) {
         if (values.role == "owner") {
-            dispatch(createUser({...values, administrator_id : user.id}));
+            await mobxStore.createUser({...values, administrator_id : mobxStore.user.id})
+                .then(() => mobxStore.getUsers().then(() => setRowData(mobxStore.users)));
+            handleReset(values);
             
         } else {
-            dispatch(createUser(values));
+            await mobxStore.createUser(values).then(() => mobxStore.getUsers().then(() => setRowData(mobxStore.users)));
+            handleReset(values);
+            
         }
         enableAddGrid();
     }
@@ -124,7 +123,7 @@ const Users = ({...props}: HookData) => {
         {headerName : "Updated at", field : "updated_at"},
     ]);
     
-    const [rowData, setRowData] = useState<GridData[]>();
+    const [rowData, setRowData] = useState<any[]>();
     const [selectedData, setSelectedData] = useState<any>([
         {
             name : "",
@@ -153,7 +152,8 @@ const Users = ({...props}: HookData) => {
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {
-                dispatch(deleteUserAction(selectedData.data.id));
+                mobxStore.deleteUser(selectedData.data.id)
+                    .then(() => mobxStore.getUsers().then(() => setRowData(mobxStore.users)));
             });
         }
     }, []);
@@ -183,18 +183,14 @@ const Users = ({...props}: HookData) => {
     }, []);
     
     useEffect(() => {
-        if (userRole == "admin" || userRole == "regional_admin") {
-            dispatch(getUsers())
+        if (mobxStore.user.role == "admin" || mobxStore.user.role == "regional_admin") {
+            mobxStore.getUsers()
                 .then(() => {
-                    if (Array.isArray(usersArray)) {
-                        console.log(usersArray);
-                        setRowData(usersArray);
-                        
-                        const filteredUser = usersArray.filter(
-                            (data) => data.role == "regional_admin");
-                        
-                        
-                        const updatedFilteredUser = filteredUser.map((selectedData) => ({
+                    if (Array.isArray(mobxStore.users)) {
+                        setRowData(mobxStore.users);
+                        const filteredUser = mobxStore.users.filter(
+                            (data: any) => data.role == "regional_admin");
+                        const updatedFilteredUser = filteredUser.map((selectedData: any) => ({
                             name : selectedData.name,
                             surname : selectedData.surname,
                             email : selectedData.email,
@@ -209,7 +205,7 @@ const Users = ({...props}: HookData) => {
                     }
                 });
         }
-    }, []);
+    }, [mobxStore.deleteUser, mobxStore.createUser, mobxStore.editGridUser]);
     
     function openModal (title: string) {
         if (title == "User Creation") {
@@ -227,16 +223,14 @@ const Users = ({...props}: HookData) => {
     };
     
     
-    return userRole !== "regional_admin" && userRole !== "admin" ? (
-            <div
-                className={userRole === "regional_admin" || userRole === "admin" ? "warn_message" : "warn_message disabled"}
-                onClick={() => changeState()}
-            >
-                You don't have permission to see this page
-            </div>
-        ) :
+    return mobxStore.user.role !== "regional_admin" && mobxStore.user.role !== "admin" ? (
+            <div className={mobxStore.user.role === "regional_admin" || mobxStore.user.role === "admin" ? "warn_message" :
+                "warn_message disabled"}
+                 onClick={() => changeState()}>You don`t have any permissions to see this page</div>
+        )
+        :
         (
-            <div className={userRole == "regional_admin" || "admin" ? "users-grid" : "users-grid disabled"}
+            <div className={mobxStore.user.role == "regional_admin" || "admin" ? "users-grid" : "users-grid disabled"}
                  onClick={() => changeState()}>
                 <ModalFunction
                     active={createActive}
@@ -256,10 +250,12 @@ const Users = ({...props}: HookData) => {
                         
                         <div className="form-wrapper-modal">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">If you are a regional admin you can create user
-                                    only
+                                <p className="warn_message-info">If you are a regional admin you can create user only
                                     with the same country and city</p>
-                                <p className="warn_message-info">Only regional admin can create an owner</p>
+                                
+                                <p className="warn_message-info">Only admin can create regional admin</p>
+                                
+                                <p className="warn_message-info">Nobody can create an admin</p>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="signUp__form--modal">
@@ -429,9 +425,12 @@ const Users = ({...props}: HookData) => {
                         
                         <div className="form-wrapper-modal--mobile ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">If you are a regional admin you can create user
-                                    only
+                                <p className="warn_message-info">If you are a regional admin you can create user only
                                     with the same country and city</p>
+                                
+                                <p className="warn_message-info">Only admin can create regional admin</p>
+                                
+                                <p className="warn_message-info">Nobody can create an admin</p>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="signUp__form--modal">
@@ -604,8 +603,7 @@ const Users = ({...props}: HookData) => {
                 >
                     <p className="modal-delete__text">Are you sure you want to delete?</p>
                     <div className="buttons-delete">
-                        <button className="cancel__button cancel__button-delete"
-                                onClick={() => setDeleteActive(false)}>
+                        <button className="cancel__button cancel__button-delete" onClick={() => setDeleteActive(false)}>
                             Cancel
                         </button>
                         
@@ -631,8 +629,7 @@ const Users = ({...props}: HookData) => {
                         </div>
                         <div className="form-wrapper-modal ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address
-                                    and
+                                <p className="warn_message-info">Owner and customer can only change password,address and
                                     phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role </p>
@@ -804,8 +801,7 @@ const Users = ({...props}: HookData) => {
                         
                         <div className="form-wrapper-modal--mobile ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address
-                                    and
+                                <p className="warn_message-info">Owner and customer can only change password,address and
                                     phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role</p>
@@ -1165,4 +1161,4 @@ const Users = ({...props}: HookData) => {
             </div>
         );
 };
-export default Users;
+export const Users = observer(UsersComponent);
