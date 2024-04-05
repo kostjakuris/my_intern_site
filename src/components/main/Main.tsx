@@ -7,8 +7,6 @@ import {observer} from "mobx-react-lite";
 
 const MainComponent = ({...props}: HookData) => {
     const [modalActive, setModalActive] = useState(false);
-    const [secondButton, setSecondButton] = useState(true);
-    const [thirdButton, setThirdButton] = useState(false);
     const [button, setButton] = useState(false);
     
     function changeState () {
@@ -28,15 +26,6 @@ const MainComponent = ({...props}: HookData) => {
             <section className="main-page__info">
                 <div className="page-info__icon">
                     <img className="page-info__img" src={mobxStore.user ? mobxStore.user.avatar : ""} alt="avatar"/>
-                    <span className="change__img" onClick={() => setButton((prev) => !prev)}>
-            <button
-                className={button ? "change__img-button active" : "change__img-button"}
-                onClick={(e) => e.stopPropagation()}
-            >
-              Upload your photo
-            </button>
-            <img className="change__img-icon" src="icons/Vector.svg" alt="pen"/>
-          </span>
                     <p className="page-info__username">
                         {mobxStore ? mobxStore.user.name : ""} {mobxStore ? mobxStore.user.surname : ""}
                     </p>
@@ -54,19 +43,8 @@ const MainComponent = ({...props}: HookData) => {
             <section className="main-page__data">
                 <div className="main-page__nav">
                     <div className="page__nav-list">
-                        <button
-                            className={secondButton ? "page__nav-link active" : "page__nav-link"}
-                            onClick={() => setSecondButton(true)}
-                        >
+                        <button className="page__nav-link active">
                             About
-                        </button>
-                        
-                        <button
-                            className={thirdButton ? "page__nav-link active" : "page__nav-link"}
-                            onClick={() => setThirdButton(true)}
-                            name="Settings"
-                        >
-                            Settings
                         </button>
                     </div>
                 </div>

@@ -122,7 +122,179 @@ class MobxStore {
     isLoading: boolean = false;
     
     message: string | null = null;
-    
+    createUser = (
+        
+        async ({
+                   name,
+                   surname,
+                   email,
+                   role,
+                   password,
+                   country,
+                   city,
+                   address,
+                   administrator_id
+               }: CreateUserGridData) => {
+            const persistedToken = this.accessToken;
+            try {
+                this.setAuthHeader(persistedToken);
+                const respons = await axios.post(
+                    "http://intern-project-backend.atwebpages.com/api/users/create-user", {
+                        name,
+                        surname,
+                        email,
+                        role,
+                        password,
+                        country,
+                        city,
+                        address,
+                        administrator_id,
+                        phone_number : "3 (554) 123-4517",
+                    });
+                this.users = respons.data.users;
+                return respons.data;
+            } catch (e: any) {
+                this.message = e.response.data.message;
+                return e.message;
+                
+            }
+        }
+    );
+    editUser = (
+        async ({name, surname, email, password, country, city, address}: ValuesData) => {
+            const persistedToken = this.accessToken;
+            const id = this.user.id;
+            
+            try {
+                this.setAuthHeader(persistedToken);
+                const respons = await axios.put(
+                    "http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+                        id,
+                        name,
+                        surname,
+                        email,
+                        password,
+                        country,
+                        city,
+                        address,
+                    });
+                this.user = respons.data.user;
+                return respons.data;
+            } catch (e: any) {
+                this.message = e.response.data.message;
+                return e.message;
+                
+            }
+        }
+    );
+    createDevice = (
+        
+        async ({name, device_type, address, serial_number}: DeviceFormData) => {
+            const persistedToken = this.accessToken;
+            try {
+                this.setAuthHeader(persistedToken);
+                const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create",
+                    {
+                        owner_id : 3,
+                        name,
+                        device_type,
+                        address,
+                        serial_number,
+                        phase_active : true,
+                        phase_type : "laptop",
+                        sum_power : 155.9,
+                        group_id : 1,
+                        location : "{}",
+                        administrator_id : 2,
+                    });
+                this.devices = respons.data.devices;
+                return respons.data;
+                
+            } catch (e: any) {
+                this.message = e.response.data.message;
+                return e.message;
+                
+            }
+        }
+    );
+    deleteDevice = (async (id: number) => {
+        const persistedToken = this.accessToken;
+        try {
+            this.setAuthHeader(persistedToken);
+            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/devices/delete", {
+                data : {
+                    id,
+                },
+            });
+            this.devices = respons.data.devices;
+            return respons.data;
+        } catch (e: any) {
+            this.message = e.response.data.message;
+            return e.message;
+            
+        }
+    });
+    deleteUser = (async (id: number) => {
+        const persistedToken = this.accessToken;
+        try {
+            this.setAuthHeader(persistedToken);
+            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/users/delete-user", {
+                data : {
+                    id,
+                },
+            });
+            this.users = respons.data.users;
+            return respons.data;
+        } catch (e: any) {
+            this.message = e.response.data.message;
+            return e.message;
+            
+        }
+    });
+    editDevice = (
+        
+        async ({id, name, device_type, country, email, city, address, serial_number}: DeviceFormData) => {
+            const persistedToken = this.accessToken;
+            try {
+                this.setAuthHeader(persistedToken);
+                const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/devices/edit", {
+                    id,
+                    name,
+                    device_type,
+                    email,
+                    country,
+                    city,
+                    address,
+                    serial_number,
+                });
+                this.devices = respons.data.devices;
+                return respons.data;
+                
+            } catch (e: any) {
+                this.message = e.response.data.message;
+                return e.message;
+                
+            }
+        }
+    );
+    createGroup = (
+        async ({name}: createGroupData) => {
+            const persistedToken = this.accessToken;
+            
+            try {
+                this.setAuthHeader(persistedToken);
+                const res = await axios.post("http://intern-project-backend.atwebpages.com/api/groups/create", {
+                    name
+                });
+                this.groups = res.data.groups;
+                return res.data;
+                
+            } catch (e: any) {
+                this.message = e.response.data.message;
+                return e.message;
+                
+            }
+        });
     
     constructor () {
         makeAutoObservable(this);
@@ -133,7 +305,6 @@ class MobxStore {
             storage : window.localStorage
         });
     }
-    
     
     setAuthHeader = (accessToken: any) => {
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -168,7 +339,6 @@ class MobxStore {
                 this.isLoading = false;
             }
         };
-    
     
     logIn = async ({email, password}: SignInFormData) => {
         this.isLoading = true;
@@ -216,7 +386,6 @@ class MobxStore {
         }
     };
     
-    
     logOut = async () => {
         try {
             await clearPersistedStore(this);
@@ -233,7 +402,6 @@ class MobxStore {
         }
     };
     
-    
     getUsers = async () => {
         const persistedToken = this.accessToken;
         
@@ -249,73 +417,6 @@ class MobxStore {
             
         }
     };
-    
-    createUser = (
-        
-        async ({
-                   name,
-                   surname,
-                   email,
-                   role,
-                   password,
-                   country,
-                   city,
-                   address,
-                   administrator_id
-               }: CreateUserGridData) => {
-            const persistedToken = this.accessToken;
-            try {
-                this.setAuthHeader(persistedToken);
-                const respons = await axios.post(
-                    "http://intern-project-backend.atwebpages.com/api/users/create-user", {
-                        name,
-                        surname,
-                        email,
-                        role,
-                        password,
-                        country,
-                        city,
-                        address,
-                        administrator_id,
-                        phone_number : "3 (554) 123-4517",
-                    });
-                this.users = respons.data.users;
-                return respons.data;
-            } catch (e: any) {
-                this.message = e.response.data.message;
-                return e.message;
-                
-            }
-        }
-    );
-    
-    editUser = (
-        async ({name, surname, email, password, country, city, address}: ValuesData) => {
-            const persistedToken = this.accessToken;
-            const id = this.user.id;
-            
-            try {
-                this.setAuthHeader(persistedToken);
-                const respons = await axios.put(
-                    "http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
-                        id,
-                        name,
-                        surname,
-                        email,
-                        password,
-                        country,
-                        city,
-                        address,
-                    });
-                this.user = respons.data.user;
-                return respons.data;
-            } catch (e: any) {
-                this.message = e.response.data.message;
-                return e.message;
-                
-            }
-        }
-    );
     
     editGridUser =
         
@@ -368,99 +469,6 @@ class MobxStore {
         }
     };
     
-    createDevice = (
-        
-        async ({name, device_type, address, serial_number}: DeviceFormData) => {
-            const persistedToken = this.accessToken;
-            try {
-                this.setAuthHeader(persistedToken);
-                const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create",
-                    {
-                        owner_id : 3,
-                        name,
-                        device_type,
-                        address,
-                        serial_number,
-                        phase_active : true,
-                        phase_type : "laptop",
-                        sum_power : 155.9,
-                        group_id : 1,
-                        location : "{}",
-                        administrator_id : 2,
-                    });
-                this.devices = respons.data.devices;
-                return respons.data;
-                
-            } catch (e: any) {
-                this.message = e.response.data.message;
-                return e.message;
-                
-            }
-        }
-    );
-    
-    deleteDevice = (async (id: number) => {
-        const persistedToken = this.accessToken;
-        try {
-            this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/devices/delete", {
-                data : {
-                    id,
-                },
-            });
-            this.devices = respons.data.devices;
-            return respons.data;
-        } catch (e: any) {
-            this.message = e.response.data.message;
-            return e.message;
-            
-        }
-    });
-    
-    deleteUser = (async (id: number) => {
-        const persistedToken = this.accessToken;
-        try {
-            this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/users/delete-user", {
-                data : {
-                    id,
-                },
-            });
-            this.users = respons.data.users;
-            return respons.data;
-        } catch (e: any) {
-            this.message = e.response.data.message;
-            return e.message;
-            
-        }
-    });
-    
-    editDevice = (
-        
-        async ({id, name, device_type, country, email, city, address, serial_number}: DeviceFormData) => {
-            const persistedToken = this.accessToken;
-            try {
-                this.setAuthHeader(persistedToken);
-                const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/devices/edit", {
-                    id,
-                    name,
-                    device_type,
-                    email,
-                    country,
-                    city,
-                    address,
-                    serial_number,
-                });
-                this.devices = respons.data.devices;
-                return respons.data;
-                
-            } catch (e: any) {
-                this.message = e.response.data.message;
-                return e.message;
-                
-            }
-        }
-    );
     getGroups =
         async () => {
             const persistedToken = this.accessToken;
@@ -483,24 +491,6 @@ class MobxStore {
             }
         };
     
-    createGroup = (
-        async ({name}: createGroupData) => {
-            const persistedToken = this.accessToken;
-            
-            try {
-                this.setAuthHeader(persistedToken);
-                const res = await axios.post("http://intern-project-backend.atwebpages.com/api/groups/create", {
-                    name
-                });
-                this.groups = res.data.groups;
-                return res.data;
-                
-            } catch (e: any) {
-                this.message = e.response.data.message;
-                return e.message;
-                
-            }
-        });
     editGroup = async (id: number) => {
         const persistedToken = this.accessToken;
         try {
