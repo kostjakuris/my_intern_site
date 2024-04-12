@@ -1,15 +1,8 @@
 import "./Nav.min.css";
 import {NavLink} from "react-router-dom";
 import {NavContent} from "../../App";
-import {useJsApiLoader} from "@react-google-maps/api";
-
-// const API_KEY: any = process.env.REACT_APP_API_KEY;
 
 const Nav = ({...props}: NavContent) => {
-    // const { isLoaded } = useJsApiLoader({
-    //   id: "google-map-script",
-    //   googleMapsApiKey: API_KEY,
-    // });
     return (
         <div>
             <div className="main__nav">

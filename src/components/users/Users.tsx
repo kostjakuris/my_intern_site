@@ -3,11 +3,10 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Users.css";
 import "./ModalCreate.min.css";
-import React, {useState, useMemo, useEffect, useRef, useCallback} from "react";
-import {CreateUserGridData, HookData} from "../input/inputVariables";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {CreateUserGridData, HookData, ValuesData} from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
 import UsersAdditionalGrid from "./UsersAdditionalGrid";
-import {ValuesData} from "../input/inputVariables";
 import {useFormik} from "formik";
 import {ModalCreateSchema} from "../input/ModalCreateValidation";
 import Input from "../input/Input";
@@ -992,109 +991,38 @@ const UsersComponent = ({...props}: HookData) => {
                 >
                     {selectedData.map((data: any) => (
                         <div className="page-details__wrapper">
-                            {data.role !== "owner" ? (
-                                <div className="page-container">
-                                    <p className="page-details-text">About user</p>
-                                    <div className="page-details__wrap">
-                                        <div className="page-details__icon">
-                                            <img className="page-details__img" src={data.avatar} alt="avatar"/>
-                                        </div>
-                                        <div className="page-details">
-                                            <div className="page-details__data">
-                                                <div className="personal-details__titles">
-                                                    <p className="personal-details__title">Name</p>
-                                                    <p className="personal-details__title">Surname</p>
-                                                    <p className="personal-details__title">Email</p>
-                                                    <p className="personal-details__title ">Phone number</p>
-                                                    <p className="personal-details__title">Country</p>
-                                                    <p className="personal-details__title">Town</p>
-                                                    <p className="personal-details__title">Address</p>
-                                                </div>
-                                                <div className="personal-details__information">
-                                                    <p className="personal-details__info">{data.name}</p>
-                                                    <p className="personal-details__info">{data.surname}</p>
-                                                    <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
-                                                    <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
-                                                    <p className="personal-details__info">{data.phone_number}</p>
-                                                    <p className="personal-details__info">{data.country}</p>
-                                                    <p className="personal-details__info">{data.city}</p>
-                                                    <p className="personal-details__info ">{data.address}</p>
-                                                </div>
+                            {<div className="page-container">
+                                <p className="page-details-text">About user</p>
+                                <div className="page-details__wrap">
+                                    <div className="page-details__icon">
+                                        <img className="page-details__img" src={data.avatar} alt="avatar"/>
+                                    </div>
+                                    <div className="page-details">
+                                        <div className="page-details__data">
+                                            <div className="personal-details__titles">
+                                                <p className="personal-details__title">Name</p>
+                                                <p className="personal-details__title">Surname</p>
+                                                <p className="personal-details__title">Email</p>
+                                                <p className="personal-details__title ">Phone number</p>
+                                                <p className="personal-details__title">Country</p>
+                                                <p className="personal-details__title">Town</p>
+                                                <p className="personal-details__title">Address</p>
+                                            </div>
+                                            <div className="personal-details__information">
+                                                <p className="personal-details__info">{data.name}</p>
+                                                <p className="personal-details__info">{data.surname}</p>
+                                                <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
+                                                <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
+                                                <p className="personal-details__info">{data.phone_number}</p>
+                                                <p className="personal-details__info">{data.country}</p>
+                                                <p className="personal-details__info">{data.city}</p>
+                                                <p className="personal-details__info ">{data.address}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            ) : (
-                                
-                                
-                                <div className="page-details__first-container">
-                                    <div className="page-details__container">
-                                        <div className="page-details__first-wrapper">
-                                            <p className="page-details-second-text">About user</p>
-                                            <div className="page-details__first-icon">
-                                                <img className="page-details__first-img" src={data.avatar}
-                                                     alt="avatar"/>
-                                            </div>
-                                            <div className="page-details__first-data">
-                                                <div className="personal-details__titles">
-                                                    <p className="personal-details__title">Name</p>
-                                                    <p className="personal-details__title">Surname</p>
-                                                    <p className="personal-details__title">Email</p>
-                                                    <p className="personal-details__title ">Phone number</p>
-                                                    <p className="personal-details__title">Country</p>
-                                                    <p className="personal-details__title">Town</p>
-                                                    <p className="personal-details__title">Address</p>
-                                                </div>
-                                                
-                                                <div className="personal-details__information">
-                                                    <p className="personal-details__info">{data.name}</p>
-                                                    <p className="personal-details__info">{data.surname}</p>
-                                                    <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
-                                                    <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
-                                                    <p className="personal-details__info">{data.phone_number}</p>
-                                                    <p className="personal-details__info">{data.country}</p>
-                                                    <p className="personal-details__info">{data.city}</p>
-                                                    <p className="personal-details__info ">{data.address}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {adminData.map((addData: any) => (
-                                            
-                                            <div className="page-details__first-wrapper">
-                                                <p className="page-details-text page-details-title page-details_media-text">
-                                                    About regional administrator
-                                                </p>
-                                                <div className="page-details__first-icon">
-                                                    <img className="page-details__first-img" src={addData.avatar}
-                                                         alt="avatar"/>
-                                                </div>
-                                                <div className="page-details__first-data">
-                                                    <div className="personal-details__titles">
-                                                        <p className="personal-details__title">Name</p>
-                                                        <p className="personal-details__title">Surname</p>
-                                                        <p className="personal-details__title">Email</p>
-                                                        <p className="personal-details__title ">Phone number</p>
-                                                        <p className="personal-details__title">Country</p>
-                                                        <p className="personal-details__title">Town</p>
-                                                        <p className="personal-details__title">Address</p>
-                                                    </div>
-                                                    
-                                                    <div className="personal-details__information">
-                                                        <p className="personal-details__info">{addData.name}</p>
-                                                        <p className="personal-details__info">{addData.surname}</p>
-                                                        <p className="personal-details__info personal-details__desktop-email">{addData.email}</p>
-                                                        <p className="personal-details__info personal-details__mobile-email">{addData.email}</p>
-                                                        <p className="personal-details__info">{addData.phone_number}</p>
-                                                        <p className="personal-details__info">{addData.country}</p>
-                                                        <p className="personal-details__info">{addData.city}</p>
-                                                        <p className="personal-details__info ">{addData.address}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
+                            </div>
+                            }
                         </div>
                     ))}
                 </ModalFunction>

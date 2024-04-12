@@ -99,7 +99,6 @@
     line-height: normal;
     border: none;
     background-color: transparent;
-    cursor: pointer;
 }
 
 .page__nav-link.active {

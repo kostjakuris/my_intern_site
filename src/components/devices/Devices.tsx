@@ -3,10 +3,9 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./Devices.css";
 import "./ModalCreate.min.css";
-import React, {useState, useMemo, useRef, useCallback, useEffect} from "react";
-import {HookData} from "../input/inputVariables";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {DeviceFormData, HookData} from "../input/inputVariables";
 import ModalFunction from "../modal-function/ModalFunction";
-import {DeviceFormData} from "../input/inputVariables";
 import {useFormik} from "formik";
 import Input from "../input/Input";
 import {CreateDeviceSchema} from "../input/CreateDeviceValidation";
@@ -57,9 +56,7 @@ const DevicesComponent = ({...props}: HookData) => {
     const gridRef = useRef<AgGridReact>(null);
     const [columnDefs] = useState<GridData[]>([
         {
-            headerName : "Serial number",
-            field : "serial_number",
-            checkboxSelection : true,
+            headerName : "Serial number", field : "serial_number", checkboxSelection : true,
             headerCheckboxSelection : true
         },
         {headerName : "Device type", field : "device_type"},
@@ -715,7 +712,7 @@ const DevicesComponent = ({...props}: HookData) => {
                 {selectedDevice.map((data: any) => (
                     <div className="page-details__wrapper">
                         <div className="page-details__icon">
-                            <img className="page-details__img" src={data.avatar} alt="avatar"/>
+                            <img className="page-details__img" src="/img/image 5.jpg" alt="avatar"/>
                         </div>
                         <div className="page-details__data">
                             <div className="personal-details__titles">

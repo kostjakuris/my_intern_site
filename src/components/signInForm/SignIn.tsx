@@ -3,9 +3,8 @@ import {Link} from "react-router-dom";
 import "./signInForm.min.css";
 import {useEffect, useState} from "react";
 import Input from "../input/Input";
-import {SignInFormData} from "../input/inputVariables";
+import {HookData, SignInFormData} from "../input/inputVariables";
 import {signInSchema} from "../input/SignInValidation";
-import {HookData} from "../input/inputVariables";
 import {mobxStore} from "../../store/auth/mobx";
 import {observer} from "mobx-react-lite";
 
