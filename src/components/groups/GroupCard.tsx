@@ -1,6 +1,5 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./Groups.css";
-import {useState, useEffect, useCallback} from "react";
 import ModalFunction from "../modal-function/ModalFunction";
 import GroupGrid from "./GroupGrid";
 import {HookData} from "../input/inputVariables";
@@ -13,26 +12,26 @@ const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, set
     const [openActive, setOpenActive] = useState(false);
     const [addRowData, setAddRowData] = useState<any[] | undefined>();
     const [rowData, setRowData] = useState<any[] | undefined>();
-
-
+    
+    
     function changeMenu () {
         if (openActive) {
             setOpenActive(false);
         }
     }
-
+    
     useEffect(() => {
         if (Array.isArray(mobxStore.devices) && Array.isArray(groupData)) {
             const devicesCounts = groupData.map((group) => {
                 const filteredDevices = mobxStore.devices.filter((device) => device.group_id === group.id);
                 return filteredDevices.length;
             });
-
-
+            
+            
             setAddRowData(devicesCounts);
         }
     }, [groupData, mobxStore.devices]);
-
+    
     const filteredDevices = useCallback((id: number) => {
         const updatedRowData: any[] = [];
         if (Array.isArray(mobxStore.devices) && Array.isArray(groupData)) {
@@ -41,37 +40,29 @@ const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, set
             setRowData(updatedRowData);
         }
     }, []);
-
+    
     return (
         <div className="groups__wrapper">
             {groupData ? groupData.map((data, index) => (
                 <div key={data.id} className="groups__card" onClick={() => changeMenu()}>
-
+                    
                     <div className="groups__card-top">
                         <div className="groups__card-name">{data.name}
                         </div>
-
+                        
                         <div className="groups__card-menu">
-                        <span key={data.id} className="groups__card-open"
-                              onClick={() => setOpenActive((prev) => !prev)}>
-                            <img src="icons/charm_menu-kebab.svg" alt="menu"/>
-                        </span>
-
-                            <span className={openActive ? "groups__card-edit active" : "groups__card-edit"}
-                                  onClick={() => mobxStore.editGroup(data.id)}>
-                                <img src="icons/Edit.svg" alt="edit"/>
-                            </span>
-                            <span className={openActive ? "groups__card-delete active" : "groups__card-delete"}
+                            <span key={data.id}
+                                  className={"groups__card-delete active"}
                                   onClick={() => mobxStore.deleteGroup(data.id)}>
-                            <img src="icons/material-symbols_delete-outline.svg" alt="delete"/>
-                        </span>
+                                    <img src="icons/material-symbols_delete-outline.svg" alt="delete"/>
+                            </span>
                         </div>
                     </div>
-
+                    
                     <div className="groups__card-devices">
                         {addRowData ? addRowData[index] : 0} Devices
                     </div>
-
+                    
                     <div className="groups__card-button" onClick={() => filteredDevices(data.id)}>
                         <button className="submit__button-groups" onClick={() => setGroupDetailsActive(true)}>
                             Details
@@ -87,7 +78,7 @@ const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, set
                             <h3 className="form-wrapper-modal__title">User`s info</h3>
                         </div>
                         <div>
-
+                            
                             <GroupGrid
                                 rowData={rowData}
                                 groupDevices={addRowData}
@@ -98,13 +89,13 @@ const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, set
                                 groupData={groupData}
                             />
                         </div>
-
+                    
                     </ModalFunction>
-
+                
                 </div>
-
+            
             )) : null}
         </div>
     );
 };
-export const GroupCard=observer(GroupCardComponent);
+export const GroupCard = observer(GroupCardComponent);

@@ -602,7 +602,8 @@ const UsersComponent = ({...props}: HookData) => {
                 >
                     <p className="modal-delete__text">Are you sure you want to delete?</p>
                     <div className="buttons-delete">
-                        <button className="cancel__button cancel__button-delete" onClick={() => setDeleteActive(false)}>
+                        <button className="cancel__button cancel__button-delete"
+                                onClick={() => setDeleteActive(false)}>
                             Cancel
                         </button>
                         

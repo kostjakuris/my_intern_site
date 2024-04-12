@@ -1,12 +1,10 @@
-import React from "react";
-import {HookData} from "../input/inputVariables";
-import {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import {createGroupData, HookData} from "../input/inputVariables";
 import "./Groups.min.css";
 import {GroupCard} from "./GroupCard";
 import Input from "../input/Input";
 import ModalFunction from "../modal-function/ModalFunction";
 import {useFormik} from "formik";
-import {createGroupData} from "../input/inputVariables";
 import * as yup from "yup";
 import {mobxStore} from "../../store/auth/mobx";
 import {observer} from "mobx-react-lite";
@@ -66,18 +64,16 @@ const GroupsComponent = ({...props}: HookData) => {
             <div className="grid-function-groups">
                 <div className="grid-buttons-groups">
                     <button className="users-grid__button" onClick={() => setAddGroup(true)}>
-            <span className="groups-grid__span">
-              <img className="users-grid__img" src="icons/material-symbols_add.svg" alt="add user"/>
-            </span>
+                        <span className="groups-grid__span">
+                            <img className="users-grid__img" src="icons/material-symbols_add.svg" alt="add user"/>
+                        </span>
                     </button>
                 </div>
             </div>
             
-            <ModalFunction
-                active={addGroup}
-                setActive={setAddGroup}
-                activeClassName={" modal-createGroup active"}
-                className={"modal-createGroup"}
+            <ModalFunction active={addGroup} setActive={setAddGroup}
+                           activeClassName={" modal-createGroup active"}
+                           className={"modal-createGroup"}
             >
                 <p>Create new group</p>
                 <form onSubmit={handleSubmit}>

@@ -702,11 +702,9 @@ const DevicesComponent = ({...props}: HookData) => {
                 </div>
             </ModalFunction>
             
-            <ModalFunction
-                active={deviceDetailsActive}
-                setActive={setDeviceDetailsActive}
-                activeClassName={"modal__content active"}
-                className={"modal__content"}
+            <ModalFunction active={deviceDetailsActive} setActive={setDeviceDetailsActive}
+                           activeClassName={"modal__content active"}
+                           className={"modal__content"}
             >
                 <p className="page-details-text">About device</p>
                 {selectedDevice.map((data: any) => (

@@ -47,18 +47,6 @@
     cursor: pointer;
 }
 
-.groups__card-edit {
-    display: none;
-}
-
-.groups__card-edit.active {
-    display: block;
-    position: absolute;
-    top: 35px;
-    left: 0;
-    cursor: pointer;
-}
-
 .groups__card-delete {
     display: none;
 }
@@ -66,8 +54,8 @@
 .groups__card-delete.active {
     display: block;
     position: absolute;
-    top: 65px;
-    left: -4px;
+    top: 0;
+    left: -20px;
     cursor: pointer;
 }
 
@@ -138,7 +126,7 @@
     .groups__card {
         width: 300px;
     }
-
+    
     .submit__button-groups {
         width: 300px;
     }
@@ -149,7 +137,7 @@
         width: 280px;
         height: 150px;
     }
-
+    
     .submit__button-groups {
         width: 280px;
         height: 40px;
@@ -166,11 +154,11 @@
     .groups__card {
         width: 300px;
     }
-
+    
     .submit__button-groups {
         width: 300px;
     }
-
+    
     .first-card {
         flex-direction: column;
         align-items: center;
@@ -181,7 +169,7 @@
     .groups__container {
         margin-left: 0;
     }
-
+    
     .warn_message {
         font-size: 14px;
     }
@@ -191,7 +179,7 @@
     .groups__card {
         width: 250px;
     }
-
+    
     .submit__button-groups {
         width: 250px;
     }
@@ -201,7 +189,7 @@
     .groups__card {
         width: 200px;
     }
-
+    
     .submit__button-groups {
         width: 200px;
     }
@@ -211,7 +199,7 @@
     .groups__card {
         width: 150px;
     }
-
+    
     .submit__button-groups {
         width: 150px;
     }
