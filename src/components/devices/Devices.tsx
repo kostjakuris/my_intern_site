@@ -32,6 +32,7 @@ const DevicesComponent = ({...props}: HookData) => {
             city : "",
             address : "",
             serial_number : "",
+            group_id : "",
         },
         validationSchema : CreateDeviceSchema,
         onSubmit : async () => {
@@ -290,6 +291,21 @@ const DevicesComponent = ({...props}: HookData) => {
                                         errors={errors.serial_number}
                                     />
                                 </div>
+                                
+                                <div className=" form__serialNumber ">
+                                    <Input
+                                        id={"group_id"}
+                                        name={"group_id"}
+                                        type={"text"}
+                                        placeholder={"Group id"}
+                                        className={"form serialNumber"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.group_id}
+                                        touched={touched.group_id}
+                                        errors={errors.group_id}
+                                    />
+                                </div>
                             </div>
                         </div>
                         
@@ -408,6 +424,20 @@ const DevicesComponent = ({...props}: HookData) => {
                                     value={values.serial_number}
                                     touched={touched.serial_number}
                                     errors={errors.serial_number}
+                                />
+                            </div>
+                            <div className=" form__serialNumber ">
+                                <Input
+                                    id={"group_id"}
+                                    name={"group_id"}
+                                    type={"text"}
+                                    placeholder={"Group id"}
+                                    className={"form-modal town"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.group_id}
+                                    touched={touched.group_id}
+                                    errors={errors.group_id}
                                 />
                             </div>
                         </div>

@@ -124,17 +124,8 @@ class MobxStore {
     
     message: string | null = null;
     createUser = (
-        
         async ({
-                   name,
-                   surname,
-                   email,
-                   role,
-                   password,
-                   country,
-                   city,
-                   address,
-                   administrator_id
+                   name, surname, email, role, password, country, city, address, administrator_id
                }: CreateUserGridData) => {
             const persistedToken = this.accessToken;
             try {
@@ -189,8 +180,8 @@ class MobxStore {
         }
     );
     createDevice = (
-        
-        async ({name, device_type, address, serial_number, email}: DeviceFormData) => {
+        async ({name, device_type, address, serial_number, email, group_id}: DeviceFormData) => {
+            const newGroupId = group_id ? Number(group_id) : 1;
             const persistedToken = this.accessToken;
             try {
                 this.setAuthHeader(persistedToken);
@@ -205,7 +196,7 @@ class MobxStore {
                         phase_active : true,
                         phase_type : "laptop",
                         sum_power : 155.9,
-                        group_id : 1,
+                        group_id : newGroupId,
                         location : "{}",
                         administrator_id : 5,
                     });

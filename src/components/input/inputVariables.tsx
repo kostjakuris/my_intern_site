@@ -13,7 +13,7 @@ export type DeviceFormData = {
     phase_active?: boolean | null;
     phase_type?: string | null;
     sum_power?: number | null;
-    group_id?: number | null;
+    group_id?: string | null;
     location?: string | null;
 };
 

@@ -125,6 +125,7 @@ const UsersComponent = ({...props}: HookData) => {
     const [rowData, setRowData] = useState<any[]>();
     const [selectedData, setSelectedData] = useState<any>([
         {
+            id : "",
             name : "",
             surname : "",
             email : "",
@@ -167,6 +168,7 @@ const UsersComponent = ({...props}: HookData) => {
         
         if (selectedRows) {
             const updatedSelectedData = selectedRows.map((selectedData) => ({
+                id : selectedData.id,
                 name : selectedData.name,
                 surname : selectedData.surname,
                 email : selectedData.email,
@@ -996,6 +998,7 @@ const UsersComponent = ({...props}: HookData) => {
                                     <div className="page-details">
                                         <div className="page-details__data">
                                             <div className="personal-details__titles">
+                                                <p className="personal-details__title">Id</p>
                                                 <p className="personal-details__title">Name</p>
                                                 <p className="personal-details__title">Surname</p>
                                                 <p className="personal-details__title">Email</p>
@@ -1005,6 +1008,7 @@ const UsersComponent = ({...props}: HookData) => {
                                                 <p className="personal-details__title">Address</p>
                                             </div>
                                             <div className="personal-details__information">
+                                                <p className="personal-details__info">{data.id}</p>
                                                 <p className="personal-details__info">{data.name}</p>
                                                 <p className="personal-details__info">{data.surname}</p>
                                                 <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
