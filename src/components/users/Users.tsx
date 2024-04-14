@@ -223,8 +223,7 @@ const UsersComponent = ({...props}: HookData) => {
     
     
     return mobxStore.user.role !== "regional_admin" && mobxStore.user.role !== "admin" ? (
-            <div className={mobxStore.user.role === "regional_admin" || mobxStore.user.role === "admin" ? "warn_message" :
-                "warn_message disabled"}
+            <div className={"warn_message"}
                  onClick={() => changeState()}>You don`t have any permissions to see this page</div>
         )
         :

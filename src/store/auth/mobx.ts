@@ -3,7 +3,8 @@ import {
     CreateUserData,
     CreateUserGridData,
     DeviceFormData,
-    SignInFormData, ValuesData
+    SignInFormData,
+    ValuesData
 } from "../../components/input/inputVariables";
 import axios from "axios";
 import {makeAutoObservable} from "mobx";
@@ -189,23 +190,24 @@ class MobxStore {
     );
     createDevice = (
         
-        async ({name, device_type, address, serial_number}: DeviceFormData) => {
+        async ({name, device_type, address, serial_number, email}: DeviceFormData) => {
             const persistedToken = this.accessToken;
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create",
                     {
-                        owner_id : 3,
+                        owner_id : 24,
                         name,
                         device_type,
                         address,
                         serial_number,
+                        email,
                         phase_active : true,
                         phase_type : "laptop",
                         sum_power : 155.9,
                         group_id : 1,
                         location : "{}",
-                        administrator_id : 2,
+                        administrator_id : 5,
                     });
                 this.devices = respons.data.devices;
                 return respons.data;
@@ -374,6 +376,7 @@ class MobxStore {
                 },
             });
             this.user = res.data.user;
+            console.log(res.data.user);
             this.isLoggedIn = true;
             return res.data;
         } catch (e: any) {
@@ -460,6 +463,8 @@ class MobxStore {
                 },
             });
             this.devices = res.data.devices;
+            console.log(res.data.devices);
+            
             return res.data;
             
         } catch (e: any) {

@@ -74,12 +74,13 @@ const DevicesComponent = ({...props}: HookData) => {
             serial_number : null,
             device_type : null,
             name : null,
-            email : null,
+            owner_email : null,
             country : null,
             city : null,
             address : null,
         },
     ]);
+    console.log(selectedDevice);
     
     const defaultColDef = useMemo(
         () => ({
@@ -106,7 +107,7 @@ const DevicesComponent = ({...props}: HookData) => {
                 serial_number : selectedData.serial_number,
                 device_type : selectedData.device_type,
                 name : selectedData.name,
-                email : selectedData.email,
+                owner_email : selectedData.owner_email,
                 country : selectedData.country,
                 city : selectedData.city,
                 address : selectedData.address,
@@ -717,7 +718,7 @@ const DevicesComponent = ({...props}: HookData) => {
                                 <p className="personal-details__title">Serial number</p>
                                 <p className="personal-details__title">Device Type</p>
                                 <p className="personal-details__title">Name</p>
-                                <p className="personal-details__title ">Email</p>
+                                <p className="personal-details__title ">Owner email</p>
                                 <p className="personal-details__title">Country</p>
                                 <p className="personal-details__title">City</p>
                                 <p className="personal-details__title">Address</p>
@@ -726,9 +727,9 @@ const DevicesComponent = ({...props}: HookData) => {
                             <div className="personal-details__information">
                                 <p className="personal-details__info">{data.serial_number}</p>
                                 <p className="personal-details__info">{data.device_type}</p>
-                                <p className="personal-details__info personal-details__desktop-email">{data.email}</p>
-                                <p className="personal-details__info personal-details__mobile-email">{data.email}</p>
                                 <p className="personal-details__info">{data.name}</p>
+                                <p className="personal-details__info personal-details__desktop-email">{data.owner_email}</p>
+                                <p className="personal-details__info personal-details__mobile-email">{data.owner_email}</p>
                                 <p className="personal-details__info">{data.country}</p>
                                 <p className="personal-details__info">{data.city}</p>
                                 <p className="personal-details__info ">{data.address}</p>
