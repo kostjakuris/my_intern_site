@@ -628,8 +628,6 @@ const UsersComponent = ({...props}: HookData) => {
                         </div>
                         <div className="form-wrapper-modal ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address and
-                                    phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role </p>
                                 <p className="warn_message-info">Admin can change everything</p>
@@ -800,8 +798,6 @@ const UsersComponent = ({...props}: HookData) => {
                         
                         <div className="form-wrapper-modal--mobile ">
                             <div className="form-wrapper-warn__message">
-                                <p className="warn_message-info">Owner and customer can only change password,address and
-                                    phone number</p>
                                 <p className="warn_message-info">Regional admin can`t change email,country,town and
                                     role</p>
                                 <p className="warn_message-info">Admin can change everything</p>
