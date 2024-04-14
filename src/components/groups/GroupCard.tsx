@@ -5,6 +5,7 @@ import GroupGrid from "./GroupGrid";
 import {HookData} from "../input/inputVariables";
 import {mobxStore} from "../../store/auth/mobx";
 import {observer} from "mobx-react-lite";
+import {toJS} from "mobx";
 
 
 const GroupCardComponent = ({groupData, navActive, setNavActive, signActive, setSignActive}: HookData) => {

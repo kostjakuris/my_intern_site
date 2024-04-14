@@ -376,7 +376,6 @@ class MobxStore {
                 },
             });
             this.user = res.data.user;
-            console.log(res.data.user);
             this.isLoggedIn = true;
             return res.data;
         } catch (e: any) {
@@ -463,7 +462,6 @@ class MobxStore {
                 },
             });
             this.devices = res.data.devices;
-            console.log(res.data.devices);
             
             return res.data;
             

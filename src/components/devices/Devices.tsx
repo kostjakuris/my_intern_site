@@ -80,7 +80,6 @@ const DevicesComponent = ({...props}: HookData) => {
             address : null,
         },
     ]);
-    console.log(selectedDevice);
     
     const defaultColDef = useMemo(
         () => ({
