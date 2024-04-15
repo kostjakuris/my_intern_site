@@ -27,7 +27,7 @@ const DevicesComponent = ({...props}: HookData) => {
         initialValues : {
             name : "",
             device_type : "",
-            email : "",
+            owner_id : "",
             country : "",
             city : "",
             address : "",
@@ -203,16 +203,16 @@ const DevicesComponent = ({...props}: HookData) => {
                                 
                                 <div className=" form__email ">
                                     <Input
-                                        id={"email"}
-                                        name={"email"}
-                                        type={"email"}
-                                        placeholder={"Email"}
+                                        id={"owner_id"}
+                                        name={"owner_id"}
+                                        type={"text"}
+                                        placeholder={"Owner id"}
                                         className={"form email"}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.email}
-                                        touched={touched.email}
-                                        errors={errors.email}
+                                        value={values.owner_id}
+                                        touched={touched.owner_id}
+                                        errors={errors.owner_id}
                                     />
                                 </div>
                                 
@@ -355,16 +355,16 @@ const DevicesComponent = ({...props}: HookData) => {
                             
                             <div className=" form__email-modal ">
                                 <Input
-                                    id={"email"}
-                                    name={"email"}
-                                    type={"email"}
-                                    placeholder={"Email"}
+                                    id={"owner_id"}
+                                    name={"owner_id"}
+                                    type={"text"}
+                                    placeholder={"Owner id"}
                                     className={"form-modal email"}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.email}
-                                    touched={touched.email}
-                                    errors={errors.email}
+                                    value={values.owner_id}
+                                    touched={touched.owner_id}
+                                    errors={errors.owner_id}
                                 />
                             </div>
                             
@@ -489,7 +489,7 @@ const DevicesComponent = ({...props}: HookData) => {
                 
                 </div>
                 
-                <div className="form-wrapper-modal ">
+                <div className="form-wrapper-modal">
                     <form onSubmit={handleSubmit}>
                         <div className="signUp__form--modal">
                             <div className="left__form--modal">
@@ -508,21 +508,6 @@ const DevicesComponent = ({...props}: HookData) => {
                                     />
                                 </div>
                                 
-                                <div className=" form__email ">
-                                    <Input
-                                        id={"email"}
-                                        name={"email"}
-                                        type={"email"}
-                                        placeholder={"Email"}
-                                        className={"form email"}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.email}
-                                        touched={touched.email}
-                                        errors={errors.email}
-                                    />
-                                </div>
-                                
                                 <div className=" form__country ">
                                     <Input
                                         id={"country"}
@@ -538,7 +523,7 @@ const DevicesComponent = ({...props}: HookData) => {
                                     />
                                 </div>
                                 
-                                <div className=" form__adress ">
+                                <div className="form__adress">
                                     <Input
                                         id={"address"}
                                         name={"address"}
@@ -550,6 +535,20 @@ const DevicesComponent = ({...props}: HookData) => {
                                         value={values.address}
                                         touched={touched.address}
                                         errors={errors.address}
+                                    />
+                                </div>
+                                <div className=" form__serialNumber ">
+                                    <Input
+                                        id={"group_id"}
+                                        name={"group_id"}
+                                        type={"text"}
+                                        placeholder={"Group id"}
+                                        className={"form serialNumber"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.group_id}
+                                        touched={touched.group_id}
+                                        errors={errors.group_id}
                                     />
                                 </div>
                             </div>
@@ -584,7 +583,7 @@ const DevicesComponent = ({...props}: HookData) => {
                                         errors={errors.city}
                                     />
                                 </div>
-                                <div className=" form__serialNumber ">
+                                <div className="form__serialNumber">
                                     <Input
                                         id={"serial_number"}
                                         name={"serial_number"}
@@ -598,6 +597,7 @@ const DevicesComponent = ({...props}: HookData) => {
                                         errors={errors.serial_number}
                                     />
                                 </div>
+                            
                             </div>
                         </div>
                         
@@ -645,20 +645,6 @@ const DevicesComponent = ({...props}: HookData) => {
                                 />
                             </div>
                             
-                            <div className=" form__email-modal ">
-                                <Input
-                                    id={"email"}
-                                    name={"email"}
-                                    type={"email"}
-                                    placeholder={"Email"}
-                                    className={"form-modal email"}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.email}
-                                    touched={touched.email}
-                                    errors={errors.email}
-                                />
-                            </div>
                             
                             <div className=" form__adress-modal ">
                                 <Input
@@ -716,6 +702,20 @@ const DevicesComponent = ({...props}: HookData) => {
                                     value={values.serial_number}
                                     touched={touched.serial_number}
                                     errors={errors.serial_number}
+                                />
+                            </div>
+                            <div className=" form__serialNumber ">
+                                <Input
+                                    id={"group_id"}
+                                    name={"group_id"}
+                                    type={"text"}
+                                    placeholder={"Group id"}
+                                    className={"form-modal town"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.group_id}
+                                    touched={touched.group_id}
+                                    errors={errors.group_id}
                                 />
                             </div>
                         </div>

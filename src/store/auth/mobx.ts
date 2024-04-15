@@ -180,19 +180,19 @@ class MobxStore {
         }
     );
     createDevice = (
-        async ({name, device_type, address, serial_number, email, group_id}: DeviceFormData) => {
+        async ({name, device_type, address, serial_number, group_id, owner_id}: DeviceFormData) => {
             const newGroupId = group_id ? Number(group_id) : 1;
+            const newOwnerId = Number(owner_id);
             const persistedToken = this.accessToken;
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create",
                     {
-                        owner_id : 24,
+                        owner_id : newOwnerId,
                         name,
                         device_type,
                         address,
                         serial_number,
-                        email,
                         phase_active : true,
                         phase_type : "laptop",
                         sum_power : 155.9,
@@ -245,20 +245,20 @@ class MobxStore {
         }
     });
     editDevice = (
-        
-        async ({id, name, device_type, country, email, city, address, serial_number}: DeviceFormData) => {
+        async ({id, name, device_type, country, city, address, serial_number, group_id}: DeviceFormData) => {
             const persistedToken = this.accessToken;
+            const newGroupId = group_id ? Number(group_id) : 1;
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/devices/edit", {
                     id,
                     name,
                     device_type,
-                    email,
                     country,
                     city,
                     address,
                     serial_number,
+                    group_id : newGroupId,
                 });
                 this.devices = respons.data.devices;
                 return respons.data;
@@ -442,8 +442,6 @@ class MobxStore {
     
     getDevices = async () => {
         const persistedToken = this.accessToken;
-        
-        
         try {
             this.setAuthHeader(persistedToken);
             const res = await axios.get("http://intern-project-backend.atwebpages.com/api/devices", {
@@ -453,7 +451,6 @@ class MobxStore {
                 },
             });
             this.devices = res.data.devices;
-            
             return res.data;
             
         } catch (e: any) {
@@ -485,22 +482,6 @@ class MobxStore {
             }
         };
     
-    editGroup = async (id: number) => {
-        const persistedToken = this.accessToken;
-        try {
-            this.setAuthHeader(persistedToken);
-            const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/groups/edit", {
-                id,
-            });
-            this.groups = respons.data.groups;
-            return respons.data;
-            
-        } catch (e: any) {
-            this.message = e.response.data.message;
-            return e.message;
-            
-        }
-    };
     deleteGroup = async (id: number) => {
         const persistedToken = this.accessToken;
         try {

@@ -2,7 +2,7 @@ import React from "react";
 
 export type DeviceFormData = {
     id?: number;
-    owner_id?: number | null;
+    owner_id?: string | null;
     name?: string | null;
     device_type?: string | null;
     email?: string | null;
