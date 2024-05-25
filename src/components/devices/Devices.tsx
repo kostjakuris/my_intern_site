@@ -134,6 +134,7 @@ const DevicesComponent = ({...props}: HookData) => {
     }, []);
     
     const onSubmitEditDevice = useCallback(async (values: DeviceFormData) => {
+        
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {

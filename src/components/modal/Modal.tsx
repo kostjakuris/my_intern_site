@@ -5,9 +5,9 @@ import {ValuesData} from "../input/inputVariables";
 import {useFormik} from "formik";
 import {useState} from "react";
 import Input from "../input/Input";
-import {ModalEditSchema} from "../input/ModalEditValidation";
 import {mobxStore} from "../../store/auth/mobx";
 import {observer} from "mobx-react-lite";
+import {ModalEditSchema} from "../input/ModalEditValidation";
 
 const ModalComponent = ({active, setActive}: ModalData) => {
     const [hidePassword, setHidePassword] = useState(false);
@@ -21,6 +21,7 @@ const ModalComponent = ({active, setActive}: ModalData) => {
             city : "",
             password : "",
             address : "",
+            phone_number : "",
         },
         validationSchema : ModalEditSchema,
         onSubmit : async (values: ValuesData) => {
@@ -163,6 +164,20 @@ const ModalComponent = ({active, setActive}: ModalData) => {
                                     errors={errors.city}
                                 />
                             </div>
+                            <div className=" form__phoneNumber ">
+                                <Input
+                                    id={"phone_number"}
+                                    name={"phone_number"}
+                                    type={"tel"}
+                                    placeholder={"Phone number"}
+                                    className={"form phoneNumber"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.phone_number}
+                                    touched={touched.phone_number}
+                                    errors={errors.phone_number}
+                                />
+                            </div>
                         </div>
                     </div>
                     
@@ -294,6 +309,20 @@ const ModalComponent = ({active, setActive}: ModalData) => {
                                 value={values.city}
                                 touched={touched.city}
                                 errors={errors.city}
+                            />
+                        </div>
+                        <div className=" form__phoneNumber ">
+                            <Input
+                                id={"phone_number"}
+                                name={"phone_number"}
+                                type={"tel"}
+                                placeholder={"Phone number"}
+                                className={"form-modal phoneNumber"}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.phone_number}
+                                touched={touched.phone_number}
+                                errors={errors.phone_number}
                             />
                         </div>
                     </div>

@@ -153,7 +153,7 @@ class MobxStore {
         }
     );
     editUser = (
-        async ({name, surname, email, password, country, city, address}: ValuesData) => {
+        async ({name, surname, email, password, country, city, address, phone_number}: ValuesData) => {
             const persistedToken = this.accessToken;
             const id = this.user.id;
             
@@ -169,6 +169,7 @@ class MobxStore {
                         country,
                         city,
                         address,
+                        phone_number
                     });
                 this.user = respons.data.user;
                 return respons.data;

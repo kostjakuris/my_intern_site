@@ -8,4 +8,6 @@ export const ModalEditSchema = yup.object().shape({
     city : yup.string().required("Town required"),
     password : yup.string().required("Password required").min(8, "Must be at least 8 letters or more"),
     address : yup.string().required("Address required"),
+    phone_number : yup.string().required("Phone number required")
+        .matches(/(\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2,3}$)/gm, "Invalid phone number"),
 });

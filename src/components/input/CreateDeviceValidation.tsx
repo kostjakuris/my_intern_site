@@ -8,4 +8,5 @@ export const CreateDeviceSchema = yup.object().shape({
     city : yup.string().required("Town required"),
     address : yup.string().required("Address required"),
     serial_number : yup.string().required("Serial number required"),
+    group_id : yup.string().required("Group id required"),
 });
