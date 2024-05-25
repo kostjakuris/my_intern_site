@@ -131,7 +131,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.post(
-                    "http://intern-project-backend.atwebpages.com/api/users/create-user", {
+                    "https://diplom.korvir.zp.ua/", {
                         name,
                         surname,
                         email,
@@ -160,7 +160,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.put(
-                    "http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+                    "https://diplom.korvir.zp.ua/", {
                         id,
                         name,
                         surname,
@@ -187,7 +187,7 @@ class MobxStore {
             const persistedToken = this.accessToken;
             try {
                 this.setAuthHeader(persistedToken);
-                const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/devices/create",
+                const respons = await axios.post("https://diplom.korvir.zp.ua/",
                     {
                         owner_id : newOwnerId,
                         name,
@@ -215,7 +215,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/devices/delete", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
                 data : {
                     id,
                 },
@@ -232,7 +232,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/users/delete-user", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
                 data : {
                     id,
                 },
@@ -251,7 +251,7 @@ class MobxStore {
             const newGroupId = group_id ? Number(group_id) : 1;
             try {
                 this.setAuthHeader(persistedToken);
-                const respons = await axios.put("http://intern-project-backend.atwebpages.com/api/devices/edit", {
+                const respons = await axios.put("https://diplom.korvir.zp.ua/", {
                     id,
                     name,
                     device_type,
@@ -277,7 +277,7 @@ class MobxStore {
             
             try {
                 this.setAuthHeader(persistedToken);
-                const res = await axios.post("http://intern-project-backend.atwebpages.com/api/groups/create", {
+                const res = await axios.post("https://diplom.korvir.zp.ua/", {
                     name
                 });
                 this.groups = res.data.groups;
@@ -312,7 +312,7 @@ class MobxStore {
         async ({name, surname, email, password, country, city, address, phone_number}: CreateUserData) => {
             this.isLoading = true;
             try {
-                const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/register", {
+                const respons = await axios.post("https://diplom.korvir.zp.ua/", {
                     name,
                     surname,
                     email,
@@ -337,7 +337,7 @@ class MobxStore {
     logIn = async ({email, password}: SignInFormData) => {
         this.isLoading = true;
         try {
-            const respons = await axios.post("http://intern-project-backend.atwebpages.com/api/auth/login", {
+            const respons = await axios.post("https://diplom.korvir.zp.ua/", {
                 email,
                 password,
             });
@@ -361,7 +361,7 @@ class MobxStore {
         
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users/user-info", {
+            const res = await axios.get("https://diplom.korvir.zp.ua/", {
                 headers : {
                     "Content-Type" : "application/json",
                     Accept : "application/json",
@@ -401,7 +401,7 @@ class MobxStore {
         
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("http://intern-project-backend.atwebpages.com/api/users", {});
+            const res = await axios.get("https://diplom.korvir.zp.ua/", {});
             this.users = res.data.users;
             return res.data;
             
@@ -421,7 +421,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.put(
-                    "http://intern-project-backend.atwebpages.com/api/users/update-user-info", {
+                    "https://diplom.korvir.zp.ua/", {
                         id,
                         name,
                         surname,
@@ -445,7 +445,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("http://intern-project-backend.atwebpages.com/api/devices", {
+            const res = await axios.get("https://diplom.korvir.zp.ua/", {
                 headers : {
                     "Content-Type" : "application/json",
                     Accept : "application/json",
@@ -467,7 +467,7 @@ class MobxStore {
             
             try {
                 this.setAuthHeader(persistedToken);
-                const res = await axios.get("http://intern-project-backend.atwebpages.com/api/groups", {
+                const res = await axios.get("https://diplom.korvir.zp.ua/", {
                     headers : {
                         "Content-Type" : "application/json",
                         Accept : "application/json",
@@ -487,7 +487,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("http://intern-project-backend.atwebpages.com/api/groups/delete", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
                 data : {
                     id,
                 },
