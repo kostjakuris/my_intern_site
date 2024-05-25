@@ -131,7 +131,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.post(
-                    "https://diplom.korvir.zp.ua/", {
+                    "https://diplom.korvir.zp.ua/api/users/create-user", {
                         name,
                         surname,
                         email,
@@ -160,7 +160,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.put(
-                    "https://diplom.korvir.zp.ua/", {
+                    "https://diplom.korvir.zp.ua/api/users/update-user-info", {
                         id,
                         name,
                         surname,
@@ -187,7 +187,7 @@ class MobxStore {
             const persistedToken = this.accessToken;
             try {
                 this.setAuthHeader(persistedToken);
-                const respons = await axios.post("https://diplom.korvir.zp.ua/",
+                const respons = await axios.post("https://diplom.korvir.zp.ua/api/devices/create",
                     {
                         owner_id : newOwnerId,
                         name,
@@ -215,7 +215,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/api/devices/delete", {
                 data : {
                     id,
                 },
@@ -232,7 +232,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/api/users/delete-user", {
                 data : {
                     id,
                 },
@@ -251,7 +251,7 @@ class MobxStore {
             const newGroupId = group_id ? Number(group_id) : 1;
             try {
                 this.setAuthHeader(persistedToken);
-                const respons = await axios.put("https://diplom.korvir.zp.ua/", {
+                const respons = await axios.put("https://diplom.korvir.zp.ua/api/devices/edit", {
                     id,
                     name,
                     device_type,
@@ -277,7 +277,7 @@ class MobxStore {
             
             try {
                 this.setAuthHeader(persistedToken);
-                const res = await axios.post("https://diplom.korvir.zp.ua/", {
+                const res = await axios.post("https://diplom.korvir.zp.ua/api/groups/create", {
                     name
                 });
                 this.groups = res.data.groups;
@@ -312,7 +312,7 @@ class MobxStore {
         async ({name, surname, email, password, country, city, address, phone_number}: CreateUserData) => {
             this.isLoading = true;
             try {
-                const respons = await axios.post("https://diplom.korvir.zp.ua/", {
+                const respons = await axios.post("https://diplom.korvir.zp.ua/api/auth/register", {
                     name,
                     surname,
                     email,
@@ -337,7 +337,7 @@ class MobxStore {
     logIn = async ({email, password}: SignInFormData) => {
         this.isLoading = true;
         try {
-            const respons = await axios.post("https://diplom.korvir.zp.ua/", {
+            const respons = await axios.post("https://diplom.korvir.zp.ua/api/auth/login", {
                 email,
                 password,
             });
@@ -361,7 +361,7 @@ class MobxStore {
         
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("https://diplom.korvir.zp.ua/", {
+            const res = await axios.get("https://diplom.korvir.zp.ua/api/users/user-info", {
                 headers : {
                     "Content-Type" : "application/json",
                     Accept : "application/json",
@@ -401,7 +401,7 @@ class MobxStore {
         
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("https://diplom.korvir.zp.ua/", {});
+            const res = await axios.get("https://diplom.korvir.zp.ua/api/users", {});
             this.users = res.data.users;
             return res.data;
             
@@ -421,7 +421,7 @@ class MobxStore {
             try {
                 this.setAuthHeader(persistedToken);
                 const respons = await axios.put(
-                    "https://diplom.korvir.zp.ua/", {
+                    "https://diplom.korvir.zp.ua/api/users/update-user-info", {
                         id,
                         name,
                         surname,
@@ -445,7 +445,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const res = await axios.get("https://diplom.korvir.zp.ua/", {
+            const res = await axios.get("https://diplom.korvir.zp.ua/api/devices", {
                 headers : {
                     "Content-Type" : "application/json",
                     Accept : "application/json",
@@ -467,7 +467,7 @@ class MobxStore {
             
             try {
                 this.setAuthHeader(persistedToken);
-                const res = await axios.get("https://diplom.korvir.zp.ua/", {
+                const res = await axios.get("https://diplom.korvir.zp.ua/api/groups", {
                     headers : {
                         "Content-Type" : "application/json",
                         Accept : "application/json",
@@ -487,7 +487,7 @@ class MobxStore {
         const persistedToken = this.accessToken;
         try {
             this.setAuthHeader(persistedToken);
-            const respons = await axios.delete("https://diplom.korvir.zp.ua/", {
+            const respons = await axios.delete("https://diplom.korvir.zp.ua/api/groups/delete", {
                 data : {
                     id,
                 },
