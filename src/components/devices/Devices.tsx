@@ -22,7 +22,7 @@ type GridData = {
 
 
 const DevicesComponent = ({...props}: HookData) => {
-    
+    const gridRef = useRef<AgGridReact>(null);
     const {values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset} = useFormik<DeviceFormData>({
         initialValues : {
             name : "",
@@ -54,7 +54,6 @@ const DevicesComponent = ({...props}: HookData) => {
         }
     }
     
-    const gridRef = useRef<AgGridReact>(null);
     const [columnDefs] = useState<GridData[]>([
         {
             headerName : "Serial number", field : "serial_number", checkboxSelection : true,
@@ -111,6 +110,7 @@ const DevicesComponent = ({...props}: HookData) => {
                 country : selectedData.country,
                 city : selectedData.city,
                 address : selectedData.address,
+                group_id : selectedData.group_id
             }));
             setSelectedDevice(updatedSelectedData);
         }
@@ -134,7 +134,6 @@ const DevicesComponent = ({...props}: HookData) => {
     }, []);
     
     const onSubmitEditDevice = useCallback(async (values: DeviceFormData) => {
-        
         const getSelectedNodes = gridRef.current?.api.getSelectedNodes();
         if (getSelectedNodes) {
             getSelectedNodes.forEach((selectedData) => {

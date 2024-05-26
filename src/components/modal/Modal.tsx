@@ -14,14 +14,14 @@ const ModalComponent = ({active, setActive}: ModalData) => {
     
     const {values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset} = useFormik({
         initialValues : {
-            name : "",
-            surname : "",
-            email : "",
-            country : "",
-            city : "",
+            name : mobxStore ? mobxStore.user.name : "",
+            surname : mobxStore ? mobxStore.user.surname : "",
+            email : mobxStore ? mobxStore.user.email : "",
+            country : mobxStore ? mobxStore.user.country : "",
+            city : mobxStore ? mobxStore.user.city : "",
             password : "",
-            address : "",
-            phone_number : "",
+            address : mobxStore ? mobxStore.user.address : "",
+            phone_number : mobxStore ? mobxStore.user.phone_number : "",
         },
         validationSchema : ModalEditSchema,
         onSubmit : async (values: ValuesData) => {
